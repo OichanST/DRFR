@@ -1,0 +1,384 @@
+body{
+	background-color:#B0B0B0;
+	-webkit-user-select:none;		/* 選択不可にする */
+}
+/* table共通 */
+table{
+	background-color:white;
+	border-collapse:collapse;
+}
+table caption{
+	text-align:left;
+	font-weight:bold;
+}
+table th,table td{
+	border:1px solid black;
+}
+table th{
+	background-color:#D9F9FF;
+}
+table.innerStatus td{
+	height:auto !impotant;
+}
+/* リスト表示領域 */
+.listWrapper{
+	width:99.9%;
+	overflow-y:scroll;
+	border-left:1px solid black;
+	border-right:1px solid black;
+	border-bottom:1px solid black;
+}
+select{
+	font-size:0.95rem;
+	height:26px;
+}
+/* リスト */
+.list{
+	width:100%;
+}
+.list, .list td{
+	border-top:none;
+	border-left:none;
+	font-size:0.9rem;
+}
+
+.list tr:last-child td{
+	border-bottom:none;
+}
+
+.list tr:nth-child(2n){
+	background-color:#E0FFFF;
+}
+.list tr{
+	cursor:pointer;
+	/* アニメーション定義 */
+	transition-property:background-color;
+	transition-duration:0.2s;
+	transition-timing-function:ease-in-out;
+	transition-delay:0;
+}
+.list tr:hover{
+	box-shadow:
+		0  3px 5px rgba(255,160,0,0.9) inset,
+		0 -3px 5px rgba(255,160,0,0.9) inset;
+}
+.list tr:active{
+	box-shadow:
+		 1px  1px 5px rgba(0,0,0,0.3) inset,
+		-1px -1px 5px rgba(0,0,0,0.3) inset;
+}
+
+.list tr.active{
+	background-color:rgb(255,160,0);
+}
+.list tr.inactive
+{
+	background-color:gray;
+}
+.inactive input,
+.inactive select{
+	background-color:#E0E0E0;
+}
+.list tr.complete{
+	background-color:yellow;
+}
+/* 陣形テーブル */
+.formation{
+	display:inline-block;
+	vertical-align:middle;
+	border-top:1px solid black;
+	border-left:1px solid black;
+	border-right:none;
+	border-bottom:none;
+}
+.formation td{
+	width:6px;
+	height:6px;
+	border-top:none;
+	border-left:none;
+	border-right:1px solid black !important;
+	border-bottom:1px solid black !important;
+}
+#simArea{
+	display:flex;
+	justify-content:flex-start;
+}
+#sim > tbody > tr > td{
+	cursor:pointer;
+	width:190px;
+	height:190px;
+	text-align:left;
+	vertical-align:top;
+	padding:5px;
+	background-color:white;
+	/* アニメーション定義 */
+	transition-property:background-color;
+	transition-duration:0.2s;
+	transition-timing-function:ease-in-out;
+	transition-delay:0;
+}
+#sim td:empty{
+	background-color:#F0F0F0;
+}
+#sim td div{
+	font-size:0.75rem;
+}
+#sim td:hover{
+	box-shadow:
+		 1px  1px 6px rgba(255,160,0,0.9) inset,
+		-1px -1px 6px rgba(255,160,0,0.9) inset;
+}
+#sim td:active{
+	box-shadow:
+		 1px  1px 6px rgba(0,0,0,0.3) inset,
+		-1px -1px 6px rgba(0,0,0,0.3) inset;
+}
+#sim td.selected{
+	background-color:rgb(255,160,0);
+}
+/* ボタン表示領域 */
+.btnArea:not(.endBtn){
+	display:flex;
+	margin-bottom:4px;
+}
+.btnArea:not(.bottomBtn){
+	justify-content:flex-start;
+}
+.bottomBtn{
+	margin-top:8px;
+	justify-content:flex-end;
+}
+.btnArea div,.btn{
+	cursor:pointer;
+	border-top:1px solid black;
+	border-left:1px solid black;
+	border-right:2.5px solid black;
+	border-bottom:2px solid black;
+	padding-left:5px;
+	padding-right:5px;
+	padding-top:3px;
+	/* アニメーション定義 */
+	transition-property:background-color;
+	transition-duration:0.12s;
+	transition-timing-function:ease-in-out;
+	transition-delay:0;
+	border-radius:5px 5px 5px 5px;
+}
+.btnArea div.active:hover{
+	background-color:#FFFFF0;
+}
+.btnArea div:active{
+	border-top:2px solid black;
+	border-left:2.5px solid black;
+	border-right:1px solid black;
+	border-bottom:1px solid black;
+}
+.btnArea div.active{
+	background-color:yellow;
+}
+.btnArea div.inactive{
+	background-color:gray;
+}
+.btnArea div:not(:first-child){
+	margin-left:5px;
+}
+/* ダイアログ */
+.dialog{
+	visibility:hidden;
+	position:absolute;
+	width:75vw;
+	height:80vh;
+	top:50%;
+	left:50%;
+	transform:translate(-50%,-50%);
+	display:flex;
+	flex-direction:column;
+	border:1px solid black;
+	background-color:#F0F0F0;
+	box-shadow:2px 2px 5px;
+	padding:10px;
+	opacity:0;
+	/* アニメーション定義 */
+	transition-property:visibility,opacity;
+	transition-duration:0.1s;
+	transition-timing-function:ease-in-out;
+	transition-delay:0;
+}
+.dialog.active{
+	visibility:visible;
+	opacity:1;
+}
+#selector{
+	z-index:5;
+}
+#teamSelector{
+	display:flex;
+	flex-direction:column;
+	font-size:1.1rem;
+}
+#teamSelector > div{
+	background-color:white;
+	cursor:pointer;
+	border:1px solid black;
+	padding:5px 5px 5px 10px;
+	margin-bottom:8px;
+	display:flex;
+	justify-content:flex-start;
+	height:40px;
+	box-shadow:1px 1px 3px;
+}
+#teamSelector > div > div > div:nth-child(2n - 1){
+	font-size:1.3em;
+	height:24px;
+}
+#teamSelector > div > div > div:nth-child(2n){
+	font-size:0.55em;
+}
+#teamSelector > div > div:nth-child(2n){
+	font-size:1.7em;
+}
+#teamSelector > div.active{
+	background-color:orange;
+}
+#eqDetail{
+	border:1px solid black;
+	height:65px;
+	padding-top:4px;
+	padding-left:5px;
+}
+#dmgMtrx{
+	width:98.5%;
+}
+#dmgMtrx th,#dmgMtrx td{
+	font-size:0.7rem;
+}
+#glaf{
+	background-color:white;
+}
+#mask{
+	top:0;
+	left:0;
+	position:absolute;
+	width:100%;
+	height:100%;
+	background-color:gray;
+	opacity:0.5;
+	display:none;
+}
+#mask.active{
+	display:block;
+}
+#header{
+	width:100%;
+}
+.sortInactive{
+	cursor:pointer;
+	color:blue;
+}
+.sortActive{
+	cursor:pointer;
+	color:red;
+}
+.num{
+	text-align:right;
+	padding-right:4px;
+}
+#status td{
+	padding-left:4px;
+}
+#resultArea{
+	position:absolute;
+	background-color:#D0D0D0;
+	top:2.5rem;
+	left:-1200px;
+	border:1px solid black;
+	padding:10px;
+	visibility:hidden;
+	box-shadow:1px 1px 3px;
+	/* アニメーション定義 */
+	transition-property:left,visibility;
+	transition-duration:0.3s;
+	transition-timing-function:ease-in-out;
+	transition-delay:0;
+}
+#resultArea.active{
+	left:8px;
+	visibility:visible;
+}
+#equip td{
+	cursor:pointer;
+	text-align:center;
+	width:calc(100% / 3);
+}
+#equip td:hover{
+	box-shadow:-5px -5px 8px rgba(255,255,255,0.9) inset,
+	5px 5px 8px rgba(255,255,255,0.9) inset;
+}
+#equip td:active{
+	box-shadow:1px 1px 4px rgba(0,0,0,0.5) inset;
+}
+#eqSelector{
+	width:66.3vw;
+	height:65vh;
+	transform:translate(-44.5%,-60%);
+	z-index:6;
+}
+.closeBtn{
+	cursor:pointer;
+	background-color:#F0F0F0;
+	font-size:0.8rem;
+	vertical-align:top;
+	text-align:center;
+	width:18px;
+	display:inline-block;
+	border:1px solid black;
+	border-radius:3px 3px 3px 3px;
+	box-shadow:1px 1px 2px #909090;
+	/* アニメーション定義 */
+	transition-property:left,visibility;
+	transition-duration:0.3s;
+	transition-timing-function:ease-in-out;
+	transition-delay:0;
+}
+#detailArea{
+	position:absolute;
+	z-index:1;
+	left:38.2rem;
+	width:20rem;
+	padding:5px;
+	background-color:#B0B0B0;
+	box-shadow:1px 1px 5px black;
+	font-size:0.75rem;
+	margin-left:4px;
+	visibility:hidden;
+}
+#detailArea.active{
+	visibility:visible;
+}
+.flex{
+	display:flex;
+	justify-content:flex-start;
+}
+.flexEnd{
+	display:flex;
+	justify-content:flex-end;
+}
+.flexBetween{
+	display:flex;
+	justify-content:space-between;
+}
+.smallFont{
+	font-size:0.85rem;
+}
+.smallerFont{
+	font-size:0.8rem;
+}
+.mTop{
+	margin-top:4px;
+}
+.mLeft{
+	margin-left:4px;
+}
+.mBottom{
+	margin-bottom:4px;
+}

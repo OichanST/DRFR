@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8"/>
+		<!--<meta name="viewport" content="width=device-width,initial-scale=1.0">-->
+		<title>ドールズフロントライン（ドルフロ） DPSしみゅれーたー</title>
+		<meta name="description" content="日本語版のDPSシミュレーターが欲しくて自作しました。ご意見、ご要望等はID:2027831まで。">
+		<link rel="stylesheet" type="text/css" href="css/drfr.css"/>
+		<script type="text/javascript" src="js/drfr.const.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="data/drfr.json"></script>
+		<script type="text/javascript" src="js/drfr.js"></script>
+		<script type="text/javascript" src="js/drfr.calc.js"></script>
+	</head>
+	<body onload="prepare(true);">
+		<div id="mask"></div>
+		<div id="selector" class="dialog">
+			<div class="flexBetween">
+				<div class="flex">
+					<div id="typeBtn" class="btnArea">
+						<div class="active" onclick="TDollSelector.filter('type',HG);">HG</div>
+						<div class="inactive" onclick="TDollSelector.filter('type',AR);">AR</div>
+						<div class="inactive" onclick="TDollSelector.filter('type',SMG);">SMG</div>
+						<div class="inactive" onclick="TDollSelector.filter('type',RF);">RF</div>
+						<div class="inactive" onclick="TDollSelector.filter('type',MG);">MG</div>
+						<div class="inactive" onclick="TDollSelector.filter('type',SG);">SG</div>
+					</div>
+					<div id="rareBtn" class="btnArea" style="margin-left:20px;">
+						<div class="active" onclick="TDollSelector.filter('rare',2);">★2</div>
+						<div class="active" onclick="TDollSelector.filter('rare',3);">★3</div>
+						<div class="active" onclick="TDollSelector.filter('rare',4);">★4</div>
+						<div class="active" onclick="TDollSelector.filter('rare',5);">★5</div>
+						<div class="active" onclick="TDollSelector.filter('rare','Extra');">Extra</div>
+					</div>
+				</div>
+				<div class="btnArea flexEnd">
+					<div class="active" onclick="TDollSelector.close();">閉じる</div>
+				</div>
+			</div>
+			<div class="flexBetween">
+				<div id="effectBtn" class="btnArea">
+					<div class="active" onclick="TDollSelector.filter('effect','FF');">火力上昇</div>
+					<div class="active" onclick="TDollSelector.filter('effect','SS');">射速上昇</div>
+					<div class="active" onclick="TDollSelector.filter('effect','AR');">命中上昇</div>
+					<div class="active" onclick="TDollSelector.filter('effect','DR');">回避上昇</div>
+					<div class="active" onclick="TDollSelector.filter('effect','CR');">会心率上昇</div>
+					<div class="active" onclick="TDollSelector.filter('effect','DF');">防御上昇</div>
+					<div class="active" onclick="TDollSelector.filter('effect','CT');">スキル冷却速度上昇</div>
+				</div>
+				<div class="btnArea">
+					<div class="active" onclick="TDollSelector.clear();TDollSelector.init();">クリア</div>
+				</div>
+			</div>
+			<table id="header">
+				<tr>
+					<th class="sortInactive" style="width:20px;" onclick="TDollSelector.sort('rare');">★</th>
+					<th style="width:40px;">銃種</th>
+					<th style="width:180px;">戦術人形名</th>
+					<th class="sortInactive" style="width:44px;" onclick="TDollSelector.sort('hp');">体力</th>
+					<th class="sortInactive" style="width:44px;" onclick="TDollSelector.sort('atk');">火力</th>
+					<th class="sortInactive" style="width:44px;" onclick="TDollSelector.sort('acc');">命中</th>
+					<th class="sortInactive" style="width:44px;" onclick="TDollSelector.sort('eva');">回避</th>
+					<th class="sortInactive" style="width:44px;" onclick="TDollSelector.sort('spe');">射速</th>
+					<th class="sortInactive" style="width:44px;" onclick="TDollSelector.sort('dps');">DPS</th>
+					<th id="slotHeader" class="sortInactive" style="width:44px;font-size:0.85rem;" onclick="TDollSelector.sort('slot');">弾薬数</th>
+					<th id="defHeader" class="sortInactive" style="width:44px;" onclick="TDollSelector.sort('def');">防御</th>
+					<th style="width:55px;">陣形</th>
+					<th style="width:250px;">効果</th>
+					<th>スキル</th>
+					<th style="width:58px;">開幕CT</th>
+				</tr>
+			</table>
+			<div class="listWrapper" style="border-right:1px solid black;">
+				<table id="unit" class="list"></table>
+			</div>
+			<div class="flexBetween">
+				<div style="width:180px;padding-top:1.5rem;">
+					好感度
+					<select id="favor">
+						<option value="-5">0～9</option>
+						<option value="0" selected>10～89</option>
+						<option value="5">90～139</option>
+						<option value="10">140～150</option>
+					</select><br/>
+					スキルレベル
+					<select id="slv">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+						<option value="6">6</option>
+						<option value="7">7</option>
+						<option value="8">8</option>
+						<option value="9">9</option>
+						<option value="10">10</option>
+					</select>
+				</div>
+				<div style="width:100%;">
+					<table id="equip" style="width:100%;height:80px;">
+						<caption>【装備】</caption>
+						<tr>
+							<td onclick="TDollSelector.equip(1);"></td>
+							<td onclick="TDollSelector.equip(2);"></td>
+							<td onclick="TDollSelector.equip(3);"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="btnArea bottomBtn">
+				<div class="active" onclick="Formation.put();">編成する</div>
+			</div>
+		</div>
+		<div id="eqSelector" class="dialog">
+			<div class="btnArea bottomBtn" style="margin-top:0px !important;">
+				<div class="active" onclick="EquipSelector.close();">閉じる</div>
+			</div>
+			<table style="width:100%;">
+				<tr>
+					<th style="width:20px;">★</th>
+					<th style="width:160px;">系統</th>
+					<th style="width:220px;">装備品名</th>
+					<th>装備効果</th>
+				</tr>
+			</table>
+			<div class="flexBetween" style="flex-direction:column;height:62vh;">
+				<div class="listWrapper">
+					<table id="eqList" class="list"></table>
+				</div>
+				<div style="margin-top:8px;">
+					<div id="eqDetail"></div>
+					<div class="btnArea bottomBtn">
+						<div class="active" onclick="EquipSelector.set();">装備</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="flexBetween" style="margin-top:4px;">
+			<div>
+				<div class="flex">
+					<div id="displayChanger" class="btnArea">
+						<div class="inactive" onclick="displayChange();">DPSグラフ</div>
+					</div>
+				</div>
+				<div id="simArea">
+					<div>
+						<table id="sim">
+							<tr>
+								<td onclick="Formation.sel(1);" ondragover="event.preventDefault();" ondrop="Formation.drop(1);"></td>
+								<td onclick="Formation.sel(2);" ondragover="event.preventDefault();" ondrop="Formation.drop(2);"></td>
+								<td onclick="Formation.sel(3);" ondragover="event.preventDefault();" ondrop="Formation.drop(3);"></td>
+							</tr>
+							<tr>
+								<td onclick="Formation.sel(4);" ondragover="event.preventDefault();" ondrop="Formation.drop(4);"></td>
+								<td onclick="Formation.sel(5);" ondragover="event.preventDefault();" ondrop="Formation.drop(5);"></td>
+								<td onclick="Formation.sel(6);" ondragover="event.preventDefault();" ondrop="Formation.drop(6);"></td>
+							</tr>
+							<tr>
+								<td onclick="Formation.sel(7);" ondragover="event.preventDefault();" ondrop="Formation.drop(7);"></td>
+								<td onclick="Formation.sel(8);" ondragover="event.preventDefault();" ondrop="Formation.drop(8);"></td>
+								<td onclick="Formation.sel(9);" ondragover="event.preventDefault();" ondrop="Formation.drop(9);"></td>
+							</tr>
+						</table>
+						<div class="btnArea bottomBtn">
+							<div id="openSelector" class="inactive" onclick="Formation.openSelector();">変更する</div>
+						</div>
+					</div>
+					<div style="width:13rem;margin-left:4px;">
+						<div>
+							<table class="smallFont" style="width:100%;">
+								<tr>
+									<th>妖精</th>
+									<td colspan="3"><select id="fairy" class="smallFont" onchange="Fairy.disp();"></select></td>
+								</tr>
+								<tr>
+									<th style="width:20%;">★</th>
+									<td style="width:20%;text-align:center;">
+										<select id="fairyRank" class="smallFont" onchange="Fairy.disp();"></select>
+									</td>
+									<th style="width:20%;">LV</th>
+									<td style="text-align:center;">
+										<select id="fairyLv" class="smallFont" onchange="Fairy.disp();"></select>
+									</td>
+								</tr>
+								<tr>
+									<th style="width:2.5rem;">天賦</th>
+									<td colspan="3">
+										<div class="btnArea" style="justify-content:space-between;margin-bottom:0px;">
+											<select id="fairySkill" class="smallFont" style="margin-top:2px;" onchange="Fairy.disp();"></select>
+											<div id="addFairySkill" class="inactive" onclick="Fairy.changeSkill();">発動</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td id="fairyDetail" colspan="8" style="padding-left:4px;font-size:0.8rem;"></td>
+								</tr>
+							</table>
+							<table class="smallerFont" style="width:100%;margin-top:4px;">
+								<caption>Total DPS</caption>
+								<tr>
+									<th style="width:5.5rem;">5sec</th>
+									<td id="dps5sec" class="num"></td>
+								</tr>
+								<tr>
+									<th>8sec</th>
+									<td id="dps8sec" class="num"></td>
+								</tr>
+								<tr>
+									<th>20sec</th>
+									<td id="dps20sec" class="num"></td>
+								</tr>
+							</table>
+						</div>
+						<div>
+							<div id="statArea" style="display:none;margin-top:4px;">
+								<div id="statName"></div>
+								<div class="btnArea smallerFont" style="margin-top:4px;">
+									<div id="detailBtn" class="inactive" onclick="toggleDetail();">陣形効果・スキル詳細</div>
+								</div>
+								<table id="status" class="smallerFont" style="width:100%;margin-top:4px;">
+									<tr>
+										<th style="width:5.5rem;">体力</th><td></td>
+									</tr>
+									<tr>
+										<th>夜戦</th><td></td>
+									</tr>
+									<tr>
+										<th>会心</th><td></td>
+									</tr>
+									<tr>
+										<th>会心ダメージ</th><td></td>
+									</tr>
+									<tr>
+										<th>破甲</th><td></td>
+									</tr>
+									<tr>
+										<th>火力</th><td></td>
+									</tr>
+									<tr>
+										<th>命中</th><td></td>
+									</tr>
+									<tr>
+										<th>回避</th><td></td>
+									</tr>
+									<tr>
+										<th>射速</th><td></td>
+									</tr>
+									<tr>
+										<th>弾薬数</th><td></td>
+									</tr>
+									<tr>
+										<th>防御</th><td></td>
+									</tr>
+									<tr>
+										<th>FPS</th><td></td>
+									</tr>
+									<tr>
+										<th>DPS</th><td></td>
+									</tr>
+								</table>
+								<span id="dpsComment" class="smallerFont" style="display:none;">※リロード中を除く</span>
+							</div>
+						</div>
+					</div>
+					<div id="detailArea">
+						<div style="background-color:#808080;padding:5px;">
+							<span style="color:#FFCC00;">陣形効果&nbsp;<sub>TILES</sub></span>
+							<div class="flex" style="background-color:#606060;color:white;box-shadow:1px 1px 5px black inset;padding:10px;">
+								<div id="detFormation" style="margin-top:4px;"></div>
+								<div id="detFormationExp" style="margin-left:10px;"></div>
+							</div>
+						</div>
+						<div style="background-color:#808080;margin-top:4px;padding:5px;">
+							<span style="color:#FFCC00;">スキル&nbsp;<sub>SKILLS</sub></span>
+							<div id="detSkill" style="background-color:#606060;color:white;box-shadow:1px 1px 5px black inset;padding:5px;">
+								<div id="detSkillName" style="background-color:#909090;padding-left:4px;margin-bottom:4px;"></div>
+								<span id="detSkillLv" style="display:inline-block;text-align:center;background-color:#FFCC00;color:black;padding-left:4px;padding-right:4px;width:1.7rem;"></span>
+								<span id="detSkillCT"></span>
+								<div id="detSkillExp" style="padding:5px;"></div>
+							</div>
+						</div>
+						<div class="btnArea" style="font-size:0.9rem;margin-top:4px;height:2rem;">
+							<div id="manualSkillBtn" class="inactive" onclick="changeManual();" style="padding-top:0.25rem;">スキル強制手動</div>
+							<div id="manualTimeArea" style="border:none;display:none;" onchange="changeWt();">（使用開始：<select id="manualTime"></select>秒）</div>
+						</div>
+						<div id="skillCond"></div>
+					</div>
+				</div>
+				<div id="resultArea" style="z-index:4;">
+					<div class="flex">
+						<div class="flexBetween" style="flex-direction:column;">
+							<div id="glafNames" class="smallerFont" style="width:142px;"></div>
+							<div class="flexEnd" style="flex-direction:column;margin-bottom:8px;">
+								<div style="font-size:0.5rem;font-weight:bold;margin-bottom:4px;">
+									※破線はリロード中、もしくは<br/>
+									　狙撃スキル時の照準合わせ中<br/>
+									　を意味します
+								</div>
+								<div class="smallFont">
+									ダメージ軸最大値<br/>
+									<div style="width:100%;text-align:right;">
+										<select id="dmgMesure" class="smallFont" style="margin-right:4px;" onchange="calclate();">
+											<option value="2">2000</option>
+											<option value="4">4000</option>
+											<option value="8" selected>8000</option>
+											<option value="12">12000</option>
+											<option value="16">16000</option>
+											<option value="20">20000</option>
+										</select>
+									</div>
+								</div>
+								<div style="font-size:0.85rem;">
+									時間軸最大値<br/>
+									<div style="width:100%;text-align:right">
+										<select id="timeMesure" class="smallFont" onchange="calclate();">
+											<option value="10">10</option>
+											<option value="20" selected>20</option>
+											<option value="30">30</option>
+										</select>
+										<span style="margin-right:4px;">s</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div>
+							<canvas id="glaf" height="500" style="height:500px;border:1px solid black;"></canvas>
+						</div>
+					</div>
+					<div>
+						<table id="dmgMtrx" style="table-layout:fixed;margin-top:4px;"></table>
+					</div>
+				</div>
+			</div>
+			<div id="teamSelector">
+				<div class="active" onclick="TeamSelector.sel(0);">
+					<div>
+						<div>部隊</div>
+						<div>ECHELON</div>
+					</div>
+					<div>１</div>
+				</div>
+				<div onclick="TeamSelector.sel(1);">
+					<div>
+						<div>部隊</div>
+						<div>ECHELON</div>
+					</div>
+					<div>２</div>
+				</div>
+				<div onclick="TeamSelector.sel(2);">
+					<div>
+						<div>部隊</div>
+						<div>ECHELON</div>
+					</div>
+					<div>３</div>
+				</div>
+				<div onclick="TeamSelector.sel(3);">
+					<div>
+						<div>部隊</div>
+						<div>ECHELON</div>
+					</div>
+					<div>４</div>
+				</div>
+				<div onclick="TeamSelector.sel(4);">
+					<div>
+						<div>部隊</div>
+						<div>ECHELON</div>
+					</div>
+					<div>５</div>
+				</div>
+				<div onclick="TeamSelector.sel(5);">
+					<div>
+						<div>部隊</div>
+						<div>ECHELON</div>
+					</div>
+					<div>６</div>
+				</div>
+				<div onclick="TeamSelector.sel(6);">
+					<div>
+						<div>部隊</div>
+						<div>ECHELON</div>
+					</div>
+					<div>７</div>
+				</div>
+				<div onclick="TeamSelector.sel(7);">
+					<div>
+						<div>部隊</div>
+						<div>ECHELON</div>
+					</div>
+					<div>８</div>
+				</div>
+				<div onclick="TeamSelector.sel(8);">
+					<div>
+						<div>部隊</div>
+						<div>ECHELON</div>
+					</div>
+					<div>９</div>
+				</div>
+				<div onclick="TeamSelector.sel(9);">
+					<div>
+						<div>部隊</div>
+						<div>ECHELON</div>
+					</div>
+					<div>10</div>
+				</div>
+				<div onclick="reset();">
+					<div>
+						<div>部隊</div>
+						<div>リセット</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="margin-top:4px;">
+			<div class="flexBetween">
+				<div>
+					<div class="btnArea">
+						<div class="inactive" id="calcExpected" onclick="ctrlExpected();">期待値による計算</div>
+						<sup style="margin-left:4px;margin-top:4.5px;">※命中率、会心率、会心ダメージを計算結果に含むようにします。</sup>
+					</div>
+					<div id="expectedDetail" style="display:none;justify-content:flex-start;">
+						<div>
+							<select id="fieldType" onchange="calclate();">
+								<option value="day">昼戦</option>
+								<option value="night">夜戦</option>
+							</select>
+							仮想敵
+							<select id="enemy" onchange="selEnemy();"></select>
+							<select id="enemyType" onchange="setEnemyData();"></select>
+						</div>
+						<div style="margin-left:4px;">
+							<table id="detailTable" class="smallFont" style="display:none;">
+								<tr>
+									<th style="width:35px;">HP</th>
+									<td id="eneHp" style="width:60px;text-align:right;padding-right:4px;"></td>
+									<th style="width:35px;">火力</th>
+									<td id="eneAtk" style="width:50px;text-align:right;padding-right:4px;"></td>
+									<th style="width:35px;">射速</th>
+									<td id="eneSpe" style="width:40px;text-align:right;padding-right:4px;"></td>
+									<th style="width:35px;">命中</th>
+									<td id="eneAcc" style="width:40px;text-align:right;padding-right:4px;"></td>
+									<th style="width:35px;">回避</th>
+									<td>
+										<select id="eneEva" class="smallFont" onchange="calclate();"></select>
+									</td>
+									<th style="width:35px;">装甲</th>
+									<td>
+										<input type="number" id="eneDef" class="smallFont" style="text-align:right;width:3rem;" min="0" max="999" value="0" onchange="calclate();">
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div style="text-align:right;">
+					<a target="_new" href="log.html">使い方とか</a>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

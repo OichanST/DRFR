@@ -1,0 +1,2910 @@
+/* 戦術人形 */
+const unitData = {
+	"コルトSAA"				:{
+								rare:4,type:HG ,formation:{target:ALL,range:[2,4,6,8],effect:{FF:24,AR:50}},status:{hp:400,atk:36,acc:49,eva:76,spe:47},
+								make:"00:50:00",
+								skill:{
+									name:"火力号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										atk:[12  ,13  ,14  ,15  ,16  ,17  ,18  ,19  ,20  ,22  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"M1911"					:{
+								rare:2,type:HG ,formation:{target:ALL,range:[2,4,6,8],effect:{SS:20,AR:50}},status:{hp:365,atk:27,acc:50,eva:74,spe:57},
+								make:"00:20:00",
+								skill:{
+									name:"発煙手榴弾",wt:1,t:"enemy",range:2.5,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										spe:[-20 ,-22 ,-24 ,-25 ,-27 ,-29 ,-31 ,-32 ,-34 ,-36 ],
+										mov:[-28 ,-30 ,-32 ,-34 ,-36 ,-37 ,-39 ,-41 ,-43 ,-45 ]
+									},
+									dur    :[2.5 ,2.7 ,2.8 ,3   ,3.2 ,3.3 ,3.5 ,3.7 ,3.8 ,4   ]
+								}
+							},
+	"M9"					:{
+								rare:3,type:HG ,formation:{target:ALL,range:[2,3,8,9],effect:{FF:20,DR:20}},status:{hp:380,atk:29,acc:56,eva:66,spe:61},
+								make:"00:40:00",
+								skill:{
+									name:"閃光手榴弾",wt:5,t:"enemy",range:2.5,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										stan:true
+									},
+									dur    :[1.6 ,1.8 ,2   ,2.1 ,2.3 ,2.5 ,2.7 ,2.8 ,3   ,3.2 ]
+								}
+							},
+	
+	"M1895"					:{
+								rare:2,type:HG ,formation:{target:ALL,range:[2,4,8],effect:{FF:32,CR:16}},status:{hp:350,atk:32,acc:56,eva:66,spe:61},
+								make:"00:20:00",
+								skill:{
+									name:"火力制圧Ｎ",wt:6,t:"enemy",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										atk:[12  ,13  ,14  ,15  ,16  ,16  ,17  ,18  ,19  ,20  ],
+										n_atk:[20  ,22  ,23  ,25  ,27  ,28  ,30  ,32  ,33  ,35  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ],
+									n_dur  :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"トカレフ"				:{
+								rare:3,type:HG ,formation:{target:ALL,range:[2,3,8,9],effect:{SS:20,AR:50}},status:{hp:430,atk:31,acc:47,eva:66,spe:52},
+								make:"00:45:00",
+								skill:{
+									name:"援護号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										eva:[32  ,35  ,37  ,40  ,42  ,45  ,47  ,50  ,52  ,55  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"スチェッキン"			:{
+								rare:4,type:HG ,formation:{target:ALL,range:[2,3,8,9],effect:{FF:12,SS:24}},status:{hp:415,atk:28,acc:44,eva:66,spe:65},
+								make:"00:55:00",
+								skill:{
+									name:"突撃号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										spe:[12  ,13  ,14  ,15  ,16  ,17  ,18  ,19  ,20  ,22  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"マカロフ"				:{
+								rare:3,type:HG ,formation:{target:ALL,range:[1,4,6,7],effect:{FF:20,SS:12}},status:{hp:315,atk:26,acc:61,eva:96,spe:61},
+								make:"00:40:00",
+								skill:{
+									name:"精確制圧",wt:6,t:"enemy",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										acc:[24  ,25  ,27  ,28  ,29  ,31  ,32  ,33  ,35  ,36  ]
+									},
+									dur    :[4   ,4   ,4   ,5   ,5   ,5   ,5   ,6   ,6   ,6   ]
+								}
+							},
+	"P38"					:{
+								rare:2,type:HG ,formation:{target:ALL,range:[2,3,8,9],effect:{SS:14,AR:56}},status:{hp:330,atk:28,acc:49,eva:81,spe:57},
+								make:"00:20:00",
+								skill:{
+									name:"照明弾",wt:3,t:"friend",range:ALL,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										n_acc:[50  ,54  ,59  ,63  ,68  ,72  ,77  ,81  ,86  ,90  ]
+									},
+									dur    :[8   ,9   ,10  ,11  ,12  ,12  ,13  ,13  ,14  ,15  ]
+								}
+							},
+	"PPK"					:{
+								rare:2,type:HG ,formation:{target:ALL,range:[1,4,6,7],effect:{SS:32,CR:16}},status:{hp:285,atk:25,acc:59,eva:100,spe:63},
+								make:"00:22:00",
+								skill:{
+									name:"殲滅号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										atk:[6   ,6   ,7   ,7   ,8   ,8   ,9   ,9   ,10  ,10  ],
+										crt:[25  ,26  ,27  ,28  ,29  ,31  ,32  ,33  ,34  ,35  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"P08"					:{
+								rare:3,type:HG ,formation:{target:ALL,range:[2,6,8],effect:{FF:14,AR:70}},status:{hp:350,atk:31,acc:46,eva:80,spe:55},
+								make:"00:30:00",
+								skill:{
+									name:"援護号令Ｎ",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										n_eva:[50  ,54  ,58  ,62  ,66  ,69  ,73  ,77  ,81  ,85  ],
+										eva:[28  ,29  ,30  ,30  ,31  ,32  ,33  ,33  ,34  ,35  ]
+									},
+									n_dur  :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ],
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"C96"					:{
+								rare:3,type:HG ,formation:{target:ALL,range:[1,6,7],effect:{AR:64,DR:30}},status:{hp:415,atk:29,acc:41,eva:61,spe:62},
+								make:"00:30:00",
+								skill:{
+									name:"照明弾",wt:3,t:"friend",range:ALL,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										n_acc:[55  ,60  ,65  ,70  ,75  ,80  ,85  ,90  ,85  ,100 ]
+									},
+									dur    :[8   ,9   ,10  ,11  ,12  ,12  ,13  ,13  ,14  ,15  ]
+								}
+							},
+	"92式"					:{
+								rare:3,type:HG ,formation:{target:ALL,range:[1,2,3,4,6,7,8,9],effect:{AR:50,DR:40}},status:{hp:315,atk:31,acc:46,eva:80,spe:61},
+								make:"00:35:00",
+								skill:{
+									name:"突貫号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										atk:[6   ,6   ,7   ,7   ,8   ,8   ,8   ,9   ,9  ,10  ],
+										spe:[6   ,6   ,7   ,7   ,8   ,8   ,8   ,9   ,9  ,10  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"アストラ"				:{
+								rare:3,type:HG ,formation:{target:ALL,range:[1,3,7,9],effect:{SS:20,DR:20}},status:{hp:400,atk:33,acc:45,eva:68,spe:52},
+								make:"00:40:00",
+								skill:{
+									name:"突撃号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										spe:[11  ,12  ,13  ,14  ,15  ,16  ,17  ,18  ,19  ,20  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"G17"					:{
+								rare:3,type:HG ,formation:{target:ALL,range:[1,3,6,7,9],effect:{AR:64,DR:30}},status:{hp:315,atk:29,acc:58,eva:87,spe:61},
+								skill:{
+									name:"火力制圧",wt:6,t:"enemy",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										atk:[15  ,16  ,17  ,18  ,19  ,21  ,22  ,23  ,24  ,25  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"トンプソン"			:{
+								rare:5,type:SMG,formation:{target:AR ,range:[1,7],effect:{FF:12,DR:15}},status:{hp:1190,atk:31,acc:12,eva:56,spe:82},
+								make:"02:30:00",
+								skill:{
+									name:"フォースシールド",wt:8,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{invincible:true},
+									dur    :[2   ,2.2 ,2.4 ,2.7 ,2.9 ,3.1 ,3.3 ,3.6 ,3.8 ,4   ]
+								}
+							},
+	"M3"					:{
+								rare:2,type:SMG,formation:{target:AR ,range:[4],effect:{AR:40,DR:30}},status:{hp:925,atk:30,acc:13,eva:67,spe:68},
+								make:"01:30:00",
+								skill:{
+									name:"手榴弾",wt:3,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[180 ,220 ,260 ,300 ,340 ,390 ,430 ,470 ,510 ,550 ]
+									}
+								}
+							},
+	"イングラム"			:{
+								rare:3,type:SMG,formation:{target:AR ,range:[1,4,7],effect:{FF:12}},status:{hp:880,atk:28,acc:11,eva:68,spe:91},
+								make:"02:00:00",
+								skill:{
+									name:"発煙手榴弾",wt:1,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										spe:[-20 ,-22 ,-24 ,-25 ,-27 ,-29 ,-31 ,-32 ,-34 ,-36 ],
+										mov:[-30 ,-32 ,-34 ,-37 ,-39 ,-41 ,-43 ,-46 ,-48 ,-50 ]
+									},
+									dur    :[2.5 ,2.7 ,2.8 ,3   ,3.2 ,3.3 ,3.5 ,3.7 ,3.8 ,4   ]
+								}
+							},
+	"FMG-9"					:{
+								rare:3,type:SMG,formation:{target:AR ,range:[1,7],effect:{FF:10,DR:12}},status:{hp:705,atk:26,acc:13,eva:90,spe:92},
+								skill:{
+									name:"援護集中",wt:6,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										eva:[65  ,71  ,77  ,83  ,89  ,96  ,102 ,108 ,114 ,120 ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"Vector"				:{
+								rare:5,type:SMG,formation:{target:AR ,range:[4],effect:{SS:25}},status:{hp:925,atk:30,acc:11,eva:71,spe:101},
+								make:"02:35:00",
+								skill:{
+									name:"焼夷手榴弾",wt:3,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[350 ,390 ,430 ,470 ,510 ,540 ,580 ,620 ,660 ,700 ],
+										dot:{
+											f:10,
+											dmg:[50 ,60 ,60 ,70 ,70 ,80 ,80 ,90 ,90 ,100 ]
+										}
+									},
+									dur    :[2   ,2.4 ,2.7 ,3   ,3.4 ,3.7 ,4   ,4.3 ,4.7 ,5   ]
+								}
+							},
+	"PPSh-41"				:{
+								rare:2,type:SMG,formation:{target:AR ,range:[2,8],effect:{FF:10,SS:5}},status:{hp:970,atk:26,acc:11,eva:56,spe:93},
+								make:"01:50:00",
+								skill:{
+									name:"手榴弾",wt:3,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[180 ,220 ,260 ,300 ,340 ,390 ,430 ,470 ,510 ,550 ]
+									}
+								}
+							},
+	"PPS-43"				:{
+								rare:3,type:SMG,formation:{target:AR ,range:[1,4,7],effect:{FF:12}},status:{hp:880,atk:33,acc:13,eva:65,spe:74},
+								make:"02:10:00",
+								skill:{
+									name:"手榴弾",wt:3,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[200 ,240 ,290 ,330 ,380 ,420 ,470 ,510 ,560 ,600 ]
+									}
+								}
+							},
+	"PP-90"					:{
+								rare:4,type:SMG,formation:{target:AR ,range:[1,7],effect:{FF:8,DR:20}},status:{hp:795,atk:25,acc:13,eva:86,spe:96},
+								make:"02:20:00",
+								skill:{
+									name:"援護集中Ｔ",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										eva:[25  ,27  ,29  ,32  ,34  ,36  ,38  ,41  ,43  ,45  ]
+									},
+									dur    :[9   ,9.7 ,10.3,11  ,11.7,12.3,13  ,13.7,14.3,15  ]
+								}
+							},
+	"PP-2000"				:{
+								rare:2,type:SMG,formation:{target:AR ,range:[1,7],effect:{FF:10,AR:25}},status:{hp:795,atk:30,acc:11,eva:74,spe:80},
+								make:"01:10:00",
+								skill:{
+									name:"手榴弾",wt:3,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[180 ,220 ,260 ,300 ,340 ,390 ,430 ,470 ,510 ,550 ]
+									}
+								}
+							},
+	"MP40"					:{
+								rare:2,type:SMG,formation:{target:AR ,range:[1,7],effect:{AR:25,DR:20}},status:{hp:925,atk:29,acc:13,eva:58,spe:76},
+								make:"01:30:00",
+								skill:{
+									name:"焼夷手榴弾",wt:3,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[280 ,310 ,340 ,370 ,400 ,430 ,460 ,490 ,520 ,550 ],
+										dot:{
+											f:10,
+											dmg:[50 ,60 ,60 ,70 ,70 ,80 ,80 ,90 ,90 ,100 ]
+										}
+									},
+									dur    :[2   ,2.4 ,2.7 ,3   ,3.4 ,3.7 ,4   ,4.3 ,4.7 ,5   ]
+								}
+							},
+	"Gr MP5"				:{
+								rare:4,type:SMG,formation:{target:AR ,range:[1,7],effect:{AR:40,CR:20}},status:{hp:840,atk:30,acc:13,eva:68,spe:89},
+								make:"02:20:00",
+								skill:{
+									name:"フォースシールド",wt:8,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{invincible:true},
+									dur    :[1.5 ,1.7 ,1.8 ,2   ,2.2 ,2.3 ,2.5 ,2.7 ,2.8 ,3   ]
+								}
+							},
+	"スコーピオン"			:{
+								rare:3,type:SMG,formation:{target:AR ,range:[4],effect:{SS:15,AR:50}},status:{hp:795,atk:24,acc:13,eva:83,spe:95},
+								make:"02:00:00",
+								skill:{
+									name:"焼夷手榴弾",wt:3,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[300 ,330 ,370 ,400 ,430 ,470 ,500 ,530 ,570 ,600 ],
+										dot:{
+											f:10,
+											dmg:[50 ,60 ,60 ,70 ,70 ,80 ,80 ,90 ,90 ,100 ]
+										}
+									},
+									dur    :[2   ,2.4 ,2.7 ,3   ,3.4 ,3.7 ,4   ,4.3 ,4.7 ,5   ]
+								}
+							},
+	
+	"ステンMK-II"			:{
+								rare:3,type:SMG,formation:{target:AR ,range:[1,4,7],effect:{AR:10,DR:30}},status:{hp:925,atk:26,acc:15,eva:75,spe:78},
+								make:"01:40:00",
+								skill:{
+									name:"手榴弾",wt:3,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[200 ,240 ,290 ,330 ,380 ,420 ,470 ,510 ,560 ,600 ]
+									}
+								}
+							},
+	
+	"M38"					:{
+								rare:2,type:SMG,formation:{target:AR ,range:[1,7],effect:{FF:5,SS:10}},status:{hp:1015,atk:32,acc:12,eva:52,spe:75},
+								make:"01:30:00",
+								skill:{
+									name:"閃光手榴弾",wt:5,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{stan:true},
+									dur    :[1.8 ,2   ,2.1 ,2.3 ,2.4 ,2.6 ,2.7 ,2.9 ,3   ,3.2 ]
+								}
+							},
+	"Micro Uzi"				:{
+								rare:3,type:SMG,formation:{target:AR ,range:[2,8],effect:{FF:18}},status:{hp:795,atk:24,acc:11,eva:79,spe:104},
+								make:"01:40:00",
+								skill:{
+									name:"焼夷手榴弾",wt:3,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[300 ,330 ,370 ,400 ,430 ,470 ,500 ,530 ,570 ,600 ],
+										dot:{
+											f:10,
+											dmg:[50 ,60 ,60 ,70 ,70 ,80 ,80 ,90 ,90 ,100 ]
+										}
+									},
+									dur    :[2   ,2.4 ,2.7 ,3   ,3.4 ,3.7 ,4   ,4.3 ,4.7 ,5   ]
+								}
+							},
+	"m45"					:{
+								rare:2,type:SMG,formation:{target:AR ,range:[1,7],effect:{SS:10,DR:10}},status:{hp:925,atk:30,acc:12,eva:62,spe:74},
+								make:"01:20:00",
+								skill:{
+									name:"発煙手榴弾",wt:1,t:"enemy",range:2.5,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										spe:[-20 ,-22 ,-24 ,-25 ,-27 ,-29 ,-31 ,-32 ,-34 ,-36 ],
+										mov:[-28 ,-30 ,-32 ,-34 ,-36 ,-37 ,-39 ,-41 ,-43 ,-45 ]
+									},
+									dur    :[2.5 ,2.7 ,2.8 ,3   ,3.2 ,3.3 ,3.5 ,3.7 ,3.8 ,4   ]
+								}
+							},
+	"M1ガーランド"			:{
+								rare:3,type:RF ,formation:{target:HG ,range:[6],effect:{CT:12}},status:{hp:440,atk:120,acc:62,eva:28,spe:37},
+								make:"04:00:00",
+								skill:{
+									name:"ロックショット",wt:10,wait:1.5,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[280 ,310 ,340 ,370 ,400, 430 ,460 ,490 ,520 ,550 ]
+									}
+								}
+							},
+	"M1A1"					:{
+								rare:3,type:RF ,formation:{target:HG ,range:[2,8],effect:{CT:12}},status:{hp:420,atk:128,acc:72,eva:40,spe:32},
+								skill:{
+									name:"突撃集中Ｔ",wt:5,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										spe:[0   ,24  ,26  ,0  ,0  ,0  ,0  ,0  ,0  ,40  ]
+									},
+									dur    :[0   ,9.7 ,10.3,0  ,0  ,0  ,0  ,0  ,0  ,15  ]
+								}
+							},
+	"スプリングフィールド"	:{
+								rare:4,type:RF ,formation:{target:HG ,range:[3],effect:{CT:15}},status:{hp:420,atk:128,acc:72,eva:40,spe:32},
+								make:"04:25:00",
+								skill:{
+									name:"カームショット",wt:10,wait:1.5,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[300 ,330 ,370 ,400 ,430, 470 ,500 ,530 ,570 ,600 ]
+									}
+								}
+							},
+	"M14"					:{
+								rare:3,type:RF ,formation:{target:HG ,range:[3,9],effect:{CT:12}},status:{hp:420,atk:108,acc:71,eva:27,spe:43},
+								make:"03:40:00",
+								skill:{
+									name:"火力集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[35  ,38  ,41  ,43  ,46  ,49  ,52  ,54  ,57  ,60  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"M21"					:{
+								rare:3,type:RF ,formation:{target:HG ,range:[2,8],effect:{CT:12}},status:{hp:465,atk:118,acc:74,eva:27,spe:35},
+								skill:{
+									name:"エイムショット",wt:10,wait:1.5,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[280 ,310 ,340 ,370 ,400, 430 ,460 ,490 ,520 ,550 ]
+									}
+								}
+							},
+	"モシン・ナガン"		:{
+								rare:4,type:RF ,formation:{target:HG ,range:[8],effect:{CT:15}},status:{hp:440,atk:131,acc:85,eva:38,spe:30},
+								make:"04:10:00",
+								skill:{
+									name:"カームショット",wt:10,wait:1.5,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[300 ,330 ,370 ,400 ,430, 470 ,500 ,530 ,570 ,600 ]
+									}
+								}
+							},
+	"SVT-38"				:{
+								rare:2,type:RF ,formation:{target:HG ,range:[2,8],effect:{CT:10}},status:{hp:420,atk:110,acc:59,eva:34,spe:34},
+								make:"03:30:00",
+								skill:{
+									name:"エイムショット",wt:10,wait:1.5,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[250 ,280 ,310 ,330 ,360, 390 ,420 ,440 ,470 ,500 ]
+									}
+								}
+							},
+	"SKS"					:{
+								rare:2,type:RF ,formation:{target:HG ,range:[6],effect:{CT:10}},status:{hp:465,atk:100,acc:59,eva:34,spe:34},
+								make:"03:30:00",
+								skill:{
+									name:"突撃集中Ｔ",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										spe:[32  ,35  ,37  ,40  ,42  ,45  ,47  ,50  ,52  ,55  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"PTRD"					:{
+								rare:4,type:RF ,formation:{target:HG ,range:[2],effect:{CT:15}},status:{hp:465,atk:159,acc:75,eva:29,spe:28},
+								make:"04:30:00",
+								skill:{
+									name:"ブロックショット",wt:15,wait:2,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[320 ,360 ,400 ,450 ,490 ,530 ,570 ,620 ,660 ,700 ]
+									}
+								}
+							},
+	"SVD"					:{
+								rare:4,type:RF ,formation:{target:HG ,range:[3,9],effect:{CT:15}},status:{hp:400,atk:130,acc:80,eva:33,spe:37},
+								make:"04:15:00",
+								skill:{
+									name:"突撃集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										spe:[40  ,43  ,46  ,48  ,51  ,54  ,57  ,59  ,62  ,65  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"SV-98"					:{
+								rare:3,type:RF ,formation:{target:HG ,range:[9],effect:{CT:12}},status:{hp:420,atk:122,acc:74,eva:28,spe:37},
+								make:"03:40:00",
+								skill:{
+									name:"ブロックショット",wt:10,wait:1.5,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[280 ,310 ,340 ,370 ,400, 430 ,460 ,490 ,520 ,550 ]
+									}
+								}
+							},
+	"Kar98k"				:{
+								rare:5,type:RF ,formation:{target:HG ,range:[3,9],effect:{CT:18}},status:{hp:420,atk:135,acc:78,eva:41,spe:34},
+								make:"04:40:00",
+								skill:{
+									name:"チェーンショット",wt:8,wait:1,t:"enemy",cf:2,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[150 ,170 ,190 ,220 ,240, 260 ,280 ,310 ,330 ,350 ]
+									}
+								}
+							},
+	"G43"					:{
+								rare:2,type:RF ,formation:{target:HG ,range:[3,9],effect:{CT:10}},status:{hp:400,atk:111,acc:58,eva:28,spe:40},
+								make:"03:10:00",
+								skill:{
+									name:"突撃集中Ｎ",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										n_spe:[45,49  ,54  ,58  ,63  ,67  ,72  ,76  ,81  ,85  ],
+										spe:[15  ,16  ,18  ,19  ,21  ,22  ,24  ,25  ,27  ,28  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"WA2000"				:{
+								rare:5,type:RF ,formation:{target:HG ,range:[6],effect:{CT:18}},status:{hp:440,atk:130,acc:82,eva:30,spe:39},
+								make:"04:50:00",
+								skill:{
+									name:"突撃集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										spe:[45  ,48  ,52  ,55  ,58  ,62  ,65  ,68  ,72  ,75  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	
+	"リー・エンフィールド"	:{
+								rare:5,type:RF ,formation:{target:HG ,range:[2,8],effect:{CT:18}},status:{hp:400,atk:135,acc:78,eva:40,spe:36},
+								make:"05:00:00",
+								skill:{
+									name:"火力集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[45  ,48  ,52  ,55  ,58  ,62  ,65  ,68  ,72  ,75  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"FF FN49"				:{
+								rare:2,type:RF ,formation:{target:HG ,range:[3,9],effect:{CT:10}},status:{hp:465,atk:111,acc:61,eva:32,spe:32},
+								make:"03:10:00",
+								skill:{
+									name:"火力集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[32  ,35  ,37  ,40  ,42  ,45  ,47  ,50  ,52  ,55  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"It BM59"				:{
+								rare:2,type:RF ,formation:{target:HG ,range:[6],effect:{CT:10}},status:{hp:485,atk:104,acc:52,eva:25,spe:38},
+								make:"03:20:00",
+								skill:{
+									name:"突撃集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										spe:[32  ,35  ,37  ,40  ,42  ,45  ,47  ,50  ,52  ,55  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"NTW-20"				:{
+								rare:5,type:RF ,formation:{target:HG ,range:[6],effect:{CT:18}},status:{hp:465,atk:165,acc:75,eva:29,spe:30},
+								make:"04:45:00",
+								skill:{
+									name:"ブロックショット",wt:10,wait:2,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[350 ,400 ,450 ,500 ,550, 600 ,650 ,700 ,750 ,800 ]
+									}
+								}
+							},
+	"M16A1"					:{
+								rare:4,type:AR ,formation:{target:SMG,range:[2,3,8,9],effect:{FF:10,DR:12}},status:{hp:605,atk:47,acc:46,eva:44,spe:75},exeq:["防弾ベスト"],
+								skill:{
+									name:"閃光手榴弾",wt:5,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										stan:true
+									},
+									dur    :[2.2 ,2.4 ,2.6 ,2.8 ,3   ,3.2 ,3.4 ,3.6 ,3.8 ,4   ]
+								}
+							},
+	"M4A1"					:{
+								rare:4,type:AR ,formation:{target:AR ,range:[2,3,6,8,9],effect:{FF:18,CR:30}},status:{hp:550,atk:46,acc:48,eva:48,spe:79},
+								skill:{
+									name:"火力集中Ｔ",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										atk:[40  ,43  ,47  ,50  ,53  ,57  ,60  ,63  ,67  ,70  ]
+									},
+									dur    :[6   ,6.4 ,6.8 ,7.2 ,7.6 ,8   ,8.4 ,8.8 ,9.4 ,10  ]
+								}
+							},
+	"M4 SOPMODII"			:{
+								rare:4,type:AR ,formation:{target:SMG,range:[3,6,9],effect:{AR:50,DR:12}},status:{hp:550,atk:50,acc:49,eva:44,spe:78},
+								skill:{
+									name:"殺傷榴弾",wt:8,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[500 ,580 ,660 ,730 ,810 ,890 ,970 ,1040,1120,1200]
+									}
+								}
+							},
+	"ST AR-15"				:{rare:4,type:AR ,formation:{target:SMG,range:[3,6,9],effect:{SS:10,DR:12}},status:{hp:525,atk:48,acc:50,eva:50,spe:77},
+								skill:{
+									name:"突撃集中Ｔ",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										spe:[25  ,27  ,29  ,32  ,34  ,36  ,38  ,41  ,43  ,45  ]
+									},
+									dur    :[9   ,9.7 ,10.3,11  ,11.7,12.3,13  ,13.7,14.3,15  ]
+								}
+							},
+	"AK-47"					:{
+								rare:3,type:AR ,formation:{target:SMG,range:[8],effect:{DR:18}},status:{hp:660,atk:53,acc:35,eva:34,spe:65},
+								make:"03:20:00",
+								skill:{
+									name:"強襲集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[15  ,17  ,19  ,22  ,24  ,26  ,28  ,31  ,33  ,35  ],
+										acc:[50  ,56  ,61  ,67  ,72  ,78  ,83  ,89  ,94  ,100 ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	
+	"As Val"				:{
+								rare:4,type:AR ,formation:{target:SMG,range:[2],effect:{FF:25,SS:10}},status:{hp:660,atk:39,acc:46,eva:49,spe:75},
+								make:"03:30:00",
+								skill:{
+									name:"火力集中Ｎ",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										n_atk:[110 ,118 ,126 ,133 ,141 ,149 ,157 ,164 ,172 ,180 ],
+										atk:[35  ,38  ,41  ,43  ,46  ,49  ,52  ,54  ,57  ,60  ]
+									},
+									dur    :[3.5 ,3.8 ,4.1 ,4.3 ,4.6 ,4.9 ,5.2 ,5.4 ,5.7 ,6   ]
+								}
+							},
+	"StG44"					:{
+								rare:3,type:AR ,formation:{target:SMG,range:[6],effect:{AR:60,DR:20}},status:{hp:635,atk:53,acc:46,eva:36,spe:61},
+								make:"03:00:00",
+								skill:{
+									name:"チェーンブラスト",wt:8,t:"enemy",range:[1,2.5,4],
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[[180,70,40],[210,80,50],[240,90,50],[270,110,60],[300,120,70],[330,130,70],[360,140,80],[390,170,90],[420,180,90],[450,180,100]]
+									}
+								}
+							},
+	"Gr G41"				:{
+								rare:5,type:AR ,formation:{target:SMG,range:[3,9],effect:{AR:50,DR:15}},status:{hp:635,atk:50,acc:48,eva:40,spe:77},
+								make:"04:05:00",
+								skill:{
+									name:"火力集中Ｔ",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										atk:[45  ,48  ,52  ,55  ,58  ,62  ,65  ,68  ,72  ,75  ]
+									},
+									dur    :[6   ,6.4 ,6.8 ,7.2 ,7.6 ,8   ,8.4 ,8.8 ,9.4 ,10  ]
+								}
+							},
+	"Gr G3"					:{
+								rare:2,type:AR ,formation:{target:SMG,range:[2],effect:{SS:20,AR:50}},status:{hp:550,atk:55,acc:46,eva:38,spe:61},
+								make:"02:50:00",
+								skill:{
+									name:"殺傷榴弾",wt:8,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[400 ,470 ,530 ,600 ,670,730,800,870,930,1000]
+									}
+								}
+							},
+	"Gr G36"				:{
+								rare:4,type:AR ,formation:{target:SMG,range:[6,9],effect:{FF:30,SS:10}},status:{hp:635,atk:47,acc:44,eva:41,spe:72},
+								make:"03:40:00",
+								skill:{
+									name:"火力集中Ｔ",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										atk:[40  ,43  ,47  ,50  ,53  ,57  ,60  ,63  ,67  ,70  ]
+									},
+									dur    :[6   ,6.4 ,6.8 ,7.2 ,7.6 ,8   ,8.4 ,8.8 ,9.4 ,10  ]
+								}
+							},
+	"@416"					:{
+								rare:5,type:AR ,formation:{target:SMG,range:[6],effect:{FF:10,DR:12}},status:{hp:605,atk:51,acc:46,eva:44,spe:76},
+								make:"03:55:00",
+								skill:{
+									name:"殺傷榴弾",wt:8,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[600 ,700 ,800 ,900 ,1000,1100,1200,1300,1400,1500]
+									}
+								}
+							},
+	"56-1式"				:{
+								rare:4,type:AR ,formation:{target:SMG,range:[6],effect:{DR:15,CR:10}},status:{hp:690,atk:53,acc:35,eva:35,spe:69},
+								make:"03:25:00",
+								skill:{
+									name:"チェーンブラスト",wt:8,t:"enemy",range:[1,2.5,4],
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[[200,80,40],[210,80,50],[270,110,50],[300,120,60],[330,130,70],[370,150,70],[400,160,80],[430,170,90],[470,190,90],[500,200,100]]
+									}
+								}
+							},
+	
+	"L85A1"					:{
+								rare:2,type:AR ,formation:{target:SMG,range:[2],effect:{FF:20,AR:50}},status:{hp:470,atk:46,acc:43,eva:43,spe:78},
+								make:"02:50:00",
+								skill:{
+									name:"突貫集中",wt:6,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[20  ,22  ,23  ,25  ,27  ,28  ,30  ,32  ,33  ,35  ],
+										spe:[10  ,11  ,11  ,12  ,12  ,13  ,13  ,14  ,14  ,15  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"Fr FAMAS"				:{
+								rare:4,type:AR ,formation:{target:SMG,range:[9],effect:{FF:25,AR:60}},status:{hp:605,atk:44,acc:48,eva:40,spe:81},
+								make:"03:30:00",
+								skill:{
+									name:"チェーンブラスト",wt:8,t:"enemy",range:[1,2.5,4],
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[[200,80,40],[210,80,50],[270,110,50],[300,120,60],[330,130,70],[370,150,70],[400,160,80],[430,170,90],[470,190,90],[500,200,100]]
+									}
+								}
+							},
+	"FF FNC"				:{
+								rare:3,type:AR ,formation:{target:SMG,range:[3],effect:{AR:50,DR:12}},status:{hp:550,atk:51,acc:46,eva:37,spe:73},
+								make:"03:20:00",
+								skill:{
+									name:"火力集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[35  ,38  ,41  ,43  ,46  ,49  ,52  ,54  ,57  ,60  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"ガリル"				:{
+								rare:2,type:AR ,formation:{target:SMG,range:[6],effect:{AR:50,DR:10}},status:{hp:525,atk:50,acc:44,eva:43,spe:66},
+								make:"02:40:00",
+								skill:{
+									name:"精確集中",wt:5,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										acc:[200 ,233 ,267 ,300 ,333 ,367 ,400 ,433 ,467 ,500 ]
+									},
+									dur    :[9   ,9.7 ,10.3,11  ,11.7,12.3,13  ,13.7,14.3,15  ]
+								}
+							},
+	"TAR-21"				:{
+								rare:4,type:AR ,formation:{target:SMG,range:[3,9],effect:{DR:18}},status:{hp:525,atk:49,acc:48,eva:44,spe:79},
+								make:"03:30:00",
+								skill:{
+									name:"突貫集中",wt:6,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16 ],
+									eff:{
+										atk:[45  ,48  ,52  ,55  ,58  ,62  ,65  ,68  ,72  ,75  ],
+										spe:[15  ,16  ,17  ,18  ,19  ,21  ,22  ,23  ,24  ,25  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"AUG"					:{
+								rare:5,type:AR,formation:{target:ALL,range:[2,3,6,8,9],effect:{FF:12,AR:20}},status:{hp:605,atk:55,acc:57,eva:46,spe:75},
+								skill:{
+									name:"弔いの雨",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16 ],
+									eff:{
+										acc:[-30 ,-27 ,-23 ,-20 ,-17 ,-13 ,-10 ,-7  ,-3  ,0  ]
+									},
+									dur    :[3   ,3.4 ,3.9 ,4.3 ,4.8 ,5.2 ,5.7 ,6.1 ,6.6 ,7  ]
+								}
+							},
+	"SIG-510"				:{
+								rare:2,type:AR ,formation:{target:SMG,range:[3,9],effect:{FF:20,SS:10}},status:{hp:580,atk:56,acc:41,eva:37,spe:59},
+								make:"02:40:00",
+								skill:{
+									name:"火力集中",wt:4,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[32  ,35  ,37  ,40  ,42  ,45  ,47  ,50  ,52  ,55  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"M1918"					:{
+								rare:4,type:MG ,formation:{target:SG ,pos:4,range:[6],effect:{FF:15,DF:10}},status:{hp:785,atk:96,acc:31,eva:33,spe:114,slot:8},
+								make:"06:25:00",
+								skill:{
+									name:"火力集中ＭＧ",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[25  ,30  ,35  ,40  ,45  ,50  ,55  ,60  ,65  ,70  ]
+									},
+									dur    :[4   ,4.2 ,4.4 ,4.7 ,4.9 ,5.1 ,5.3 ,5.6 ,5.8 ,6   ]
+								}
+							},
+	
+	"M2HB"					:{
+								rare:3,type:MG ,formation:{target:SG ,pos:4,range:[6],effect:{FF:22}},status:{hp:1075,atk:102,acc:18,eva:16,spe:100,slot:10},
+								make:"06:10:00",
+								skill:{
+									name:"スタッカート",wt:0,t:"self",
+									ct:0,
+									eff:{
+										atk:[1.2,1.3,1.5,1.6,1.7,1.9,2,2.1,2.3,2.4]
+									}
+								}
+							},
+	"M60"					:{
+								rare:4,type:MG ,formation:{target:SG ,pos:1,range:[3,9],effect:{FF:10,SS:8}},status:{hp:910,atk:92,acc:26,eva:26,spe:111,slot:9},
+								make:"06:10:00",
+								skill:{
+									name:"火力集中Ｎ-ＭＧ",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[12  ,15  ,17  ,20  ,22  ,25  ,27  ,30  ,32  ,35  ],
+										n_atk:[40  ,47  ,54  ,62  ,69  ,76  ,83  ,91  ,98  ,105 ],
+									},
+									dur    :[4   ,4.2 ,4.4 ,4.7 ,4.9 ,5.1 ,5.3 ,5.6 ,5.8 ,6   ]
+								}
+							},
+	"FFM249SAW"				:{
+								rare:3,type:MG ,formation:{target:SG ,pos:4,range:[6,9],effect:{SS:12,AR:10}},status:{hp:785,atk:79,acc:35,eva:36,spe:139,slot:8},
+								skill:{
+									name:"準備万端Ｎ",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[5  ,6  ,6  ,6  ,6  ,6  ,6  ,6  ,6  ,6  ],
+										n_atk:[25  ,27  ,29  ,31  ,33  ,35  ,37  ,39  ,41  ,45 ],
+										slot:[1,2,2,2,3,3,3,3,4,4]
+									},
+									dur    :[6   ,6.2 ,6.4 ,6.7 ,6.9 ,7.1 ,7.3 ,7.6 ,7.8 ,8   ]
+								}
+							},
+	"M1919A4"				:{
+								rare:3,type:MG ,formation:{target:SG ,pos:7,range:[3],effect:{AR:25,DF:10}},status:{hp:910,atk:96,acc:26,eva:22,spe:99,slot:9},
+								make:"05:40:00",
+								skill:{
+									name:"狩猟衝動",wt:3,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										acc:[25  ,29  ,34  ,38  ,43  ,47  ,52  ,56  ,61  ,65  ],
+										crt:[10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ]
+									},
+									dur    :[1   ,1.6 ,2.1 ,2.7 ,3.2 ,3.8 ,4.3 ,4.9 ,5.4 ,6   ]
+								}
+							},
+	"LWMMG"					:{
+								rare:2,type:MG ,formation:{target:SG ,pos:4,range:[6],effect:{FF:10,SS:10}},status:{hp:870,atk:95,acc:24,eva:22,spe:90,slot:9},
+								make:"05:10:00",
+								skill:{
+									name:"狩猟衝動",wt:3,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										acc:[22  ,26  ,30  ,35  ,39  ,43  ,47  ,52  ,56  ,60  ],
+										crt:[10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ]
+									},
+									dur    :[1   ,1.6 ,2.1 ,2.7 ,3.2 ,3.8 ,4.3 ,4.9 ,5.4 ,6   ]
+								}
+							},
+	"DP28"					:{
+								rare:2,type:MG ,formation:{target:SG ,pos:7,range:[3,9],effect:{SS:15}},status:{hp:705,atk:88,acc:28,eva:31,spe:114,slot:9},
+								make:"05:00:00",
+								skill:{
+									name:"準備万端",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[16  ,17  ,19  ,20  ,21  ,23  ,24  ,25  ,27  ,28  ],
+										slot:[1,1,2,2,2,2,3,3,3,3]
+									},
+									dur    :[6   ,6.2 ,6.4 ,6.7 ,6.9 ,7.1 ,7.3 ,7.6 ,7.8 ,8   ]
+								}
+							},
+	
+	
+	"PK"					:{
+								rare:4,type:MG ,formation:{target:SG ,pos:4,range:[3,6],effect:{FF:18}},status:{hp:950,atk:96,acc:21,eva:23,spe:84,slot:11},
+								make:"06:30:00",
+								skill:{
+									name:"スタッカート",wt:0,t:"self",
+									ct:0,
+									eff:{
+										atk:[1.5,1.6,1.7,1.9,2.0,2.1,2.2,2.4,2.5,2.6]
+									}
+								}
+							},
+	"MG42"					:{
+								rare:3,type:MG ,formation:{target:SG ,pos:1,range:[9],effect:{FF:22}},status:{hp:825,atk:92,acc:23,eva:26,spe:132,slot:10},
+								make:"05:50:00",
+								skill:{
+									name:"火力集中ＭＧ",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[22  ,27  ,32  ,36  ,41  ,46  ,51  ,55  ,60  ,65  ]
+									},
+									dur    :[4   ,4.2 ,4.4 ,4.7 ,4.9 ,5.1 ,5.3 ,5.6 ,5.8 ,6   ]
+								}
+							},
+	"MG34"					:{
+								rare:2,type:MG ,formation:{target:SG ,pos:7,range:[3],effect:{FF:20}},status:{hp:825,atk:85,acc:22,eva:25,spe:120,slot:10},
+								make:"05:00:00",
+								skill:{
+									name:"火力集中ＭＧ",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[20  ,24  ,29  ,33  ,38  ,42  ,47  ,51  ,56  ,60  ]
+									},
+									dur    :[4   ,4.2 ,4.4 ,4.7 ,4.9 ,5.1 ,5.3 ,5.6 ,5.8 ,6   ]
+								}
+							},
+	"MG3"					:{
+								rare:4,type:MG ,formation:{target:SG ,pos:4,range:[3,9],effect:{FF:10,AR:15}},status:{hp:990,atk:85,acc:26,eva:21,spe:130,slot:10},
+								make:"06:30:00",
+								skill:{
+									name:"準備万端",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[18  ,19  ,21  ,22  ,23  ,25  ,26  ,27  ,29  ,30  ],
+										slot:[1,2,2,2,2,2,3,3,3,4]
+									},
+									dur    :[6   ,6.2 ,6.4 ,6.7 ,6.9 ,7.1 ,7.3 ,7.6 ,7.8 ,8   ]
+								}
+							},
+	"ブレン"				:{
+								rare:3,type:MG ,formation:{target:SG ,pos:1,range:[3,9],effect:{SS:10,AR:12}},status:{hp:870,atk:89,acc:31,eva:28,spe:102,slot:8},
+								make:"05:20:00",
+								skill:{
+									name:"準備万端",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[18  ,19  ,21  ,22  ,23  ,25  ,26  ,27  ,29  ,30  ],
+										slot:[1,1,2,2,2,2,3,3,3,3]
+									},
+									dur    :[6   ,6.2 ,6.4 ,6.7 ,6.9 ,7.1 ,7.3 ,7.6 ,7.8 ,8   ]
+								}
+							},
+	"FF FNP9"				:{
+								rare:2,type:HG ,formation:{target:ALL,range:[2,3,6,8,9],effect:{SS:20,AR:40}},status:{hp:300,atk:28,acc:53,eva:83,spe:61},
+								make:"00:25:00",
+								skill:{
+									name:"援護制圧",wt:6,t:"enemy",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										eva:[32  ,33  ,34  ,35  ,36  ,36  ,37  ,38  ,39  ,40  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"MP-446"				:{
+								rare:2,type:HG ,formation:{target:ALL,range:[1,2,4,7,8],effect:{FF:28}},status:{hp:330,atk:30,acc:53,eva:74,spe:59},
+								make:"00:25:00",
+								skill:{
+									name:"突撃制圧",wt:6,t:"enemy",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										spe:[12  ,13  ,14  ,15  ,16  ,18  ,19  ,20  ,21  ,22  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"スペクトラM4"			:{
+								rare:2,type:SMG,formation:{target:AR ,range:[4],effect:{FF:20}},status:{hp:880,atk:25,acc:12,eva:66,spe:88},
+								make:"01:20:00",
+								skill:{
+									name:"援護集中",wt:6,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										eva:[60  ,66  ,71  ,77  ,82  ,88  ,93  ,99  ,104 ,110 ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"IDW"					:{
+								rare:2,type:SMG,formation:{target:AR ,range:[1,4,7],effect:{DR:20}},status:{hp:750,atk:26,acc:15,eva:85,spe:75},
+								make:"01:10:00",
+								skill:{
+									name:"援護集中",wt:6,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										eva:[60  ,66  ,71  ,77  ,82  ,88  ,93  ,99  ,104 ,110 ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"64式"					:{
+								rare:2,type:SMG,formation:{target:AR ,range:[4],effect:{SS:20}},status:{hp:880,atk:27,acc:11,eva:65,spe:93},
+								make:"01:25:00",
+								skill:{
+									name:"閃光手榴弾",wt:5,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										stan:true
+									},
+									dur    :[1.8 ,2   ,2.1 ,2.3 ,2.4 ,2.6 ,2.7 ,2.9 ,3   ,3.2 ]
+								}
+							},
+	"漢陽88式"				:{
+								rare:3,type:RF ,formation:{target:HG ,range:[6],effect:{CT:12}},status:{hp:510,atk:108,acc:60,eva:37,spe:31},
+								make:"03:50:00",
+								skill:{
+									name:"火力集中Ｎ",wt:8,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										n_atk:[50 ,55 ,59 ,63 ,68 ,72 ,72 ,81 ,86 ,90 ],
+										atk:[16  ,18  ,19  ,21  ,22  ,24  ,25  ,27  ,28  ,30  ]
+									},
+									dur    :[3.5 ,3.8 ,4.1 ,4.3 ,4.6 ,4.9 ,5.2 ,5.4 ,5.7 ,6   ]
+								}
+							},
+	"グリズリー"			:{
+								rare:5,type:HG ,formation:{target:ALL,range:[1,2,6,7,8],effect:{FF:30,DR:20}},status:{hp:430,atk:38,acc:51,eva:66,spe:54},
+								make:"01:10:00",
+								skill:{
+									name:"火力号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										atk:[15  ,16  ,17  ,18  ,19  ,21  ,22  ,23  ,24  ,25  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"M950A"					:{
+								rare:5,type:HG ,formation:{target:ALL,range:[1,3,7,9],effect:{SS:30,AR:50}},status:{hp:380,atk:30,acc:55,eva:68,spe:72},
+								make:"01:05:00",
+								skill:{
+									name:"突撃号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										spe:[15  ,16  ,17  ,18  ,19  ,21  ,22  ,23  ,24  ,25  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"SPP-1"					:{
+								rare:3,type:HG ,formation:{target:ALL,range:[1,2,7,8],effect:{FF:12,AR:90}},status:{hp:380,atk:35,acc:61,eva:75,spe:48},
+								skill:{
+									name:"援護制圧",wt:6,t:"enemy",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										eva:[40  ,42  ,43  ,45  ,47  ,48  ,50  ,52  ,53  ,55  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"Gr Mk23"				:{
+								rare:4,type:HG ,formation:{target:ALL,range:[1,4,6,7],effect:{FF:36}},status:{hp:400,atk:29,acc:53,eva:66,spe:63},
+								make:"00:50:00",
+								skill:{
+									name:"火力号令Ｎ",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										n_atk:[18,20  ,22  ,24  ,26  ,27  ,29  ,31  ,33  ,35  ],
+										atk:[10  ,11  ,12  ,13  ,14  ,16  ,17  ,18  ,19  ,20  ]
+									},
+									n_dur  :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ],
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"P7"					:{
+								rare:4,type:HG ,formation:{target:ALL,range:[1,2,3,7,8,9],effect:{SS:20,DR:24}},status:{hp:315,atk:32,acc:62,eva:83,spe:61},
+								make:"00:55:00",
+								skill:{
+									name:"援護号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										eva:[35  ,38  ,41  ,43  ,46  ,49  ,52  ,54  ,57  ,60  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"UMP9"					:{
+								rare:4,type:SMG,formation:{target:AR ,range:[1,4,7],effect:{SS:12,AR:30}},status:{hp:880,atk:26,acc:14,eva:76,spe:87},
+								make:"02:15:00",
+								skill:{
+									name:"閃光手榴弾",wt:5,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										stan:true
+									},
+									dur    :[2.2 ,2.4 ,2.6 ,2.8 ,3.0 ,3.2 ,3.4 ,3.6 ,3.8 ,4   ]
+								}
+							},
+	"UMP40"					:{
+								rare:4,type:SMG,formation:{target:SMG,range:[2,3,8,9],effect:{CR:500}},status:{hp:900,atk:27,acc:14,eva:75,spe:85},
+								skill:{
+									name:"オーバーロード",wt:1,t:"enemy",
+									ct:[666,666,666,666,666,666,666,666,666,666],
+									eff:{
+										atk:[20,21,22,23,24,25,26,27,28,30],
+										eva:[-20,-21,-21,-22,-22,-23,-23,-24,-24,-25]
+									}
+								}
+							},
+	"UMP45"					:{
+								rare:4,type:SMG,formation:{target:AR ,range:[1,4,7],effect:{FF:18,CR:30}},status:{hp:925,atk:28,acc:13,eva:74,spe:82},
+								make:"02:15:00",
+								skill:{
+									name:"発煙手榴弾",wt:1,t:"enemy",range:2.5,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										spe:[-25 ,-27 ,-28 ,-30 ,-32 ,-33 ,-35 ,-37 ,-38 ,-40 ],
+										mov:[-30 ,-32 ,-34 ,-37 ,-39 ,-41 ,-43 ,-46 ,-48 ,-50 ]
+									},
+									dur    :[2.5 ,2.7 ,2.8 ,3   ,3.2 ,3.3 ,3.5 ,3.7 ,3.8 ,4   ]
+								}
+							},
+	"Gr G36c"				:{
+								rare:5,type:SMG,formation:{target:AR ,range:[1,4,7],effect:{FF:10,SS:8}},status:{hp:1015,atk:32,acc:13,eva:65,spe:83},
+								make:"02:30:00",
+								skill:{
+									name:"フォースシールド",wt:8,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{invincible:true},
+									dur    :[2   ,2.2 ,2.4 ,2.7 ,2.9 ,3.1 ,3.3 ,3.6 ,3.8 ,4   ]
+								}
+							},
+	"OTs-12"				:{
+								rare:3,type:AR ,formation:{target:SMG,range:[3,6],effect:{FF:15,SS:20}},status:{hp:525,atk:42,acc:54,eva:54,spe:72},
+								make:"03:10:00",
+								skill:{
+									name:"突撃集中Ｔ",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										spe:[35  ,38  ,41  ,43  ,46  ,49  ,52  ,54  ,57  ,60  ]
+									},
+									dur    :[6   ,6.4 ,6.8 ,7.2 ,7.6 ,8   ,8.4 ,8.8 ,9.4 ,10  ]
+								}
+							},
+	"FAL"					:{
+								rare:5,type:AR ,formation:{target:SMG,range:[3,6,9],effect:{DR:20}},status:{hp:660,atk:57,acc:43,eva:38,spe:72},
+								make:"03:45:00",
+								skill:{
+									name:"バトルストンプ",wt:6,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[250 ,280 ,310 ,330 ,360 ,390 ,420 ,440 ,470 ,500 ]
+									}
+								}
+							},
+	"FF F2000"				:{
+								rare:2,type:AR ,formation:{target:SMG,range:[6],effect:{FF:20,DR:10}},status:{hp:525,atk:42,acc:44,eva:40,spe:81},
+								make:"02:45:00",
+								skill:{
+									name:"火力集中",wt:4,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[32  ,35  ,37  ,40  ,42  ,45  ,47  ,50  ,52  ,55  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"CZ-805"				:{
+								rare:3,type:AR ,formation:{target:SMG,range:[3,9],effect:{SS:25,AR:50}},status:{hp:580,atk:43,acc:49,eva:41,spe:75},
+								skill:{
+									name:"チェーンブラスト",wt:8,t:"enemy",range:[1,2.5,4],
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[[180,70,40],[210,80,50],[240,90,50],[270,110,60],[300,120,70],[330,130,70],[360,140,80],[390,170,90],[420,180,90],[450,180,100]]
+									}
+								}
+							},
+	"Gr MG5"				:{
+								rare:5,type:MG ,formation:{target:SG ,pos:4,range:[3,9],effect:{FF:10,DF:10}},status:{hp:990,atk:85,acc:27,eva:27,spe:120,slot:11},
+								make:"06:45:00",
+								skill:{
+									name:"スタッカート",wt:0,t:"self",
+									ct:0,
+									eff:{
+										atk:[1.5,1.7,1.8,2,2.2,2.3,2.5,2.7,2.8,3]
+									}
+								}
+							},
+	"FG42"					:{
+								rare:2,type:MG ,formation:{target:SG ,pos:4,range:[3,9],effect:{AR:30}},status:{hp:745,atk:87,acc:28,eva:33,spe:121,slot:8},
+								make:"04:50:00",
+								skill:{
+									name:"狩猟衝動",wt:3,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										acc:[22  ,26  ,30  ,35  ,39  ,43  ,47  ,52  ,56  ,60  ],
+										crt:[10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ]
+									},
+									dur    :[1   ,1.6 ,2.1 ,2.7 ,3.2 ,3.8 ,4.3 ,4.9 ,5.4 ,6   ]
+								}
+							},
+	"AAT-52"				:{
+								rare:2,type:MG ,formation:{target:SG ,pos:1,range:[9],effect:{SS:20}},status:{hp:910,atk:79,acc:24,eva:22,spe:118,slot:10},
+								make:"04:50:00",
+								skill:{
+									name:"火力集中Ｎ-ＭＧ",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[10  ,12  ,14  ,17  ,19  ,21  ,23  ,26  ,28  ,30  ],
+										n_atk:[32  ,38  ,44  ,50  ,56  ,61  ,67  ,73  ,79  ,85 ],
+									},
+									dur    :[4   ,4.2 ,4.4 ,4.7 ,4.9 ,5.1 ,5.3 ,5.6 ,5.8 ,6   ]
+								}
+							},
+	"ネゲヴ"				:{
+								rare:5,type:MG ,formation:{target:SG ,pos:4,range:[3,6,9],effect:{DF:20}},status:{hp:870,atk:84,acc:35,eva:36,spe:139,slot:9},
+								make:"06:35:00",
+								skill:{
+									name:"マニックブラッド",wt:0,t:"self",
+									ct:0,
+									eff:{
+										atk:[25,28,31,33,36,39,42,44,47,50]
+									}
+								}
+							},
+	
+	"ウェルロッドMkII"		:{
+								rare:5,type:HG ,formation:{target:ALL,range:[1,2,4,7,8],effect:{FF:20,SS:16}},status:{hp:400,atk:28,acc:71,eva:90,spe:52},
+								make:"01:00:00",
+								skill:{
+									name:"精確制圧",wt:6,t:"enemy",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										acc:[30  ,32  ,33  ,35  ,37  ,38  ,40  ,42  ,43  ,45  ]
+									},
+									dur    :[4   ,4   ,4   ,5   ,5   ,5   ,5   ,6   ,6   ,6   ]
+								}
+							},
+	"スオミ"				:{
+								rare:5,type:SMG,formation:{target:AR ,range:[1,7],effect:{SS:15,AR:30}},status:{hp:1100,atk:28,acc:15,eva:56,spe:93},
+								make:"02:25:00",
+								skill:{
+									name:"援護集中",wt:6,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										eva:[80  ,88  ,96  ,103 ,111 ,119 ,127 ,134 ,142 ,150 ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"Z-62"					:{
+								rare:3,type:SMG,formation:{target:AR ,range:[4,7],effect:{FF:12,DR:10}},status:{hp:840,atk:28,acc:15,eva:77,spe:77},
+								skill:{
+									name:"焼夷手榴弾",wt:3,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[300 ,330 ,370 ,400 ,430 ,470 ,500 ,530 ,570 ,600 ],
+										dot:{
+											f:10,
+											dmg:[50 ,60 ,60 ,70 ,70 ,80 ,80 ,90 ,90 ,100 ]
+										}
+									},
+									dur    :[2   ,2.4 ,2.7 ,3   ,3.4 ,3.7 ,4   ,4.3 ,4.7 ,5   ]
+								}
+							},
+	"Gr PSG-1"				:{
+								rare:4,type:RF ,formation:{target:HG ,range:[2,8],effect:{CT:15}},status:{hp:465,atk:120,acc:73,eva:26,spe:39},
+								skill:{
+									name:"カームショット",wt:10,wait:1.5,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[300 ,330 ,370 ,400 ,430, 470 ,500 ,530 ,570 ,600 ]
+									}
+								}
+							},
+	"9A-91"					:{
+								rare:4,type:AR ,formation:{target:SMG,range:[3,9],effect:{SS:10,DR:15}},status:{hp:580,atk:42,acc:49,eva:50,spe:78},
+								make:"03:35:00",
+								skill:{
+									name:"火力集中Ｎ",wt:5,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										n_atk:[110 ,118 ,126 ,133 ,141 ,149 ,157 ,164 ,172 ,180 ],
+										atk:[35  ,38  ,41  ,43  ,46  ,49  ,52  ,54  ,57  ,60  ]
+									},
+									dur    :[3.5 ,3.8 ,4.1 ,4.3 ,4.6 ,4.9 ,5.2 ,5.4 ,5.7 ,6   ]
+								}
+							},
+	"OTs-14"				:{
+								rare:5,type:AR ,formation:{target:SMG,range:[3,6,9],effect:{SS:25,AR:65}},status:{hp:550,atk:49,acc:54,eva:54,spe:75},
+								skill:{
+									name:"火力集中Ｎ",wt:5,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										n_atk:[120 ,129 ,138 ,147 ,156 ,164 ,173 ,182 ,191 ,200 ],
+										atk:[40  ,43  ,47  ,50  ,53  ,57  ,60  ,63  ,67  ,70  ]
+									},
+									dur    :[3.5 ,3.8 ,4.1 ,4.3 ,4.6 ,4.9 ,5.2 ,5.4 ,5.7 ,6   ]
+								}
+							},
+	"ARX-160"				:{
+								rare:3,type:AR ,formation:{target:SMG,range:[9],effect:{FF:25,AR:50}},status:{hp:495,atk:49,acc:48,eva:48,spe:73},
+								skill:{
+									name:"殺傷榴弾",wt:8,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[450 ,520 ,590 ,670 ,740 ,810 ,880 ,960,1030,1100]
+									}
+								}
+							},
+	"Mk48"					:{
+								rare:4,type:MG ,formation:{target:SG ,pos:7,range:[3,9],effect:{SS:18}},status:{hp:870,atk:90,acc:25,eva:26,spe:112,slot:10},
+								make:"06:20:00",
+								skill:{
+									name:"狩猟衝動",wt:3,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										acc:[30  ,34  ,39  ,43  ,48  ,52  ,57  ,61  ,66  ,70  ],
+										crt:[10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ]
+									},
+									dur    :[1   ,1.6 ,2.1 ,2.7 ,3.2 ,3.8 ,4.3 ,4.9 ,5.4 ,6   ]
+								}
+							},
+	"Gr G11"				:{
+								rare:5,type:AR ,formation:{target:SMG,range:[6],effect:{FF:30,DR:10}},status:{hp:605,atk:43,acc:44,eva:41,spe:95},
+								make:"04:04:00",
+								skill:{
+									name:"ストームアイ",wt:6,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										cf :[2  ,2  ,2  ,2  ,2  ,2  ,2  ,2  ,3  ,3  ]
+									},
+									dur    :[3   ,3.2 ,3.3 ,3.5 ,3.7 ,3.8 ,4   ,4.2 ,4.3 ,4.5 ]
+								}
+							},
+	"P99"					:{
+								rare:3,type:HG ,formation:{target:ALL,range:[2,6,8],effect:{SS:12,DR:36}},status:{hp:300,atk:31,acc:56,eva:87,spe:61},
+								make:"00:35:00",
+								skill:{
+									name:"援護号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										eva:[32  ,35  ,37  ,40  ,42  ,45  ,47  ,50  ,52  ,55  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"SuperSASS"				:{
+								rare:3,type:RF ,formation:{target:HG ,range:[3],effect:{CT:12}},status:{hp:440,atk:115,acc:65,eva:27,spe:39},
+								skill:{
+									name:"エイムショット",wt:10,wait:1.5,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[280 ,310 ,340 ,370 ,400, 430 ,460 ,490 ,520 ,550 ]
+									}
+								}
+							},
+	"Gr MG4"				:{
+								rare:5,type:MG ,formation:{target:SG ,pos:4,range:[3,9],effect:{AR:12,DF:15}},status:{hp:910,atk:84,acc:34,eva:34,spe:139,slot:9},
+								make:"06:40:00",
+								skill:{
+									name:"準備万端",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[20  ,22  ,23  ,25  ,27  ,28  ,30  ,32  ,33  ,35  ],
+										slot:[1,2,2,2,2,3,3,3,3,4]
+									},
+									dur    :[6   ,6.2 ,6.4 ,6.7 ,6.9 ,7.1 ,7.3 ,7.6 ,7.8 ,8   ]
+								}
+							},
+	"NZ75"					:{
+								rare:5,type:HG ,formation:{target:ALL,range:[2,3,4,6,8,9],effect:{FF:20,AR:50}},status:{hp:365,atk:33,acc:62,eva:74,spe:63},
+								skill:{
+									name:"突撃制圧",wt:6,t:"enemy",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										spe:[18  ,19  ,21  ,22  ,23  ,25  ,26  ,27  ,29  ,30  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"79式"					:{
+								rare:5,type:SMG,formation:{target:AR ,range:[1,7],effect:{FF:20}},status:{hp:970,atk:32,acc:12,eva:70,spe:88},
+								make:"02:35:00",
+								skill:{
+									name:"閃光手榴弾",wt:5,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										stan:true
+									},
+									dur    :[2.5 ,2.7 ,2.9 ,3.2 ,3.4 ,3.6 ,3.8 ,4.1 ,4.3 ,4.5 ]
+								}
+							},
+	"M99"					:{
+								rare:5,type:RF ,formation:{target:HG ,range:[6],effect:{CT:18}},status:{hp:440,atk:157,acc:81,eva:32,spe:32},
+								make:"04:55:00",
+								skill:{
+									name:"カームショット",wt:10,wait:1.5,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[350 ,400 ,450 ,500 ,550, 600 ,650 ,700 ,750 ,800 ]
+									}
+								}
+							},
+	"95式"					:{
+								rare:5,type:AR ,formation:{target:SMG,range:[9],effect:{FF:10,DR:18}},status:{hp:580,atk:55,acc:52,eva:46,spe:71},
+								make:"03:50:00",
+								skill:{
+									name:"火力集中Ｔ",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										atk:[30  ,32  ,34  ,37  ,39  ,41  ,43  ,46  ,48  ,50  ]
+									},
+									dur    :[9   ,9.7 ,10.3,11  ,11.7,12.3,13  ,13.7,14.3,15  ]
+								}
+							},
+	"97式"					:{
+								rare:5,type:AR ,formation:{target:SMG,range:[3],effect:{SS:10,DR:18}},status:{hp:580,atk:54,acc:51,eva:46,spe:72},
+								make:"03:50:00",
+								skill:{
+									name:"突撃集中Ｔ",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										spe:[30  ,32  ,34  ,37  ,39  ,41  ,43  ,46  ,48  ,50  ]
+									},
+									dur    :[9   ,9.7 ,10.3,11  ,11.7,12.3,13  ,13.7,14.3,15  ]
+								}
+							},
+	"EVO 3"					:{
+								rare:3,type:SMG,formation:{target:AR ,range:[4],effect:{AR:55}},status:{hp:970,atk:23,acc:13,eva:68,spe:93},
+								skill:{
+									name:"手榴弾",wt:3,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[200 ,240 ,290 ,330 ,380 ,420 ,470 ,510 ,560 ,600 ]
+									}
+								}
+							},
+	"59式"					:{
+								rare:3,type:HG ,formation:{target:ALL,range:[2,3,6,8,9],effect:{FF:20,AR:50}},status:{hp:300,atk:28,acc:61,eva:96,spe:61},
+								skill:{
+									name:"援護制圧Ｎ",wt:6,t:"enemy",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										n_eva:[55  ,57  ,59  ,62  ,64  ,66  ,68  ,71  ,73  ,75  ],
+										eva:[30  ,31  ,32  ,33  ,34  ,36  ,37  ,38  ,39  ,40  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ],
+									n_dur  :[3   ,3.2 ,3.4 ,3.6 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"63式"					:{
+								rare:2,type:AR ,formation:{target:SMG,range:[6],effect:{FF:10,SS:20}},status:{hp:495,atk:51,acc:40,eva:40,spe:73},
+								make:"02:45:00",
+								skill:{
+									name:"精確集中",wt:5,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										acc:[200 ,233 ,267 ,300 ,333 ,367 ,400 ,433 ,467 ,500 ]
+									},
+									dur    :[9   ,9.7 ,10.3,11  ,11.7,12.3,13  ,13.7,14.3,15  ]
+								}
+							},
+	"AR70"					:{
+								rare:3,type:AR ,formation:{target:SMG,range:[3],effect:{SS:16,AR:75}},status:{hp:550,atk:50,acc:44,eva:41,spe:71},
+								skill:{
+									name:"殺傷榴弾",wt:8,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[450 ,520 ,590 ,670 ,740 ,810 ,880 ,960,1030,1100]
+									}
+								}
+							},
+	"SR-3MP"				:{
+								rare:5,type:SMG,formation:{target:AR ,range:[1,4,7],effect:{SS:18,CR:30}},status:{hp:970,atk:31,acc:12,eva:67,spe:90},
+								make:"02:33:00",
+								skill:{
+									name:"火力集中",wt:4,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[160 ,171 ,182 ,193 ,204 ,216 ,227 ,238 ,249 ,260 ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"PP-19"					:{
+								rare:4,type:SMG,formation:{target:AR ,range:[1,7],effect:{SS:12,AR:30}},status:{hp:880,atk:26,acc:14,eva:74,spe:91},
+								skill:{
+									name:"手榴弾",wt:3,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[380 ,410 ,440 ,470 ,500, 530 ,560 ,590 ,620 ,650 ]
+									}
+								}
+							},
+	"PP-19-01"				:{
+								rare:4,type:SMG,formation:{target:AR ,range:[4],effect:{SS:24}},status:{hp:970,atk:27,acc:13,eva:68,spe:85},
+								make:"02:18:00",
+								skill:{
+									name:"発煙手榴弾",wt:1,t:"enemy",range:2.5,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										spe:[-25 ,-27 ,-28 ,-30 ,-32 ,-33 ,-35 ,-37 ,-38 ,-40 ],
+										mov:[-30 ,-32 ,-34 ,-37 ,-39 ,-41 ,-43 ,-46 ,-48 ,-50 ]
+									},
+									dur    :[2.5 ,2.7 ,2.8 ,3   ,3.2 ,3.3 ,3.5 ,3.7 ,3.8 ,4   ]
+								}
+							},
+	"6P62"					:{
+								rare:3,type:AR ,formation:{target:SMG,range:[6],effect:{FF:35}},status:{hp:605,atk:69,acc:37,eva:33,spe:54},exeq:["徹甲弾"],
+								skill:{
+									name:"強襲集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[15  ,17  ,19  ,22  ,24  ,26  ,28  ,31  ,33  ,35  ],
+										acc:[50  ,56  ,61  ,67  ,72  ,78  ,83  ,89  ,94  ,100 ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"ブレン・テン"			:{
+								rare:2,type:HG ,formation:{target:ALL,range:[2,4,6,8],effect:{FF:16,SS:10}},status:{hp:350,atk:31,acc:51,eva:63,spe:58},
+								make:"00:28:00",
+								skill:{
+									name:"火力号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										atk:[10  ,11  ,12  ,13  ,14  ,14  ,15  ,16  ,17  ,18  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"PSM"					:{
+								rare:3,type:HG ,formation:{target:ALL,range:[3,4,6,9],effect:{AR:56,DR:36}},status:{hp:285,atk:24,acc:67,eva:112,spe:65},
+								skill:{
+									name:"隠密号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										acc:[32  ,35  ,37  ,40  ,42  ,45  ,47  ,50  ,52  ,55  ],
+										eva:[16  ,17  ,19  ,20  ,21  ,23  ,24  ,25  ,27  ,28  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"Gr USPコンパクト"		:{
+								rare:2,type:HG ,formation:{target:ALL,range:[1,6,7],effect:{SS:28}},status:{hp:330,atk:24,acc:60,eva:86,spe:64},
+								make:"00:28:00",
+								skill:{
+									name:"精確号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										acc:[50  ,56  ,61  ,67  ,72  ,78  ,83  ,89  ,94  ,100 ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"Five-seveN"			:{
+								rare:5,type:HG ,formation:{target:ALL,range:[2,3,8,9],effect:{SS:30,CR:20}},status:{hp:315,atk:31,acc:57,eva:97,spe:66},
+								skill:{
+									name:"急襲号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										crt:[12  ,13  ,14  ,15  ,16  ,16  ,17  ,18  ,19  ,20  ],
+										spe:[12  ,13  ,14  ,15  ,16  ,16  ,17  ,18  ,19  ,20  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"RO635"					:{
+								rare:5,type:SMG,formation:{target:AR ,range:[1,2,4,7,8],effect:{SS:10,AR:35}},status:{hp:970,atk:27,acc:14,eva:71,spe:97},
+								skill:{
+									name:"メンタルインパクト",wt:3,t:"enemy",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										atk:[15  ,16  ,17  ,18  ,19  ,21  ,22  ,23  ,24  ,25  ],
+										eva:[40  ,43  ,47  ,50  ,53  ,57  ,60  ,63  ,67  ,70  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	
+	"OTs-44"				:{
+								rare:3,type:RF ,formation:{target:HG ,range:[3,9],effect:{CT:12}},status:{hp:400,atk:157,acc:67,eva:32,spe:32},
+								skill:{
+									name:"ロックショット",wt:15,wait:2,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[380 ,410 ,440 ,470 ,500, 530 ,560 ,590 ,620 ,650 ]
+									}
+								}
+							},
+	"Gr G28"				:{
+								rare:4,type:RF ,formation:{target:HG ,range:[2,8],effect:{CT:15}},status:{hp:440,atk:119,acc:80,eva:29,spe:39},
+								skill:{
+									name:"火力集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[40  ,43  ,46  ,48  ,51  ,54  ,57  ,59  ,62  ,65  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"SSG 69"				:{
+								rare:3,type:RF ,formation:{target:HG ,range:[6],effect:{CT:12}},status:{hp:400,atk:130,acc:82,eva:39,spe:30},
+								skill:{
+									name:"火力集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[35  ,38  ,41  ,43  ,46  ,49  ,52  ,54  ,57  ,60  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"IWS2000"				:{
+								rare:5,type:RF ,formation:{target:HG ,range:[2,8],effect:{CT:18}},status:{hp:440,atk:162,acc:78,eva:29,spe:32},
+								make:"04:52:00",
+								skill:{
+									name:"鷲影強襲",wt:6,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										atk:[80  ,91  ,102 ,113 ,124 ,136 ,147 ,158 ,169 ,180 ],
+										spe:[-20 ,-22 ,-23 ,-25 ,-27 ,-28 ,-30 ,-32 ,-33 ,-35 ]
+									},
+									dur    :[6   ,6.4 ,6.8 ,7.2 ,7.6 ,8   ,8.4 ,8.8 ,9.4 ,10  ]
+								}
+							},
+	"AEK-999"				:{
+								rare:4,type:MG ,formation:{target:SG ,pos:4,range:[3,9],effect:{SS:15,DF:10}},status:{hp:825,atk:89,acc:29,eva:28,spe:120,slot:10},
+								make:"06:20:00",
+								skill:{
+									name:"狩猟衝動Ｎ",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										n_atk:[20,22,24,27,29,31,33,36,38,40],
+										atk  :[0,0,0,0,0,0,0,0,0,0],
+										n_acc:[30  ,34  ,39  ,43  ,48  ,52  ,57  ,61  ,66  ,70  ],
+										acc:[10  ,11  ,12  ,13  ,14  ,16  ,17  ,18  ,19  ,20  ],
+										crt:[10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ]
+									},
+									dur    :[1   ,1.6 ,2.1 ,2.7 ,3.2 ,3.8 ,4.3 ,4.9 ,5.4 ,6   ]
+								}
+							},
+	"シプカ"				:{
+								rare:4,type:SMG,formation:{target:AR ,range:[1,7],effect:{SS:15,DR:10}},status:{hp:840,atk:24,acc:14,eva:79,spe:95},
+								make:"02:18:00",
+								skill:{
+									name:"援護集中",wt:6,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										eva:[70  ,77  ,83  ,90  ,97  ,103 ,110 ,117 ,123 ,130 ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"M1887"					:{
+								rare:5,type:SG ,formation:{target:MG ,pos:6,range:[4],effect:{FF:20,AR:20}},status:{hp:1375,atk:39,acc:12,eva:12,spe:22,def:22,slot:4},
+								skill:{
+									name:"ターミネートブロウ",wt:15,t:"enemy",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										fix:[100,200,300,400,500,600,700,800,900,1000]
+									}
+								}
+							},
+	"M1897"					:{
+								rare:4,type:SG ,formation:{target:MG ,pos:6,range:[4,7],effect:{AR:50}},status:{hp:1265,atk:35,acc:11,eva:11,spe:26,def:21,slot:4},
+								make:"07:30:00",
+								skill:{
+									name:"ショックブロウ",wt:8,t:"enemy",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										dmg:[100,110,120,130,140,160,170,180,190,200]
+									}
+								}
+							},
+	"M37"					:{
+								rare:4,type:SG ,formation:{target:MG ,pos:6,range:[1,7],effect:{FF:18}},status:{hp:1265,atk:33,acc:12,eva:12,spe:26,def:22,slot:4},
+								make:"07:45:00",
+								skill:{
+									name:"ショックブロウ",wt:8,t:"enemy",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										dmg:[120,130,150,160,180,190,210,220,240,250]
+									}
+								}
+							},
+	"M500"					:{
+								rare:3,type:SG ,formation:{target:MG ,pos:3,range:[1,7],effect:{FF:18}},status:{hp:1320,atk:31,acc:11,eva:10,spe:29,def:21,slot:4},
+								make:"07:20:00",
+								skill:{
+									name:"防御集中",wt:10,t:"self",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										def:[30,33,37,40,43,47,50,53,57,60]
+									},
+									dur:[4,4.2,4.4,4.7,4.9,5.1,5.3,5.6,5.8,6]
+								}
+							},
+	"M590"					:{
+								rare:4,type:SG ,formation:{target:MG ,pos:9,range:[1,7],effect:{AR:55}},status:{hp:1320,atk:32,acc:11,eva:10,spe:31,def:22,slot:4},
+								make:"07:40:00",
+								skill:{
+									name:"防衛集中",wt:10,t:"self",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										def:[40,43,47,50,53,57,60,63,67,70]
+									},
+									dur:[4,4.2,4.4,4.7,4.9,5.1,5.3,5.6,5.8,6]
+								}
+							},
+	"Super-Shorty"			:{
+								rare:4,type:SG ,formation:{target:MG ,pos:6,range:[4],effect:{FF:15,AR:20}},status:{hp:1210,atk:28,acc:14,eva:19,spe:30,def:20,slot:3},
+								make:"07:50:00",
+								skill:{
+									name:"生存本能",wt:10,t:"self",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										eva:[28,31,34,37,40,43,46,49,52,55],
+										def:[25,28,31,33,36,39,42,44,47,50]
+									},
+									dur:[4,4.2,4.4,4.7,4.9,5.1,5.3,5.6,5.8,6]
+								}
+							},
+	"Am KSG"				:{
+								rare:5,type:SG ,formation:{target:MG ,pos:6,range:[1,7],effect:{FF:20}},status:{hp:1265,atk:29,acc:13,eva:12,spe:30,def:24,slot:5},
+								make:"08:00:00",
+								skill:{
+									name:"生存本能",wt:10,t:"self",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										eva:[30,33,37,40,43,47,50,53,57,60],
+										def:[30,33,37,40,43,47,50,53,57,60]
+									},
+									dur:[4,4.2,4.4,4.7,4.9,5.1,5.3,5.6,5.8,6]
+								}
+							},
+	"KS-23"					:{
+								rare:3,type:SG ,formation:{target:MG ,pos:3,range:[7],effect:{FF:12,AR:30}},status:{hp:1375,atk:40,acc:9,eva:10,spe:25,def:21,slot:3},
+								make:"07:25:00",
+								skill:{
+									name:"火力集中ＳＧ",wt:8,t:"self",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										atk:[30,40,50,60,70,80,90,100,110,120]
+									},
+									dur:[8,8,8,8,8,8,8,8,8,8]
+								}
+							},
+	"RMB-93"				:{
+								rare:3,type:SG ,formation:{target:MG ,pos:9,range:[1],effect:{FF:12,AR:30}},status:{hp:1210,atk:30,acc:11,eva:13,spe:28,def:22,slot:4},
+								make:"07:30:00",
+								skill:{
+									name:"ショックブロウ",wt:8,t:"enemy",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										dmg:[100,110,120,130,140,160,170,180,190,200]
+									}
+								}
+							},
+	"97式散"				:{
+								rare:4,type:SG ,formation:{target:MG ,pos:6,range:[1,4,7],effect:{FF:12}},status:{hp:1320,atk:33,acc:12,eva:13,spe:27,def:20,slot:3},
+								skill:{
+									name:"火力集中ＳＧ",wt:8,t:"self",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										atk:[30,40,50,60,70,80,90,100,110,120]
+									},
+									dur:[8,8,8,8,8,8,8,8,8,8]
+								}
+							},
+	"SPAS-12"				:{
+								rare:4,type:SG ,formation:{target:MG ,pos:6,range:[1,4],effect:{FF:20}},status:{hp:1375,atk:33,acc:11,eva:9,spe:32,def:21,slot:4},
+								make:"07:40:00",
+								skill:{
+									name:"火力集中ＳＧ",wt:8,t:"self",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										atk:[30,40,50,60,70,80,90,100,110,120]
+									},
+									dur:[8,8,8,8,8,8,8,8,8,8]
+								}
+							},
+	"AA-12"					:{
+								rare:5,type:SG ,formation:{target:MG ,pos:6,range:[1,4],effect:{FF:22}},status:{hp:1345,atk:30,acc:12,eva:11,spe:39,def:22,slot:5},
+								make:"08:12:00",
+								skill:{
+									name:"ケトーシス",wt:8,t:"self",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										slot:[5,5,6,6,7,7,8,8,9,10],
+										spe:[35,40,45,50,55,60,65,70,75,80],
+										//nb:[6,6,7,7,8,8,9,9,10,10],
+										atk:[-50,-44,-39,-33,-28,-22,-17,-11,-6,0]
+									},
+									dur:[6,6.2,6.4,6.7,6.9,7.1,7.3,7.6,7.8,8]
+								}
+							},
+	"M1014"					:{
+								rare:4,type:SG ,formation:{target:MG ,pos:9,range:[1,7],effect:{FF:20}},status:{hp:1375,atk:31,acc:12,eva:11,spe:32,def:21,slot:4},
+								make:"07:14:00",
+								skill:{
+									name:"易刺激性暗示",wt:10,t:"self",
+									ct:[20.0,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16.0],
+									eff:{
+										atk:[20,23,27,30,33,37,40,43,47,50],
+										def:[15,17,18,20,22,23,25,27,28,30]
+									},
+									dur:[6,6.2,6.4,6.7,6.9,7.1,7.3,7.6,7.8,8]
+								}
+							},
+	"CZ75"					:{
+								rare:5,type:HG ,formation:{target:ALL,range:[1,2,7,8],effect:{FF:16,SS:20}},status:{hp:330,atk:34,acc:62,eva:74,spe:66},
+								skill:{
+									name:"アックススロー",wt:6,t:"enemy",range:2.5,
+									ct     :[15  ,14.7,14.3,14.0,13.7,13.4,13.0,12.7,12.3,12  ],
+									eff:{
+										dmg:[500 ,560 ,610 ,670 ,720 ,780 ,830 ,890 ,940 ,1000]
+									}
+								}
+							},
+	"Gr HK45"				:{
+								rare:3,type:HG ,formation:{target:ALL,range:[1,3,7,9],effect:{FF:32}},status:{hp:330,atk:34,acc:58,eva:80,spe:55},
+								skill:{
+									name:"強襲号令",wt:6,t:"friend",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										atk:[6   ,7   ,8   ,9   ,10  ,11  ,12  ,13  ,14  ,15  ],
+										acc:[5   ,6   ,6   ,7   ,7   ,8   ,8   ,9   ,9   ,10  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"Spitfire"				:{
+								rare:4,type:HG ,formation:{target:ALL,pos:4,range:[1,3,7,9],effect:{FF:30,AR:40}},status:{hp:350,atk:33,acc:60,eva:71,spe:59},
+								make:"00:52:00",
+								skill:{
+									name:"突撃制圧",wt:6,t:"enemy",range:ALL,
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										spe:[16  ,17  ,19  ,20  ,21  ,23  ,24  ,25  ,27  ,28  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"SCW"					:{
+								rare:3,type:SMG,formation:{target:AR ,range:[4],effect:{FF:6,SS:10}},status:{hp:840,atk:30,acc:12,eva:68,spe:91},
+								skill:{
+									name:"機動集中",wt:6,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[100 ,106 ,111 ,117 ,122 ,128 ,133 ,139 ,144 ,150 ],
+										eva:[25  ,27  ,28  ,30  ,32  ,33  ,35  ,37  ,38  ,40  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"リベロール"			:{
+								rare:4,type:AR ,formation:{target:AR ,range:[2,8],effect:{FF:20}},status:{hp:550,atk:64,acc:44,eva:40,spe:63},
+								make:"03:40:00",
+								skill:{
+									name:"スカーレットエコー",wt:6,t:"friend",range:"formation",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										atk:[15  ,16  ,17  ,18  ,19  ,21  ,22  ,23  ,24  ,25  ],
+										spe:[15  ,16  ,17  ,18  ,19  ,21  ,22  ,23  ,24  ,25  ],
+										acc:[15  ,16  ,17  ,18  ,19  ,21  ,22  ,23  ,24  ,25  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"Am RFB"				:{
+								rare:5,type:AR ,formation:{target:SMG,range:[3,6,9],effect:{AR:30,DR:18}},status:{hp:525,atk:69,acc:68,eva:49,spe:54},
+								make:"03:58:00",
+								skill:{
+									name:"ライズバレット",wt:6,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										atk:[50  ,53  ,57  ,60  ,63  ,67  ,70  ,73  ,77  ,80  ],
+										acc:[25  ,27  ,28  ,30  ,32  ,33  ,35  ,37  ,38  ,40  ]
+									},
+									dur    :[5   ,6   ,6   ,6   ,7   ,7   ,7   ,8   ,8   ,8   ]
+								}
+							},
+	"PKP"					:{
+								rare:5,type:MG ,formation:{target:SG ,pos:1,range:[3,6,9],effect:{SS:15,AR:12}},status:{hp:825,atk:95,acc:31,eva:29,spe:127,slot:10},
+								make:"06:50:00",
+								skill:{
+									name:"インフレイム",wt:0,t:"self",
+									ct:0,
+									eff:{
+										per:[5,7,8,10,12,13,15,17,18,20]
+									}
+								}
+							},
+	"81式カービン"			:{
+								rare:3,type:RF ,formation:{target:HG ,range:[3],effect:{CT:12}},status:{hp:375,atk:123,acc:79,eva:41,spe:32},
+								skill:{
+									name:"突撃集中Ｎ",wt:8,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										n_spe:[45,49  ,54  ,58  ,63  ,67  ,72  ,76  ,81  ,90  ],
+										spe:[15  ,16  ,18  ,19  ,21  ,22  ,24  ,25  ,27  ,30  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"ART556"				:{
+								rare:5,type:AR ,formation:{target:SMG,range:[3,9],effect:{AR:50,DR:15}},status:{hp:580,atk:53,acc:53,eva:49,spe:69},
+								skill:{
+									name:"突貫集中",wt:6,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16 ],
+									eff:{
+										atk:[50  ,54  ,58  ,62  ,66  ,69  ,73  ,77  ,81  ,85  ],
+										spe:[16  ,17  ,18  ,19  ,20  ,21  ,22  ,23  ,24  ,25  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"TMP"					:{
+								rare:3,type:SMG,formation:{target:AR ,pos:2,range:[1,7],effect:{FF:15,AR:20}},status:{hp:750,atk:28,acc:14,eva:77,spe:93},
+								skill:{
+									name:"援護集中",wt:6,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										eva:[65  ,71  ,77  ,83  ,89  ,96  ,102 ,108 ,114 ,120 ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"KLIN"					:{
+								rare:4,type:SMG,formation:{target:AR ,range:[4],effect:{SS:25}},status:{hp:950,atk:25,acc:11,eva:74,spe:95},
+								skill:{
+									name:"焼夷手榴弾",wt:3,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[320 ,360 ,400 ,430 ,470 ,500 ,540 ,580 ,610 ,650 ],
+										dot:{
+											f:10,
+											dmg:[50 ,60 ,60 ,70 ,70 ,80 ,80 ,90 ,90 ,100 ]
+										}
+									},
+									dur    :[2   ,2.4 ,2.7 ,3   ,3.4 ,3.7 ,4   ,4.3 ,4.7 ,5   ]
+								}
+							},
+	"F1"					:{
+								rare:3,type:SMG,formation:{target:AR ,range:[1,7],effect:{AR:40,DR:15}},status:{hp:1060,atk:26,acc:14,eva:60,spe:80},
+								skill:{
+									name:"発煙手榴弾",wt:1,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										spe:[-20 ,-22 ,-24 ,-25 ,-27 ,-29 ,-31 ,-32 ,-34 ,-36 ],
+										mov:[-30 ,-32 ,-34 ,-37 ,-39 ,-41 ,-43 ,-46 ,-48 ,-50 ]
+									},
+									dur    :[2.5 ,2.7 ,2.8 ,3   ,3.2 ,3.3 ,3.5 ,3.7 ,3.8 ,4   ]
+								}
+							},
+	"Gd DSR-50"				:{
+								rare:5,type:RF ,formation:{target:HG ,pos:4,range:[5,6],effect:{CT:18}},status:{hp:410,atk:163,acc:87,eva:33,spe:31},
+								skill:{
+									name:"バンカーショット",wt:15,wait:2,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg  :[250 ,310 ,340 ,370 ,400, 430 ,460 ,490 ,520 ,600 ],
+										dmggb:[450 ,450 ,450 ,450 ,450, 450 ,450 ,450 ,450 ,1000],
+									}
+								}
+							},
+	"PzB39"					:{
+								rare:4,type:RF ,formation:{target:HG ,range:[2,8],effect:{CT:15}},status:{hp:420,atk:148,acc:71,eva:31,spe:32},
+								skill:{
+									name:"ピアースショット",wt:6,wait:2,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										penetrate:true,
+										dmg  :[80  ,90  ,100 ,110 ,120, 130 ,140 ,150 ,160 ,180 ]
+									}
+								}
+							},
+	"T91"					:{
+								rare:5,type:AR ,formation:{target:SMG,pos:2,range:[3,9],effect:{FF:20,DR:12}},status:{hp:620,atk:51,acc:44,eva:46,spe:76},
+								make:"03:48:00",
+								skill:{
+									name:"殲滅集中Ｎ",wt:5,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										n_atk:[60,67  ,73  ,80  ,87  ,93  ,100 ,107 ,113 ,120 ],
+										n_crt:[25,28  ,31  ,33  ,36  ,39  ,42  ,44  ,47  ,50  ],
+										atk:[20  ,23  ,27  ,30  ,33  ,37  ,40  ,43  ,47  ,50  ],
+										crt:[15  ,16  ,17  ,18  ,19  ,20  ,21  ,22  ,23  ,25  ]
+									},
+									dur:[5,6,6,6,7,7,7,8,8,8]
+								}
+							},
+	
+	"コンテンダー"			:{
+								rare:5,type:HG ,formation:{target:ALL,range:[1,2,3,4,6,7,8,9],effect:{FF:30,CR:20}},status:{hp:330,atk:46,acc:85,eva:82,spe:44},exeq:["徹甲弾"],
+								make:"01:02:00",
+								skill:{
+									name:"断罪の魔弾",wt:6,wait:1,t:"enemy",
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										dmg  :[150 ,170 ,180 ,200 ,220 ,230 ,250 ,270 ,280 ,300 ],
+										dmup:[25  ,27  ,28  ,30  ,32  ,33  ,35  ,37  ,38  ,40  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"T-5000"				:{
+								rare:4,type:RF ,formation:{target:HG ,range:[8,9],effect:{CT:15}},status:{hp:450,atk:126,acc:85,eva:28,spe:36},
+								make:"04:10:00",
+								skill:{
+									name:"クランプ",wt:6,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										spe:[30  ,32  ,34  ,36  ,38  ,40  ,42  ,44  ,46  ,50  ],
+										acc:[30  ,32  ,34  ,36  ,38  ,40  ,42  ,44  ,46  ,50  ]
+									},
+									dur    :[3   ,3.3 ,4.1 ,4.3 ,4.6 ,4.9 ,5.2 ,5.4 ,5.7 ,6   ]
+								}
+							},
+	"Ameli"					:{
+								rare:4,type:MG ,formation:{target:SG ,pos:4,range:[3,6,9],effect:{FF:10,DF:15}},status:{hp:705,atk:83,acc:38,eva:42,spe:149,slot:8},
+								make:"06:25:00",
+								skill:{
+									name:"準備万端Ｎ",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[6  ,7  ,7  ,8  ,8  ,9  ,9  ,10  ,10  ,11  ],
+										n_atk:[28  ,30  ,33  ,35  ,38  ,40  ,43  ,45  ,48  ,50 ],
+										slot:[1,2,2,2,2,3,3,3,3,4]
+									},
+									dur    :[6   ,6.2 ,6.4 ,6.7 ,6.9 ,7.1 ,7.3 ,7.6 ,7.8 ,8   ]
+								}
+							},
+	
+	"Ak 5"					:{
+								rare:4,type:AR ,formation:{target:SMG,range:[3,9],effect:{FF:15,AR:30}},status:{hp:580,atk:51,acc:48,eva:38,spe:75},
+								skill:{
+									name:"火力集中",wt:5,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[40  ,43  ,46  ,48  ,51  ,54  ,57  ,59  ,62  ,65  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"S.A.T.8"				:{
+								rare:5,type:SG ,formation:{target:MG,pos:6,range:[1,4,7],effect:{FF:10,AR:15}},status:{hp:1410,atk:29,spe:33,acc:13,def:22,eva:12,slot:4},
+								make:"08:10:00",
+								skill:{
+									name:"鉄壁理論",wt:2,t:"self",
+									ct:[12,11.5,99,99,99,9.8,9.4,8.9,99,8],
+									dur:[3,3.2,99,99,99,4.1,4.3,4.5,99,5]
+								}
+							},
+	"USAS-12"				:{
+								rare:4,type:SG ,formation:{target:MG,pos:6,range:[1],effect:{FF:15,AR:20}},status:{hp:1300,atk:29,spe:37,acc:11,def:22,eva:10,slot:5},
+								make:"07:55:00",
+								skill:{
+									name:"フィーバースマッシュ",wt:1,t:"self",
+									ct:[],
+									dur:[]
+								}
+							},
+	
+	
+	"M12"					:{
+								rare:3,type:SMG,formation:{target:AR,range:[1,4,7],effect:{FF:8,DR:8}},status:{hp:1015,atk:26,acc:15,eva:64,spe:76},
+								skill:{
+									name:"焼夷手榴弾",wt:3,t:"enemy",range:1.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[300 ,330 ,370 ,400 ,430 ,470 ,500 ,530 ,570 ,600 ],
+										dot:{
+											f:10,
+											dmg:[50 ,60 ,60 ,70 ,70 ,80 ,80 ,90 ,90 ,100 ]
+										}
+									},
+									dur    :[2   ,2.4 ,2.7 ,3   ,3.4 ,3.7 ,4   ,4.3 ,4.7 ,5   ]
+								}
+							},
+	"JS05"					:{
+								rare:5,type:RF ,formation:{target:HG ,range:[3,9],effect:{CT:18}},status:{hp:450,atk:158,acc:88,eva:32,spe:31},
+								skill:{
+									name:"ピアースショット",wt:6,wait:2,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										penetrate:true,
+										dmg  :[90  ,100 ,110 ,120 ,130, 140 ,150 ,160 ,180 ,200 ]
+									}
+								}
+							},
+	"K2"					:{
+								rare:5,type:AR ,formation:{target:SMG,range:[3,9],effect:{FF:25,AR:50}},status:{hp:635,atk:50,acc:51,eva:42,spe:78},
+								make:"03:52:00",
+								skill:{
+									name:"ヒートブラスト",wt:8,t:"self",
+									ct:[5,4.8,4.6,4.4,4.2,4,3.8,3.6,3.3,3],
+									eff:{
+										fever_dmg:[40,41.2,42.4,43.6,44.8,46,47.2,48.4,49.6,52],
+										fever_acc:[-3.2,-3.1,-3,-2.8,-2.7,-2.6,-2.4,-2.3,-2.2,-2],
+										fever_dmgdwn:[-3.2,-3.1,-3,-2.8,-2.7,-2.6,-2.4,-2.3,-2.2,-2],
+										note_mov:[60,58,56,54,52,50,48,46,44,40],
+										note_eva:[60,58,56,54,52,50,48,46,44,40],
+										note_dmgup:[2,2.3,2.6,3,3.3,3.6,4,4.3,4.6,5]
+									}
+								}
+							},
+	"Gr MG23"				:{
+								rare:3,type:MG ,formation:{target:SG ,pos:4,range:[3,6],effect:{DF:12,FF:8}},status:{hp:745,atk:80,acc:34,eva:34,spe:135,slot:9},
+								skill:{
+									name:"準備万端",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[18  ,19  ,21  ,22  ,23  ,25  ,26  ,27  ,29  ,30  ],
+										slot:[1,1,2,2,2,2,3,3,3,3]
+									},
+									dur    :[6   ,6.2 ,6.4 ,6.7 ,6.9 ,7.1 ,7.3 ,7.6 ,7.8 ,8   ]
+								}
+							},
+	"Zas M21"				:{
+								rare:5,type:AR ,formation:{target:SMG,range:[3,9],effect:{SS:12,DR:15}},status:{hp:605,atk:55,acc:48,eva:41,spe:74},
+								make:"04:05:00",
+								skill:{
+									name:"夜梟咆哮",wt:4,t:"enemy",range:2.5,
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[120,130,160,180,200,220,240,260,280,300],
+										dmup:[10,11,11,12,12,13,13,14,14,15],
+										atk:[40,42,44,46,48,50,52,54,57,60]
+									},
+									dur_1:[2,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,3],
+									dur_2:[5,5.3,5.6,5.9,6.2,6.5,6.8,7.2,7.6,8]
+								}
+							},
+	"カルカノM1891"			:{
+								rare:5,type:RF ,formation:{target:RF ,pos:1,range:[4,7],effect:{CT:10}},status:{hp:400,atk:138,acc:85,eva:42,spe:34},
+								make:"04:38:00",
+								skill:{
+									name:"マールスホルン",wt:0,t:"self",
+									ct :[10  ,9.8 ,9.5 ,9.3 ,9.1 ,8.9 ,8.6 ,8.4 ,8.2 ,8   ],
+									eff:{
+										crt_a:[5   ,5.3 ,5.6 ,5.9 ,6.2 ,6.5 ,6.8 ,7.2 ,7.6 ,8   ],
+										spe_a:[5   ,5.3 ,5.6 ,5.9 ,6.2 ,6.5 ,6.8 ,7.2 ,7.6 ,8   ],
+										crt_p:[2   ,2.2 ,2.4 ,2.6 ,2.8 ,3   ,3.2 ,3.4 ,3.7 ,4   ],
+										spe_p:[2   ,2.2 ,2.4 ,2.6 ,2.8 ,3   ,3.2 ,3.4 ,3.7 ,4   ]
+									},
+									dur:[5   ,5.2 ,5.5 ,5.8 ,6   ,6.3 ,6.6 ,6.8 ,7.1 ,7.5 ]
+								}
+							},
+	"カルカノM91/38"		:{
+								rare:5,type:RF ,formation:{target:RF ,pos:7,range:[1,4],effect:{CT:10}},status:{hp:365,atk:146,acc:90,eva:44,spe:34},
+								make:"04:42:00",
+								skill:{
+									name:"ヘルメスの仮面",wt:0,t:"enemy",
+									ct :[10  ,9.8 ,9.5 ,9.3 ,9.1 ,8.9 ,8.6 ,8.4 ,8.2 ,8   ],
+									eff:{
+										dmg_1:[180 ,190 ,200 ,210 ,225 ,240 ,255 ,270 ,285 ,300 ],
+										dmg_2:[2700,2850,3000,3150,3375,3600,3825,4050,4275,4500],
+										per  :[30  ,35  ,40  ,45  ,50  ,55  ,55  ,60  ,65  ,70  ],
+										mk_p :[1   ,1   ,1   ,1   ,1   ,1   ,1   ,2   ,2   ,2   ],
+										mk_a :[12  ,13  ,14  ,14  ,15  ,16  ,16  ,17  ,17  ,18  ]
+									}
+								}
+							},
+	"80式"					:{
+								rare:4,type:MG ,formation:{target:ALL,pos:7,range:[3,6],effect:{FF:10,AR:15}},status:{hp:870,atk:93,acc:26,eva:24,spe:118,slot:10},
+								make:"06:15:00",
+								skill:{
+									name:"火力集中ＭＧ",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[25  ,30  ,35  ,40  ,45  ,50  ,55  ,60  ,65  ,70  ]
+									},
+									dur    :[4   ,4.2 ,4.4 ,4.7 ,4.9 ,5.1 ,5.3 ,5.6 ,5.8 ,6   ]
+								}
+							},
+	"ゲパードM1"			:{
+								rare:3,type:RF ,formation:{target:HG ,range:[6,9],effect:{CT:12}},status:{hp:440,atk:143,acc:77,eva:28,spe:30},
+								skill:{
+									name:"ブロックショット",wt:15,wait:2,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[300 ,339 ,378 ,417 ,456 ,494 ,533 ,572 ,611 ,650 ]
+									}
+								}
+							},
+	"K5"					:{
+								rare:4,type:HG ,formation:{target:ALL,range:[1,2,4,6,7,8],effect:{FF:30,AR:40}},status:{hp:330,atk:29,acc:52,eva:81,spe:62},
+								make:"00:53:00",
+								skill:{
+									name:"戦場の哲学館",wt:6,t:"friend",range:"formation",
+									ct     :[15  ,14.7,14.3,14  ,13.7,13.3,13  ,12.7,12.3,12  ],
+									eff:{
+										eva:[20  ,22  ,24  ,27  ,29  ,31  ,33  ,36  ,38  ,40  ],
+										atk:[10  ,11  ,13  ,14  ,15  ,17  ,18  ,19  ,21  ,22  ],
+										acc:[40  ,44  ,49  ,53  ,58  ,62  ,67  ,71  ,76  ,80  ]
+									},
+									dur    :[5   ,5.3 ,5.7 ,6   ,6.3 ,6.7 ,7   ,7.3 ,7.7 ,8   ]
+								}
+							},
+	"C-MS"					:{
+								rare:5,type:SMG,formation:{target:AR ,range:[1,4,7],effect:{FF:15,SS:5}},status:{hp:925,atk:32,acc:15,eva:75,spe:87},exeq:["徹甲弾"],
+								make:"02:28:00",
+								skill:{
+									name:"マインドチェイン",wt:1,t:"self",
+									ct:[1,1,1,1,1,1,1,1,1,1],
+									eff:{
+										eva:[30,34,38,42,46,49,53,57,61,65],
+										atk:[40,45,50,55,60,65,70,75,80,85],
+										acc:[110,120,130,140,150,160,170,180,190,200]
+									}
+								}
+							},
+	"MDR"					:{
+								rare:5,type:AR ,formation:{target:SMG,range:[6,9],effect:{FF:25,AR:65}},status:{hp:595,atk:56,acc:50,eva:41,spe:76},
+								make:"03:53:00",
+								skill:{
+									name:"デンジャースカウター",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										eva:[40  ,44  ,49  ,53  ,58  ,62  ,67  ,71  ,76  ,80  ],
+										sld:[15  ,17.8,20.6,23.3,26.1,28.9,31.7,34.4,37.2,40  ],
+										atk:[20  ,23  ,26  ,28  ,31  ,34  ,37  ,39  ,42  ,45  ],
+										spe:[10  ,11  ,13  ,14  ,15  ,17  ,18  ,19  ,21  ,22  ]
+									},
+									dur    :[6   ,6.4 ,6.8 ,7.4 ,7.8 ,8.2 ,8.6 ,9.2 ,9.4 ,10  ]
+								}
+							},
+	"GSh-18"				:{
+								rare:3,type:HG ,formation:{target:ALL,range:[1,2,4,7,8],effect:{FF:24,AR:40}},status:{hp:350,atk:33,acc:48,eva:86,spe:52},
+								skill:{
+									name:"チェーンインパクト",wt:6,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										cf :[2  ,2  ,2  ,2  ,2  ,2  ,2  ,2  ,2  ,2  ],
+										crt:[10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ,10000 ]
+									},
+									dur    :[3   ,3.3 ,3.7 ,4.0 ,4.3 ,4.7 ,5   ,5.3 ,5.7 ,6   ]
+								}
+							},
+	"TAC-50"				:{
+								rare:5,type:RF ,formation:{target:HG ,range:[6,9],effect:{CT:18}},status:{hp:435,atk:155,acc:83,eva:31,spe:32},
+								skill:{
+									name:"楓花蛍火",wt:10,t:"enemy",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										dmg:[250,270,290,320,340,360,380,410,430,450]
+									}
+								}
+							},
+	"PM-06"					:{
+								rare:5,type:SMG,formation:{target:AR ,range:[1,7],effect:{FF:12,AR:35}},status:{hp:950,atk:29,acc:15,eva:75,spe:83},
+								skill:{
+									name:"隠密集中Ｎ",wt:4,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										n_eva:[60  ,70  ,80  ,90  ,100 ,110 ,120 ,130 ,140 ,150 ],
+										n_acc:[40  ,44  ,49  ,53  ,58  ,62  ,68  ,71  ,76  ,80  ],
+										eva  :[30  ,32  ,34  ,37  ,39  ,41  ,43  ,46  ,48  ,50  ],
+										acc  :[20  ,22  ,24  ,27  ,29  ,31  ,33  ,36  ,38  ,40  ]
+									},
+									dur      :[6   ,6.4 ,6.8 ,7.4 ,7.8 ,8.2 ,8.6 ,9.2 ,9.4 ,10  ]
+								}
+							},
+	"一〇〇式"				:{
+								rare:5,type:SMG,formation:{target:AR ,range:[1,7],effect:{FF:12,AR:35}},status:{hp:1060,atk:29,acc:14,eva:67,spe:76},
+								make:"02:19:00",
+								skill:{
+									name:"桜逆像",wt:8,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										sld:[15  ,18  ,21  ,24  ,27  ,30  ,33  ,36  ,39  ,42  ],
+										eva:[30  ,34  ,38  ,42  ,46  ,49  ,53  ,57  ,61  ,65  ],
+										atk:[40  ,45  ,50  ,55  ,60  ,65  ,70  ,75  ,80  ,85  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"JS 9"					:{
+								rare:5,type:SMG,formation:{target:AR ,pos:2,range:[1,4,7],effect:{SS:18,CR:30}},status:{hp:900,atk:27,acc:15,eva:86,spe:89},
+								skill:{
+									name:"臨機応変",wt:6,t:"self",
+									ct :[10  ,9.8 ,9.5 ,9.3 ,9.1 ,8.9 ,8.6 ,8.4 ,8.2 ,8   ],
+									eff:{
+										atk:[30  ,32  ,34  ,37  ,39  ,41  ,43  ,46  ,48  ,50  ],
+										eva:[15  ,17  ,19  ,22  ,24  ,26  ,28  ,31  ,33  ,35  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"64式自"				:{
+								rare:5,type:AR ,formation:{target:SMG,range:[6,9],effect:{FF:18,DR:18}},status:{hp:625,atk:67,acc:62,eva:43,spe:63},
+								make:"04:06:00",
+								skill:{
+									name:"未来予知",wt:5,t:"self",
+									ct     :[20  ,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16  ],
+									eff:{
+										spe:[30,36,41,47,52,58,63,69,74,80],
+										acc:[30,36,41,47,52,58,63,69,74,80],
+										atk_bf:[40,46,51,57,62,68,73,79,84,90],
+										sld:[16,17,18,19,20,21,22,23,24,25],
+										atk_af:[25,28,32,35,38,42,45,48,52,55]
+									}
+								}
+							},
+	"K31"					:{
+								rare:4,type:RF ,formation:{target:HG ,range:[3,6],effect:{CT:15}},status:{hp:390,atk:126,acc:78,eva:37,spe:39},
+								make:"04:06:00",
+								skill:{
+									name:"緊急流速",wt:6,t:"self",
+									ct     :[10  ,9.8 ,9.6 ,9.3 ,9.1 ,8.9 ,8.7 ,8.4 ,8.2 ,8   ],
+									eff:{
+										acc:[-20 ,-22 ,-23 ,-25 ,-27 ,-28 ,-30 ,-32 ,-33 ,-35 ],
+										spe:[40  ,44  ,49  ,53  ,58  ,62  ,68  ,71  ,76  ,80  ]
+									},
+									dur    :[3   ,3.2 ,3.4 ,3.7 ,3.9 ,4.1 ,4.3 ,4.6 ,4.8 ,5   ]
+								}
+							},
+	"ジェリコ"				:{
+								rare:4,type:HG ,formation:{target:ALL,range:[1,3,4,6],effect:{FF:24,AR:50}},status:{hp:380,atk:31,acc:50,eva:64,spe:60},
+								make:"00:20:00",
+								skill:{
+									name:"スカーレットエクリプス",wt:0,t:"friend",range:"formation",
+									ct:[15,14.7,14.3,14,13.7,13.3,13,12.7,12.3,12],
+									eff:{
+										atk:[6,7,8,9,10,11,12,13,14,15]
+									},
+									dur:[5,5.3,5.7,6,6.3,6.7,7,7.3,7.7,8]
+								}
+							},
+	"62式"					:{
+								rare:3,type:MG ,formation:{target:ALL,pos:7,range:[3,6],effect:{AR:18,DF:8}},status:{hp:845,atk:87,acc:31,eva:28,spe:122,slot:9},
+								skill:{
+									name:"強襲集中ＭＧ",wt:8,t:"self",
+									ct     :[18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ,18  ],
+									eff:{
+										atk:[18  ,21  ,24  ,27  ,30  ,33  ,36  ,39  ,42  ,45  ],
+										acc:[25  ,29  ,34  ,38  ,43  ,47  ,52  ,56  ,61  ,65 ]
+									},
+									dur    :[4   ,4.2 ,4.4 ,4.7 ,4.9 ,5.1 ,5.3 ,5.6 ,5.8 ,6   ]
+								}
+							},
+	"ファルコン"			:{
+								rare:3,type:RF ,formation:{target:HG,range:[6,9],effect:{CT:12}},status:{hp:440,atk:140,spe:32,acc:71,eva:28},
+								skill:{
+									name:"夕陽の隼",wt:6,t:"self",
+									ct:[]
+								}
+							},
+	"ノエル"				:{
+								rare:"Extra",type:HG ,formation:{target:ALL,range:[1,2,3,7,8,9],effect:{SS:30,DR:20}},status:{hp:300,atk:39,acc:60,eva:82,spe:65},
+								skill:{
+									name:"零銃・フェンリル/オモヒカネ",wt:6,t:"enemy",cf:8,
+									ct:[15,14.7,14.3,14,13.7,13.3,13,12.7,12.3,12],
+									eff:{
+										dmg:[60,70,70,80,90,90,100,110,110,120]
+									}
+								}
+							},
+	"エルフェルト"			:{
+								rare:"Extra",type:SG ,formation:{target:MG ,pos:6,range:[1,7],effect:{FF:15,AR:15}},status:{hp:1375,atk:36,acc:13,eva:9,spe:28,def:23,slot:5},
+								skill:{
+									name:"ジェノワーズ",wt:10,t:"enemy",range:1.5,
+									ct:[20,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16],
+									eff:{
+										dmg:[[4,6],[4.4,6.7],[4.9,7.3],[5.3,8],[5.8,8.7],[6.2,9.3],[6.7,10],[7.1,10.7],[7.6,11.3],[8,12]]
+									}
+								}
+							},
+	"ジル・スティングレイ"	:{
+								rare:"Extra",type:HG ,formation:{target:ALL,range:[1,2,3,4,6,7,8,9],effect:{FF:40,AR:40}},status:{hp:400,atk:30,spe:55,acc:53,eva:96},
+								skill:{
+									name:"ミックスタイム",wt:6,
+									ct:[20,19.6,19.1,18.7,18.2,17.8,17.3,16.9,16.4,16]
+								}
+							},
+	"セイ・Ｐ・アサギリ"	:{
+								rare:"Extra",type:HG ,formation:{target:ALL,range:[1,2,6,7,8],effect:{FF:30,DR:20}},status:{hp:425,atk:30,spe:53,acc:59,eva:77},
+								skill:{
+									name:"ホワイトナイトシールド",wt:6,t:"friend",
+									ct:[],
+									dur:[]
+								}
+							},
+	"ドロシー・ヘイズ"		:{
+								rare:"Extra",type:SMG,formation:{target:[RF,AR],range:[1,7],effect:{FF:15,AR:25}},status:{hp:880,atk:28,spe:79,acc:15,eva:87},
+								skill:{
+									name:"秘密の改造",wt:1
+								}
+							},
+	"ステラ・星井"			:{
+								rare:"Extra",type:RF ,formation:{target:HG,range:[3,9],effect:{CT:18}},status:{hp:450,atk:117,spe:35,acc:84,eva:36},
+								skill:{
+									name:"傀儡の仮面",wt:6
+								}
+							},
+	"アルマ・アルマス"		:{
+								rare:"Extra",type:MG ,formation:{target:SG,pos:4,range:[3,6],effect:{DF:15,FF:15}},status:{hp:975,atk:89,spe:129,acc:31,eva:23,slot:9},
+								skill:{
+									name:"ラブ＆ドリーム",wt:8,
+									ct:[18,18,18,18,18,18,18,18,18,18]
+								}
+							},
+	"デイナ・ゼイン"		:{
+								rare:"Extra",type:SG ,formation:{target:MG,pos:6,range:[1,4,7],effect:{FF:15,AR:15}},status:{hp:1345,atk:38,spe:26,acc:15,def:22,eva:13,slot:1},
+								skill:{
+									name:"赤い間欠泉",wt:8,
+									ct:[18,18,18,18,18,18,18,18,18,18]
+								}
+							}
+};
+/* 装備 */
+const equipment = {
+	"アタッチメント":{
+		"オプティカルサイト":{
+			"BM-3-12X40"	:{rare:2,ct:{min: 5,max: 8,limit: 8},equip:[AR,SMG,RF,MG,SG]},
+			"LRX 2-12X50"	:{rare:3,ct:{min: 9,max:12,limit:24},equip:[AR,SMG,RF,MG,SG]},
+			"PSO-1"			:{rare:4,ct:{min:13,max:16,limit:32},equip:[AR,SMG,RF,MG,SG]},
+			"VFL 6-24X56"	:{rare:5,ct:{min:17,max:24,limit:48},equip:[AR,SMG,RF,MG,SG]},
+			"16Lab6-24X56"	:{rare:5,ct:{min:24,max:24,limit:48},equip:[AR,SMG,RF,MG,SG]},
+			"KSTSP"			:{rare:5,ct:{min:32,max:32,limit:48},cm:{min:40,max:40,limit:44},only:["AK-47","56-1式"]},
+			"KST1P8"		:{rare:5,ct:{min:32,max:32,limit:48},cm:{min:25,max:25,limit:30},only:["AK-47","56-1式"]},
+			"KST1P7"		:{rare:5,ct:{min:32,max:32,limit:48},cm:{min:10,max:10,limit:15},only:["AK-47","56-1式"]}
+		},
+		"ホロサイト":{
+			"EOT506"		:{rare:2,ac:{min:1,max: 1,limit: 1},at:{min:1,max:1,limit:1},sp:{min:-1,max:-1,limit:-1},equip:[AR,SMG,RF,MG,SG]},
+			"EOT512"		:{rare:3,ac:{min:2,max: 2,limit: 3},at:{min:1,max:2,limit:3},sp:{min:-2,max:-2,limit:-2},equip:[AR,SMG,RF,MG,SG]},
+			"EOT516"		:{rare:4,ac:{min:3,max: 5,limit: 7},at:{min:2,max:3,limit:4},sp:{min:-4,max:-3,limit:-3},equip:[AR,SMG,RF,MG,SG]},
+			"EOT518"		:{rare:5,ac:{min:6,max:10,limit:14},at:{min:4,max:6,limit:8},sp:{min:-6,max:-4,limit:-4},equip:[AR,SMG,RF,MG,SG]}
+		},
+		"ドットサイト":{
+			"AMP COMPM2"	:{rare:2,ac:{min: 2,max: 3,limit: 3},sp:{min:-1,max:-1,limit:-1},equip:[AR,SMG,RF,MG,SG]},
+			"AMP COMPM4"	:{rare:3,ac:{min: 4,max: 6,limit:12},sp:{min:-2,max:-1,limit:-1},equip:[AR,SMG,RF,MG,SG]},
+			"COG M150"		:{rare:4,ac:{min: 7,max:10,limit:20},sp:{min:-3,max:-1,limit:-1},equip:[AR,SMG,RF,MG,SG]},
+			"ITI MARS"		:{rare:5,ac:{min:11,max:15,limit:30},sp:{min:-4,max:-1,limit:-1},equip:[AR,SMG,RF,MG,SG]}
+		},
+		"ナイトスコープ":{
+			"PEQ-2"			:{rare:2,ns:{min:51,max: 55,limit: 55},equip:[HG,AR,SMG,SG]},
+			"PEQ-5"			:{rare:3,ns:{min:61,max: 70,limit: 75},equip:[HG,AR,SMG,SG]},
+			"PEQ-15"		:{rare:4,ns:{min:76,max: 85,limit: 85},equip:[HG,AR,SMG,SG]},
+			"PEQ-16A"		:{rare:5,ns:{min:91,max:100,limit:100},equip:[HG,AR,SMG,SG]},
+			"16LAB赤外線レーザーサイト":{rare:5,ns:{min:100,max:100,limit:100},equip:[HG,AR,SMG,SG]},
+			"PKN03M暗視スコープ"		:{rare:5,ns:{min:100,max:100,limit:100},at:{min:5,max:5,limit:8},only:["9A-91"]}
+		},
+		"サイレンサー":{
+			"AC1サイレンサー":{rare:2,ev:{min:2,max:2,limit: 2},ct:{min: 4,max: 5,limit: 5},equip:[HG,AR,SMG,RF]},
+			"AC2サイレンサー":{rare:3,ev:{min:3,max:4,limit: 4},ct:{min: 6,max: 8,limit:11},equip:[HG,AR,SMG,RF]},
+			"AC3サイレンサー":{rare:4,ev:{min:4,max:5,limit: 7},ct:{min: 9,max:11,limit:15},equip:[HG,AR,SMG,RF]},
+			"AC4サイレンサー":{rare:5,ev:{min:6,max:8,limit:10},ct:{min:12,max:15,limit:20},equip:[HG,AR,SMG,RF]}
+		}
+	},
+	"弾倉":{
+		"徹甲弾":{
+			"M61徹甲弾"		:{rare:2,gb:{min:25,max:35,limit: 35},equip:[RF,MG]},
+			"M993徹甲弾"	:{rare:3,gb:{min:40,max:50,limit: 75},equip:[RF,MG]},
+			"Mk169M63徹甲弾":{rare:4,gb:{min:55,max:65,limit: 97},equip:[RF,MG]},
+			"Mk211徹甲榴弾"	:{rare:5,gb:{min:70,max:80,limit:120},equip:[RF,MG]},
+			"16LAB硬芯徹甲弾":{rare:5,gb:{min:80,max:80,limit:120},equip:[RF,MG]},
+			"ナショナルマッチ徹甲弾":{rare:5,gb:{min:75,max:85,limit:127},sp:{min:1,max:8,limit:10},only:["スプリングフィールド"]}
+		},
+		"高速弾":{
+			"FMJ高速弾"		:{rare:2,at:{min: 2,max: 2,limit: 2},equip:[AR]},
+			"JSP高速弾"		:{rare:3,at:{min: 3,max: 4,limit: 8},equip:[AR]},
+			"JHP高速弾"		:{rare:4,at:{min: 5,max: 7,limit:12},equip:[AR]},
+			"APCR高速弾"	:{rare:5,at:{min: 8,max:12,limit:20},equip:[AR]},
+			"16Lab高速弾"	:{rare:5,at:{min:12,max:12,limit:20},equip:[AR]},
+			".300BLK高速弾"	:{rare:5,at:{min:12,max:16,limit:25},ac:{min:-5,max:-1,limit:-1},only:["ST AR-15"]}
+		},
+		"特殊弾":{
+			"ILMホローポイント弾@r2":{rare:2,at:{min: 1,max: 1,limit: 1},gb:{min: -1,max:-1,limit:-1},equip:[HG,SMG]},
+			"ILMホローポイント弾@r3":{rare:3,at:{min: 2,max: 3,limit: 5},gb:{min: -3,max:-2,limit:-2},equip:[HG,SMG]},
+			"ILMホローポイント弾@r4":{rare:4,at:{min: 4,max: 6,limit: 9},gb:{min: -6,max:-4,limit:-4},equip:[HG,SMG]},
+			"ILMホローポイント弾@r5":{rare:5,at:{min: 7,max:10,limit:15},gb:{min:-10,max:-7,limit:-7},equip:[HG,SMG]},
+			"16Labホローポイント弾"	:{rare:5,at:{min:10,max:10,limit:15},gb:{min: -7,max:-7,limit:-7},equip:[HG,SMG]}
+		},
+		"バックショット":{
+			"#1バックショット":{rare:2,at:{min:1,max:1,limit:1},cm:{min:3,max:4,limit:4},equip:[SG]},
+			"#0バックショット":{rare:3,at:{min:2,max:3,limit:4},cm:{min:5,max:6,limit:9},equip:[SG]},
+			"#00バックショット":{rare:4,at:{min:4,max:6,limit:4},cm:{min:5,max:6,limit:9},equip:[SG]},
+			"#000バックショット":{rare:5,at:{min: 7,max:10,limit:15},cm:{min:10,max:15,limit:22},equip:[SG]},
+			"16LABバックショット":{rare:5,at:{min:10,max:10,limit:15},cm:{min:15,max:15,limit:22},equip:[SG]}
+		},
+		"スラッグ弾":{
+			"BKスラッグ弾"	:{rare:2,ac:{min:1,max:2,limit: 2},equip:[SG]},
+			"SFTスラッグ弾"	:{rare:3,ac:{min:3,max:4,limit: 8},equip:[SG]},
+			"WADスラッグ弾"	:{rare:4,ac:{min:5,max:7,limit:13},equip:[SG]},
+			"SABOTスラッグ弾":{rare:5,ac:{min:8,max:12,limit:20},equip:[SG]}
+		}
+	},
+	"人形装備":{
+		"外骨格":{
+			"IOP T1外骨格"	:{rare:2,ev:{min: 6,max: 8,limit: 8},at:{min:-2,max:-1,limit:-1},equip:[HG,SMG,AR]},
+			"IOP T2外骨格"	:{rare:3,ev:{min:10,max:12,limit:16},at:{min:-4,max:-3,limit:-3},equip:[HG,SMG,AR]},
+			"IOP T3外骨格"	:{rare:4,ev:{min:14,max:16,limit:22},at:{min:-6,max:-5,limit:-5},equip:[HG,SMG,AR]},
+			"IOP T4外骨格"	:{rare:5,ev:{min:20,max:25,limit:35},at:{min:-8,max:-6,limit:-6},equip:[HG,SMG,AR]},
+			"IOP X1外骨格"	:{rare:2,ev:{min: 2,max: 3,limit: 3},equip:[HG,SMG,AR]},
+			"IOP X2外骨格"	:{rare:3,ev:{min: 4,max: 5,limit: 9},equip:[HG,SMG,AR]},
+			"IOP X3外骨格"	:{rare:4,ev:{min: 6,max: 7,limit:13},equip:[HG,SMG,AR]},
+			"IOP X4外骨格"	:{rare:5,ev:{min: 8,max:12,limit:20},equip:[HG,SMG,AR]},
+			"GSG UX外骨格"	:{rare:5,ev:{min:30,max:45,limit:58},at:{min:-10,max:-6,limit:-6},only:["Gr MP5"]},
+			"UMP UX外骨格"	:{rare:5,ev:{min:20,max:25,limit:35},cm:{min:11,max:15,limit:25},only:["UMP9","UMP40","UMP45"]},
+		},
+		"カモフラージュマント":{
+			"ぼろぼろのマント":{rare:2,cm:{min:3,max:4,limit:4},mv:{min:-3,max:-3,limit:-3},equip:[RF]},
+			"カモフラージュマント":{rare:3,cm:{min:5,max:7,limit:13},mv:{min:-3,max:-3,limit:-3},equip:[RF]},
+			"都市迷彩マント":{rare:4,cm:{min:8,max:10,limit:18},mv:{min:-3,max:-3,limit:-3},equip:[RF]},
+			"熱光学迷彩マント":{rare:5,cm:{min:11,max:15,limit:25},mv:{min:-3,max:-3,limit:-3},equip:[RF]},
+			"16Lab熱光学迷彩マント":{rare:5,cm:{min:15,max:15,limit:25},mv:{min:-3,max:-3,limit:-3},equip:[RF]}
+		},
+		"アサルトパック":{
+			"IOP多弾倉アサルトパック":{rare:4,slot:{min:1,max:1,limit:3},ev:{min:-1,max:-1,limit:-1},equip:[MG]},
+			"IOP多弾倉アサルトパック改":{rare:5,slot:{min:2,max:3,limit:5},ev:{min:-3,max:-2,limit:-2},equip:[MG]}
+		},
+		"防弾ベスト":{
+			"Type1防弾ベスト":{rare:3,df:{min:3,max:3,limit: 4},ev:{min:-1,max:-1,limit:-1},equip:[SG]},
+			"Type2防弾ベスト":{rare:4,df:{min:4,max:5,limit: 7},ev:{min:-1,max:-1,limit:-1},equip:[SG]},
+			"Type3防弾ベスト":{rare:5,df:{min:6,max:8,limit:11},ev:{min:-3,max:-2,limit:-2},equip:[SG]},
+			"16Lab防弾ベスト":{rare:5,df:{min:8,max:8,limit:11},ev:{min:-2,max:-2,limit:-2},equip:[SG]},
+			"特殊戦術機動装甲":{rare:5,df:{min:15,max:15,limit:20},ev:{min:8,max:8,limit:10},sp:{min:-10,max:-10,limit:-10},ac:{min:-20,max:-20,limit:-20},only:["M16A1"]}
+		},
+		"チップ":{
+			"Titan射撃管制チップ":{rare:5,slot:{min:3,max:4,limit:6},at:{min:-4,max:-2,limit:-2},sp:{min:-8,max:-1,limit:-1},only:["M1918"]},
+			"Hayhaメモリーチップ":{rare:5,at:{min:18,max:25,limit:30},ev:{min:2,max:4,limit:5},cm:{min:15,max:20,limit:30},only:["モシン・ナガン"]}
+		}
+	}
+};
+
+const equipSet = {
+	HG:["アタッチメント","弾倉","人形装備"],
+	SMG:["人形装備","弾倉","アタッチメント"],
+	AR:["アタッチメント","弾倉","人形装備"],
+	"M4 SOPMODII":["アタッチメント","アタッチメント","弾倉"],
+	"ST AR-15":["アタッチメント","アタッチメント","弾倉"],
+	"M16A1":["弾倉","人形装備","人形装備"],
+	RF:["弾倉","アタッチメント","人形装備"],
+	MG:["弾倉","アタッチメント","人形装備"],
+	SG:["人形装備","弾倉","アタッチメント"]
+};
+
+const fairyData = {
+	"勇士妖精":{
+		atk:[12,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,22,22,23,23,23,23,23,23,23,23,24,24,24,24,24,24,24,25],
+		acc:[40,41,41,42,42,43,43,43,44,44,45,45,45,46,46,47,47,47,48,48,49,49,49,50,50,51,51,51,52,52,53,53,53,54,54,55,55,55,56,56,57,57,57,58,58,59,59,59,60,60,61,61,61,62,62,63,63,63,64,64,65,65,65,66,66,67,67,68,68,68,69,69,70,70,70,71,71,72,72,72,73,73,74,74,74,75,75,76,76,76,77,77,78,78,78,79,79,80,80,80],
+		eva:[20,21,21,21,21,22,22,22,22,22,23,23,23,23,23,24,24,24,24,24,25,25,25,25,25,26,26,26,26,26,27,27,27,27,27,28,28,28,28,28,28,29,29,29,29,30,30,30,30,30,31,31,31,31,31,32,32,32,32,32,33,33,33,33,33,34,34,34,34,34,35,35,35,35,35,36,36,36,36,36,37,37,37,37,37,38,38,38,38,38,39,39,39,39,39,40,40,40,40,40],
+		def:[ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10]
+	}, 
+	"激怒妖精":{
+		atk:[ 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,10,10,10,10,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15],
+		eva:[20,21,21,21,21,22,22,22,22,22,23,23,23,23,23,24,24,24,24,24,25,25,25,25,25,26,26,26,26,26,27,27,27,27,27,28,28,28,28,28,28,29,29,29,29,30,30,30,30,30,31,31,31,31,31,32,32,32,32,32,33,33,33,33,33,34,34,34,34,34,35,35,35,35,35,36,36,36,36,36,37,37,37,37,37,38,38,38,38,38,39,39,39,39,39,40,40,40,40,40],
+		def:[ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10],
+		cm :[20,21,21,21,21,22,22,22,22,22,23,23,23,23,23,24,24,24,24,24,25,25,25,25,25,26,26,26,26,26,27,27,27,27,27,28,28,28,28,28,28,29,29,29,29,30,30,30,30,30,31,31,31,31,31,32,32,32,32,32,33,33,33,33,33,34,34,34,34,34,35,35,35,35,35,36,36,36,36,36,37,37,37,37,37,38,38,38,38,38,39,39,39,39,39,40,40,40,40,40]
+	},
+	"装甲妖精":{
+		atk:[11,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,22,22],
+		def:[13,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,22,23,23,23,23,23,23,23,23,24,24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25],
+		cm :[11,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,21,21,22]
+	},
+	"守護妖精":{
+		atk:[10,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20],
+		acc:[30,31,31,31,32,32,32,33,33,33,34,34,34,34,35,35,35,36,36,36,37,37,37,37,38,38,38,39,39,39,40,40,40,40,41,41,41,42,42,42,43,43,43,44,44,44,44,45,45,45,46,46,46,47,47,47,47,48,48,48,49,49,49,50,50,50,50,51,51,51,52,52,52,53,53,53,53,54,54,54,55,55,55,56,56,56,57,57,57,57,58,58,58,59,59,59,60,60,60,60],
+		eva:[40,41,41,42,42,43,43,43,44,44,45,45,45,46,46,47,47,47,48,48,49,49,49,50,50,51,51,51,52,52,53,53,53,54,54,55,55,55,56,56,57,57,57,58,58,59,59,59,60,60,61,61,61,62,62,63,63,64,64,64,65,65,65,66,66,67,67,68,68,68,69,69,70,70,70,71,71,72,72,72,73,73,74,74,74,75,75,76,76,76,77,77,78,78,78,79,79,80,80,80]
+	},
+	"防御妖精":{
+		atk:[10,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,22],
+		eva:[36,37,37,38,38,39,39,40,40,40,41,41,42,42,43,43,44,44,44,45,45,46,46,47,47,47,48,48,49,49,50,50,51,51,51,52,52,53,53,54,54,55,55,55,56,56,57,57,58,58,58,59,59,60,60,61,61,62,62,62,63,63,64,64,65,65,66,66,66,67,67,68,68,69,69,69,70,70,71,71,72,72,73,73,73,74,74,75,75,76,76,77,77,77,78,78,79,79,80,80],
+		def:[ 9,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20]
+	},
+	"挑発妖精":{
+		atk:[ 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,10,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18],
+		acc:[25,26,26,26,27,27,27,28,28,28,29,29,29,30,30,30,31,31,31,32,32,32,33,33,33,34,34,34,35,35,35,36,36,36,37,37,37,38,38,38,39,39,39,40,40,40,41,41,41,42,42,42,43,43,43,44,44,44,45,45,45,45,46,46,46,47,47,47,48,48,48,49,49,49,50,50,50,51,51,51,52,52,52,53,53,53,54,54,54,55,55,55,56,56,56,57,57,57,58,58],
+		eva:[12,13,13,13,13,13,13,14,14,14,14,14,14,15,15,15,15,15,15,15,16,16,16,16,16,16,17,17,17,17,17,17,18,18,18,18,18,18,18,19,19,19,19,19,19,20,20,20,20,20,20,21,21,21,21,21,21,21,22,22,22,22,22,22,23,23,23,23,23,23,24,24,24,24,24,24,24,25,25,25,25,25,25,26,26,26,26,26,26,27,27,27,27,27,27,27,28,28,28,28],
+		def:[ 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+		cm :[11,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,23,23,23,23,23,23,23,23,24,24,24,24,24,24,24,24,25]
+	},
+	"狙撃妖精":{
+		acc:[44,45,45,46,46,47,47,48,48,48,49,49,50,50,51,51,52,52,52,53,53,54,54,55,55,56,56,56,57,57,58,58,59,59,59,60,60,61,61,62,62,63,63,63,64,64,65,65,66,66,67,67,67,68,68,69,69,70,70,71,71,71,72,72,73,73,74,74,74,75,75,76,76,77,77,78,78,78,79,79,80,80,81,81,82,82,82,83,83,84,84,85,85,86,86,86,87,87,88,88],
+		eva:[14,15,15,15,15,15,15,15,16,16,16,16,16,16,16,17,17,17,17,17,17,17,18,18,18,18,18,18,18,19,19,19,19,19,19,19,20,20,20,20,20,20,20,21,21,21,21,21,21,21,22,22,22,22,22,22,22,23,23,23,23,23,23,23,24,24,24,24,24,24,24,25,25,25,25,25,25,25,26,26,26,26,26,26,26,27,27,27,27,27,27,27,28,28,28,28,28,28,28,28],
+		def:[ 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,15,15,15,15],
+		cm :[18,19,19,19,19,19,20,20,20,20,20,20,21,21,21,21,21,22,22,22,22,22,22,23,23,23,23,23,23,24,24,24,24,24,25,25,25,25,25,25,26,26,26,26,26,26,27,27,27,27,27,28,28,28,28,28,28,29,29,29,29,29,29,30,30,30,30,30,31,31,31,31,31,31,32,32,32,32,32,32,33,33,33,33,33,34,34,34,34,34,34,35,35,35,35,35,35,36,36,36]
+	},
+	"砲撃妖精":{
+		atk:[27,28,28,28,29,29,29,29,30,30,30,31,31,31,31,32,32,32,33,33,33,33,34,34,34,35,35,35,35,36,36,36,37,37,37,37,38,38,38,39,39,39,39,40,40,40,41,41,41,41,42,42,42,42,43,43,43,44,44,44,44,45,45,45,46,46,46,46,47,47,47,48,48,48,48,49,49,49,50,50,50,50,51,51,51,52,52,52,52,53,53,53,54,54,54,54,55,55,55,55],
+		eva:[28,29,29,29,30,30,30,30,31,31,31,32,32,32,32,33,33,33,34,34,34,34,35,35,35,36,36,36,36,37,37,37,38,38,38,38,39,39,39,40,40,40,40,41,41,41,42,42,42,42,43,43,43,43,44,44,44,45,45,45,45,46,46,46,47,47,47,47,48,48,48,49,49,49,49,50,50,50,51,51,51,51,52,52,52,53,53,53,53,54,54,54,55,55,55,55,56,56,56,56],
+		def:[ 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6]
+	},
+	"空襲妖精":{
+		atk:[12,13,13,13,13,13,14,14,14,14,14,14,15,15,15,15,15,16,16,16,16,16,16,17,17,17,17,17,18,18,18,18,18,18,19,19,19,19,19,20,20,20,20,20,20,21,21,21,21,21,22,22,22,22,22,22,23,23,23,23,23,24,24,24,24,24,24,25,25,25,25,25,26,26,26,26,26,26,27,27,27,27,27,28,28,28,28,28,28,29,29,29,29,29,30,30,30,30,30,30],
+		acc:[20,21,21,21,22,22,22,23,23,23,23,24,24,24,25,25,25,26,26,26,26,27,27,27,28,28,28,29,29,29,29,30,30,30,31,31,31,32,32,32,32,33,33,33,34,34,34,35,35,35,35,36,36,36,37,37,37,38,38,38,38,39,39,39,40,40,40,41,41,41,41,42,42,42,43,43,43,43,44,44,44,45,45,45,46,46,46,46,47,47,47,48,48,48,49,49,49,49,50,50],
+		eva:[16,17,17,17,17,18,18,18,18,19,19,19,19,20,20,20,20,21,21,21,21,22,22,22,22,22,23,23,23,23,24,24,24,24,25,25,25,25,26,26,26,26,27,27,27,27,28,28,28,28,28,29,29,29,29,30,30,30,30,31,31,31,31,32,32,32,32,33,33,33,33,33,34,34,34,34,35,35,35,35,36,36,36,36,37,37,37,37,38,38,38,38,39,39,39,39,39,40,40,40],
+		def:[ 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10]
+	},
+	"増援妖精":{
+		atk:[ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12],
+		eva:[35,36,37,37,38,38,39,39,40,40,41,41,42,42,43,43,44,45,45,46,46,47,47,48,48,49,49,50,50,51,51,52,52,53,54,54,55,55,56,56,57,57,58,58,59,59,60,60,61,61,62,63,63,64,64,65,65,66,66,67,67,68,68,69,69,70,70,71,72,72,73,73,74,74,75,75,76,76,77,77,78,78,79,80,80,81,81,82,82,82,83,84,84,85,85,86,86,87,87,88],
+		def:[ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,12],
+		cm :[ 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,10,10,10,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,15]
+	},
+	"空挺妖精":{
+		atk:[14,15,15,15,15,16,16,16,16,16,17,17,17,17,18,18,18,18,18,19,19,19,19,19,20,20,20,20,21,21,21,21,21,22,22,22,22,23,23,23,23,23,24,24,24,24,24,25,25,25,25,26,26,26,26,26,27,27,27,27,27,28,28,28,28,29,29,29,29,29,30,30,30,30,31,31,31,31,31,32,32,32,32,32,33,33,33,33,34,34,34,34,34,35,35,35,35,36,36,36],
+		eva:[13,14,14,14,14,14,15,15,15,15,15,16,16,16,16,16,17,17,17,17,17,17,18,18,18,18,18,19,19,19,19,19,20,20,20,20,20,20,21,21,21,21,21,22,22,22,22,22,23,23,23,23,23,23,24,24,24,24,24,25,25,25,25,25,26,26,26,26,26,26,27,27,27,27,27,28,28,28,28,28,29,29,29,29,29,29,30,30,30,30,30,31,31,31,31,31,32,32,32,32],
+		def:[ 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+		cm :[16,17,17,17,17,18,18,18,18,19,19,19,19,20,20,20,20,20,21,21,21,21,22,22,22,22,23,23,23,23,24,24,24,24,24,25,25,25,25,26,26,26,26,27,27,27,27,28,28,28,28,28,29,29,29,29,30,30,30,30,31,31,31,31,32,32,32,32,32,33,33,33,33,34,34,34,34,35,35,35,35,36,36,36,36,36,37,37,37,37,38,38,38,38,39,39,39,39,40,40]
+	},
+	"地雷妖精":{
+		atk:[14,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,22,22,23,23,23,23,23,23,23,23,23,24,24,24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,25],
+		acc:[25,26,26,26,26,26,27,27,27,27,27,28,28,28,28,28,28,29,29,29,29,29,30,30,30,30,30,30,31,31,31,31,31,32,32,32,32,32,32,33,33,33,33,33,34,34,34,34,34,35,35,35,35,35,35,36,36,36,36,36,37,37,37,37,37,37,38,38,38,38,38,39,39,39,39,39,39,40,40,40,40,40,41,41,41,41,41,42,42,42,42,42,42,43,43,43,43,43,44,44],
+		eva:[49,50,50,51,51,51,52,52,52,53,53,53,54,54,54,55,55,56,56,56,57,57,57,58,58,58,59,59,59,60,60,61,61,61,62,62,62,63,63,63,64,64,64,65,65,66,66,66,67,67,67,68,68,68,69,69,69,70,70,71,71,71,72,72,72,73,73,73,74,74,74,75,75,76,76,76,77,77,77,78,78,78,79,79,79,80,80,81,81,81,82,82,82,83,83,83,84,84,84,85]
+	},
+	"火箭妖精":{
+		acc:[25,26,26,26,26,26,27,27,27,27,27,28,28,28,28,28,29,29,29,29,29,29,30,30,30,30,30,31,31,31,31,31,32,32,32,32,32,32,33,33,33,33,33,34,34,34,34,34,35,35,35,35,35,36,36,36,36,36,36,37,37,37,37,37,38,38,38,38,38,39,39,39,39,39,39,40,40,40,40,40,41,41,41,41,41,42,42,42,42,42,43,43,43,43,43,43,44,44,44,44],
+		def:[13,14,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,22,22,22,22],
+		cm :[20,21,21,21,21,21,21,22,22,22,22,22,22,22,23,23,23,23,23,23,24,24,24,24,24,24,24,25,25,25,25,25,25,25,26,26,26,26,26,26,27,27,27,27,27,27,27,28,28,28,28,28,28,29,29,29,29,29,29,29,30,30,30,30,30,30,30,31,31,31,31,31,31,32,32,32,32,32,32,32,33,33,33,33,33,33,34,34,34,34,34,34,34,35,35,35,35,35,35,35]
+	},
+	"工事妖精":{
+		atk:[ 9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,12,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,15,15,15,15,15],
+		acc:[30,31,31,31,31,31,32,32,32,32,32,33,33,33,33,33,34,34,34,34,34,34,35,35,35,35,36,36,36,36,36,37,37,37,37,37,38,38,38,38,38,39,39,39,39,39,40,40,40,40,40,41,41,41,41,41,42,42,42,42,42,42,43,43,43,43,43,44,44,44,44,44,45,45,45,45,45,46,46,46,46,46,47,47,47,47,47,48,48,48,48,48,49,49,49,49,49,50,50,50],
+		eva:[24,25,25,25,25,25,25,26,26,26,26,26,26,27,27,27,27,27,27,27,28,28,28,28,28,28,29,29,29,29,29,29,30,30,30,30,30,30,30,31,31,31,31,31,31,32,32,32,32,32,32,33,33,33,33,33,33,33,34,34,34,34,34,34,35,35,35,35,35,35,36,36,36,36,36,36,36,37,37,37,37,37,37,38,38,38,38,38,38,39,39,39,39,39,39,39,40,40,40,40],
+		cm :[ 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10,10],
+		def:[12,13,13,13,13,13,13,13,13,13,13,13,13,14,14,14,14,14,14,14,14,14,14,14,14,14,15,15,15,15,15,15,15,15,15,15,15,15,15,16,16,16,16,16,16,16,16,16,16,16,16,17,17,17,17,17,17,17,17,17,17,17,17,17,18,18,18,18,18,18,18,18,18,18,18,18,18,19,19,19,19,19,19,19,19,19,19,19,19,20,20,20,20,20,20,20,20,20,20,20]
+	},
+	"指揮妖精":{
+		atk:[20,21,21,21,21,21,21,22,22,22,22,22,22,22,23,23,23,23,23,23,24,24,24,24,24,24,24,25,25,25,25,25,25,26,26,26,26,26,26,26,27,27,27,27,27,27,27,28,28,28,28,28,28,29,29,29,29,29,29,29,30,30,30,30,30,30,31,31,31,31,31,31,31,32,32,32,32,32,32,32,33,33,33,33,33,33,34,34,34,34,34,34,34,35,35,35,35,35,35,36],
+		eva:[19,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,22,23,23,23,23,23,23,23,24,24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,26,26,26,26,26,26,26,27,27,27,27,27,27,27,27,28,28,28,28,28,28,28,28,29,29,29,29,29,29,29,30,30,30,30,30,30,30,30,31,31,31,31,31,31,31,31,32,32,32,32,32,32,32],
+		def:[ 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+		cm :[21,22,22,22,22,22,22,22,23,23,23,23,23,23,23,24,24,24,24,24,24,24,25,25,25,25,25,25,25,26,26,26,26,26,26,26,27,27,27,27,27,27,27,28,28,28,28,28,28,28,29,29,29,29,29,29,29,30,30,30,30,30,30,30,31,31,31,31,31,31,31,32,32,32,32,32,32,32,33,33,33,33,33,33,33,34,34,34,34,34,34,34,35,35,35,35,35,35,35,36]
+	},
+	"捜索妖精":{
+		atk:[19,20,20,20,20,20,20,20,20,21,21,21,21,21,21,21,21,22,22,22,22,22,22,22,22,23,23,23,23,23,23,23,23,24,24,24,24,24,24,24,24,25,25,25,25,25,25,25,25,26,26,26,26,26,26,26,26,26,27,27,27,27,27,27,27,28,28,28,28,28,28,28,28,28,29,29,29,29,29,29,29,29,30,30,30,30,30,30,30,30,31,31,31,31,31,31,31,31,32,32],
+		acc:[50,51,51,51,52,52,52,53,53,53,54,54,54,54,55,55,55,56,56,56,57,57,57,57,58,58,58,59,59,59,60,60,60,60,61,61,61,62,62,62,63,63,63,64,64,64,64,65,65,65,66,66,66,67,67,67,67,68,68,68,69,69,69,70,70,70,70,71,71,71,72,72,72,73,73,73,73,74,74,74,75,75,75,76,76,76,77,77,77,77,78,78,78,79,79,79,80,80,80,80],
+		eva:[40,41,41,41,41,42,42,42,42,43,43,43,43,44,44,44,44,45,45,45,45,46,46,46,46,47,47,47,47,48,48,48,48,48,49,49,49,49,50,50,50,50,51,51,51,51,52,52,52,52,53,53,53,53,54,54,54,54,55,55,55,55,56,56,56,56,56,57,57,57,57,58,58,58,58,59,59,59,59,60,60,60,60,61,61,61,61,62,62,62,62,63,63,63,63,64,64,64,64,64]
+	},
+	"照明妖精":{
+		acc:[50,51,51,52,52,53,53,53,54,54,55,55,55,56,56,57,57,57,58,58,59,59,59,60,60,61,61,61,62,62,63,63,63,64,64,65,65,65,66,66,67,67,67,68,68,69,69,69,70,70,71,71,71,72,72,73,73,73,74,74,75,75,75,76,76,77,77,78,78,78,79,79,80,80,80,81,81,82,82,82,83,83,84,84,84,85,85,86,86,86,87,87,88,88,88,89,89,90,90,90],
+		eva:[18,19,19,19,19,19,19,19,20,20,20,20,20,20,20,21,21,21,21,21,21,21,22,22,22,22,22,22,22,23,23,23,23,23,23,23,24,24,24,24,24,24,24,25,25,25,25,25,25,25,26,26,26,26,26,26,26,27,27,27,27,27,27,27,27,28,28,28,28,28,28,28,29,29,29,29,29,29,29,30,30,30,30,30,30,30,31,31,31,31,31,31,31,32,32,32,32,32,32,32],
+		def:[ 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8],
+		cm :[21,22,22,22,22,22,22,23,23,23,23,23,23,24,24,24,24,24,24,25,25,25,25,25,25,26,26,26,26,26,26,27,27,27,27,27,27,28,28,28,28,28,28,28,29,29,29,29,29,29,30,30,30,30,30,30,31,31,31,31,31,31,32,32,32,32,32,32,33,33,33,33,33,33,34,34,34,34,34,34,34,35,35,35,35,35,35,36,36,36,36,36,36,37,37,37,37,37,37,38]
+	},
+	/*"黄金妖精":{min:{atk: 5,acc:15,eva:12,def: 3,cm: 6},max:{atk:20,acc:62,eva:50,def:12,cm:25}}
+	*/
+};
+const fairySkill = {
+	"殺傷型Ⅰ":{t:ALL,atk:12},
+	"殺傷型Ⅱ":{t:ALL,atk:15},
+	"精確型Ⅰ":{t:ALL,acc:20},
+	"精確型Ⅱ":{t:ALL,acc:25},
+	"回避型Ⅰ":{t:ALL,eva:15},
+	"回避型Ⅱ":{t:ALL,eva:20},
+	"防護型Ⅰ":{t:ALL,def: 8},
+	"防護型Ⅱ":{t:ALL,def:10},
+	"必殺型Ⅰ":{t:ALL,crt:40},
+	"必殺型Ⅱ":{t:ALL,crt:50},
+	"先鋒型"  :{t:SMG,atk:8,eva:12},
+	"突撃型"  :{t:AR,atk:10,spe:8},
+	"照準型"  :{t:RF,atk:8,spe:10},
+	"強靭型"  :{t:SG,def:8,crt:20},
+	"鎮圧型"  :{t:MG,atk:10,acc:15},
+	"鋭敏型"  :{t:HG,eva:10,crt:30},
+	"激昂型"  :{t:ALL,acc:10}
+};
+const fRank = [40,50,60,80,100];
+
+const enemyData = {
+	"Ripper":{
+		"初期型"	:{hp:  720,atk:   6,spe: 40,acc: 20,eva:13,def: 0,gb: 0},
+		"後期型"	:{hp:  794,atk:  21,spe: 40,acc: 23,eva:15,def: 0,gb: 0}
+	},
+	"Vespid":{
+		"初期型"	:{hp:  900,atk:   9,spe: 40,acc: 20,eva:10,def: 0,gb: 0},
+		"後期型"	:{hp:  392,atk:  42,spe: 40,acc: 23,eva:15,def: 0,gb: 0}
+	},
+	"Jaeger":{
+		"初期型"	:{hp:  450,atk:  18,spe: 25,acc: 40,eva: 5,def: 0,gb: 0},
+		"後期型"	:{hp:  392,atk:  42,spe: 20,acc:140,eva:15,def: 0,gb: 0},
+		"模擬戦"	:{hp:  392,atk:  42,spe: 20,acc:140,eva:15,def: 0,gb: 0}
+	},
+	"Guard":{
+		"初期型"	:{hp: 1800,atk:   7,spe: 40,acc: 34,eva: 3,def: 0,gb: 0},
+		"後期型"	:{hp: 2269,atk:  11,spe: 40,acc: 23,eva: 0,def: 0,gb: 0}
+	},
+	"Dragoon":{
+		"初期型"	:{hp: 1080,atk:  11,spe: 45,acc: 36,eva:15,def: 0,gb: 0},
+		"後期型"	:{hp: 1588,atk:  42,spe: 40,acc:140,eva:15,def: 0,gb: 0},
+		"阻止者"	:{hp: 9860,atk:  87,spe: 55,acc: 55,eva: 0,def: 0,gb: 0}
+	},
+	"Striker":{
+		"一般型"	:{hp:  567,atk:  21,spe:100,acc: 20,eva: 5,def: 0,gb: 0}
+	},
+	"Brute":{
+		"一般型"	:{hp:  472,atk:  63,spe: 40,acc: 10,eva:15,def: 0,gb:80}
+	},
+	"Prowler":{
+		"初期型"	:{hp:  225,atk:   3,spe: 30,acc: 18,eva: 3,def: 0,gb: 0},
+		"後期型"	:{hp:  397,atk:  11,spe: 30,acc: 23,eva:15,def: 0,gb: 0}
+	},
+	"Scout":{
+		"初期型"	:{hp:  270,atk:   6,spe: 46,acc: 18,eva:15,def: 0,gb: 0},
+		"後期型"	:{hp:  829,atk:  11,spe: 40,acc: 23,eva:80,def: 0,gb: 0}
+	},
+	"Dinergate":{
+		"初期型"	:{hp:   54,atk:   9,spe: 45,acc: 25,eva: 5,def: 0,gb: 0},
+		"後期型"	:{hp:   65,atk:  84,spe: 40,acc:140,eva: 0,def: 0,gb: 0}
+	},
+	"Jaguar":{
+		"初期型"	:{hp:  720,atk:  27,spe:350,acc:350,eva: 8,def: 0,gb: 0},
+		"後期型"	:{hp:  794,atk: 168,spe:350,acc:350,eva:15,def: 0,gb: 0}
+	},
+	"Aegis":{
+		"一般型"	:{hp: 1550,atk:  11,spe: 40,acc: 18,eva: 0,def:90,gb: 0}
+	},
+	"Nemeum":{
+		"一般型"	:{hp:  567,atk:  84,spe: 15,acc: 60,eva: 0,def:90,gb: 0},
+		"模擬戦"	:{hp:  567,atk:  84,spe: 15,acc: 60,eva: 0,def:90,gb: 0}
+	},
+	"Manticore":{
+		"護衛型"	:{hp: 2550,atk:  12,spe: 45,acc: 30,eva:12,def:22,gb: 0},
+		"1-4N"		:{hp: 6000,atk:  30,spe: 45,acc: 30,eva:14,def:22,gb: 0},
+		"3-4N"		:{hp:11500,atk:  30,spe: 45,acc: 30,eva:14,def:22,gb: 0},
+		"4-4/5-4N"	:{hp:10200,atk:  95,spe: 55,acc: 40,eva:12,def:25,gb: 0}
+	},
+	"Tarantula":{
+		"一般型"	:{hp:   65,atk:  84,spe: 40,acc:140,eva: 0,def:90,gb: 0}
+	},
+	"Jupiter":{
+		"一般型"	:{hp:25000,atk: 250,spe: 50,acc:200,eva: 0,def:20,gb: 0}
+	},
+	"Golyat":{
+		"黒/弱"		:{hp: 1500,atk:1000,spe:150,acc:10000,eva: 0,def: 0,gb: 0},
+		"黒"		:{hp:15000,atk:1000,spe:150,acc:10000,eva: 0,def: 0,gb: 0},
+		"赤"		:{hp:150000,atk:1000,spe:150,acc:10000,eva: 0,def: 0,gb: 0}
+	},
+	"スケアクロウ":{
+		"1-6"	:{hp:  500,atk:  12,spe: 45,acc:  4,eva: 2,def: 0,gb: 0},
+		"1-4E"	:{hp: 2400,atk:  22,spe: 45,acc:  4,eva: 2,def: 0,gb: 0},
+		"0-4"	:{hp:40000,atk: 155,spe: 60,acc: 30,eva:16,def: 0,gb: 0}
+	},
+	"エクスキューショナー":{
+		"2-6"	:{hp: 4200,atk:  35,spe: 55,acc: 10,eva: 2,def: 0,gb: 0},
+		"2-4E"	:{hp: 6000,atk:  45,spe: 55,acc: 12,eva: 4,def: 0,gb: 0},
+		"CUBE1-3":{hp: 9000,atk:  88,spe: 45,acc: 18,eva:10,def:24,gb: 0}
+	},
+	"ハンター":{
+		"3-6"	:{hp: 8000,atk:  65,spe: 65,acc: 12,eva: 4,def: 0,gb: 0},
+		"3-4E"	:{hp:10000,atk:  85,spe: 65,acc: 18,eva: 8,def: 0,gb: 0},
+		"CUBE1-2":{hp: 6800,atk:  67,spe: 55,acc: 38,eva: 3,def:30,gb: 0}
+	},
+	"イントゥルーダー":{
+		"4-6"	:{hp:12000,atk:  95,spe: 60,acc: 18,eva: 8,def: 0,gb: 0},
+		"4-4E"	:{hp:14000,atk: 105,spe: 60,acc: 22,eva: 9,def: 0,gb: 0}
+	},
+	"デストロイヤー":{
+		"5-6"	:{hp:15000,atk: 236,spe: 40,acc: 24,eva:12,def: 0,gb: 0},
+		"5-4e"	:{hp:17500,atk: 294,spe: 40,acc: 30,eva:15,def: 0,gb: 0},
+		"8-6"	:{hp:30000,atk: 300,spe: 40,acc: 45,eva:30,def: 0,gb: 0},
+		"8-4e"	:{hp:35000,atk: 300,spe: 40,acc: 60,eva:35,def: 0,gb: 0}
+	},
+	"アルケミスト":{
+		"6-6/6-4e":{hp:20000,atk: 162,spe: 60,acc: 40,eva:22,def: 0,gb: 0},
+		"6-4N"	:{hp:40000,atk: 250,spe: 60,acc: 90,eva:30,def: 0,gb: 0}
+	},
+	"ウロボロス":{
+		"CE1-4"	:{hp:15000,atk: 120,spe: 55,acc: 20,eva:12,def:23,gb: 0}
+	},
+	"エージェント":{
+		"特異点2-16/2-17":{hp:180000,atk: 65,spe: 40,acc: 40,eva:20,def: 0,gb: 0},
+		"特異点2-H/3-4/ハチの巣":{hp:220000,atk:  45,spe: 40,acc: 80,eva:30,def: 0,gb: 0}
+	},
+	"ドリーマー":{
+		"7-6"	:{hp:27500,atk: 200,spe: 60,acc: 65,eva:35,def: 0,gb:40},
+		"7-4e"	:{hp:35000,atk: 240,spe: 60,acc: 70,eva:50,def: 0,gb:40},
+		"8-6"	:{hp:38000,atk: 240,spe: 60,acc: 80,eva:50,def: 0,gb:40},
+		"8-4e"	:{hp:45000,atk: 360,spe: 60,acc:100,eva:60,def: 0,gb:40}
+	},
+	"ゲーガー":{
+		"低体温症1-4":{hp:15000,atk: 100,spe: 40,acc: 20,eva:12,def: 0,gb:20},
+		"低体温症3-4":{hp:25000,atk: 160,spe: 40,acc: 60,eva:15,def: 0,gb:20}
+	},
+	"アーキテクト":{
+		"低体温症2-4":{hp:18000,atk: 120,spe: 50,acc: 25,eva:15,def:20,gb: 0},
+		"低体温症3-4":{hp:40000,atk: 200,spe: 50,acc:100,eva:40,def:35,gb: 0}
+	},
+	"ケルベロス":{
+		"深層映写E2-4/E3-4":{hp:30000,atk: 25,spe:150,acc: 50,eva: 5,def:20,gb: 0},
+		"虚数迷宮":{hp:200000,atk: 150,spe:150,acc:100,eva:10,def:30,gb: 0},
+	},
+	"ガイア":{
+		"深層映写E3-4":{hp:35000,atk:300,spe:40,acc:40,eva:30,def:20,gb:60},
+		"虚数迷宮":{hp:75000,atk:300,spe:40,acc:75,eva:50,def:30,gb:80}
+	},
+	"ジャッジ":{
+		"9-6"	:{hp:52000,atk: 30,spe:150,acc:100,eva:10,def:25,gb: 0},
+		"9-4e"	:{hp:65000,atk: 42,spe:150,acc:100,eva:10,def:25,gb: 0}
+	},
+	"アナイアレイター":{
+		"ウサギ狩り作戦E1-4":{hp:12000,atk: 50,spe: 40,acc: 35,eva: 8,def:60,gb: 0}
+	}
+};
+
+const skillMsg = {
+	"火力号令":"@dur秒間、味方全体の火力を@atk%上昇させる",
+	"援護号令":"@dur秒間、味方全体の回避を@eva%上昇させる",
+	"突撃号令":"@dur秒間、味方全体の射速を@spe%上昇させる",
+	"精確号令":"@dur秒間、味方全体の命中を@acc%上昇させる",
+	"殲滅号令":"@dur秒間、味方全体の一部ステータスを上昇させる<br/>ステータス効果:火力+@atk%/会心率+@crt%",
+	"突貫号令":"@dur秒間、味方全体の一部ステータスを上昇させる<br/>ステータス効果:火力+@atk%/射速+@spe%",
+	"隠密号令":"@dur秒間、味方全体の一部ステータスを上昇させる<br/>ステータス効果:命中+@acc%/回避+@eva%",
+	"急襲号令":"@dur秒間、味方全体の一部ステータスを上昇させる<br/>ステータス効果:会心率+@crt%/射速+@spe%",
+	"強襲号令":"@dur秒間、味方全体の一部ステータスを上昇させる<br/>ステータス効果:火力+@atk%/命中+@acc%",
+	
+	"火力号令Ｎ":"夜戦時において、@n_dur秒(@dur秒)の間、味方全体の火力を@n_atk%(@atk%)上昇させる<br/>※()内は昼戦時の値",
+	"援護号令Ｎ":"夜戦時において、@n_dur秒(@dur秒)の間、味方全体の回避を@n_eva%(@eva%)上昇させる<br/>※()内は昼戦時の値",
+
+	"スカーレットエコー":"スキル発動時、自身の効果範囲内にいる味方の一部ステータスを@dur秒間上昇させる<br/>ステータス効果:火力/射速/命中+@atk%",
+	"戦場の哲学館":"スキル発動時、自身の効果範囲上にいる味方に対して、銃種ごとにそれぞれ異なるステータスを@dur秒間上昇させる<br/>ハンドガン/サブマシンガン:回避+@eva%<br/>ライフル/アサルトライフル:火力+@atk%<br/>マシンガン/ショットガン:命中+@acc%",
+	"デンジャースカウター":"特定の条件下において、@dur秒間、それぞれ異なる効果を発動させる自身の前方に味方がいる場合:その味方に対して、@sldポイントのシールドを展開し、回避を@eva%上昇させる自身の前方に味方がいない場合:自身の火力を@atk%、射速を@spe%上昇させる",
+	"臨機応変":"@dur秒間、自身の一部ステータスを上昇させる<br/>グループの数に応じ、累積する<br/>火力上昇効果:火力+@atk%(最大3)/回避情報効果:回避+@eva%(最大6)<br/>敵グループ数が1組のみの場合:火力上昇効果を+3<br/>敵グループ数が1組以上の場合:敵グループが組増えるごとに、回避上昇効果を+1、火力上昇効果を-1",
+	
+	"火力制圧":"@dur秒間、敵全体の火力を@atk%低下させる",
+	"精確制圧":"@dur秒間、敵全体の命中を@acc%低下させる",
+	"援護制圧":"@dur秒間、敵全体の回避を@eva%低下させる",
+	"突撃制圧":"@dur秒間、敵全体の射速を@spe%低下させる",
+	
+	"火力制圧Ｎ":"夜戦時において、@n_dur秒(@dur秒)の間、敵全体の火力を@n_atk%(@atk%)低下させる<br/>※()内は昼戦時の値",
+	"援護制圧Ｎ":"夜戦時において、@n_dur秒(@dur秒)の間、敵全体の回避を@n_eva%(@eva%)低下させる<br/>※()内は昼戦時の値",
+	
+	"メンタルインパクト":"@dur秒間、敵全体の火力を@atk%低下させ、自身の回避を@eva%上昇させる",
+	
+	"火力集中":"@dur秒間、自身の火力を@atk%上昇させる",
+	"援護集中":"@dur秒間、自身の回避を@eva%上昇させる",
+	"突撃集中":"@dur秒間、自身の射速を@spe%上昇させる",
+	"精確集中":"@dur秒間、自身の命中を@acc%上昇させる",
+	"強襲集中":"@dur秒間、自身の一部ステータスを上昇させる<br/>ステータス効果:火力+@atk%/命中+@acc%",
+	"突貫集中":"@dur秒間、自身の一部ステータスを上昇させる<br/>ステータス効果:火力+@atk%/射速+@spe%",
+	"機動集中":"@dur秒間、自身の一部ステータスを上昇させる<br/>ステータス効果:火力+@atk%/回避+@eva%",
+	"クランプ":"@dur秒間、自身の射速と命中をそれぞれ@spe%上昇させる",
+	"緊急流速":"@dur秒間、自身の命中を@acc%低下させ、射速を@spe%上昇させる",
+	
+	"火力集中Ｔ":"@dur秒間、自身の火力を@atk%上昇させる",
+	"援護集中Ｔ":"@dur秒間、自身の回避を@eva%上昇させる",
+	"突撃集中Ｔ":"@dur秒間、自身の射速を@spe%上昇させる",
+	
+	"火力集中Ｎ":"夜戦時において、@dur秒の間、自身の火力を@n_atk%(@atk%)上昇させる<br/>※()内は昼戦時の値",
+	"突撃集中Ｎ":"夜戦時において、@dur秒の間、自身の射速を@n_spe%(@spe%)上昇させる<br/>※()内は昼戦時の値",
+	"殲滅集中Ｎ":"夜戦時において、@dur秒の間、自身の一部ステータスを上昇させる<br/>ステータス効果:火力+@n_atk%(@atk%)/会心率+@n_crt%(@crt%)<br/>※()内は昼戦時の値",
+	"隠密集中Ｎ":"夜戦時において、@dur秒の間、自身の回避を@n_eva%(@eva%)、命中を@n_acc%(@acc%)上昇させる<br/>※()内は昼戦時の値",
+	"桜逆像":"@dur秒間、自身に最大@sldダメージを吸収するシールドを展開する。<br/>なお、効果時間中にシールドが破壊された場合、破壊されてからの5秒間、自身の回避を@eva%上昇させる。<br/>破壊されなかった場合には、シールドの効果時間が終了してからの5秒間、自身の火力を@atk%上昇させる。",
+	"未来予知":"スキル発動時に敵の数が「６組」以上存在する場合、3秒間、自身の射速と命中を@spe%上昇させる。<br/>条件を満たさない場合には、3秒間、自身の火力を@atk_bf%上昇させる。<br/>上昇効果終了時に敵の数が「３組」以上存在する場合、5秒間、自身の陣形効果範囲内に存在する味方に最大@sldダメージを吸収するシールドを展開する。<br/>条件を満たさない場合には、5秒間、自身の陣形効果範囲内に存在する味方、及び自身の火力を@atk_af%上昇させる。",
+	"スカーレットエクリプス":"アクティブ:@dur秒間、自身の効果範囲内にいる味方の火力を@atk%上昇させる<br/>パッシブ:自身の効果範囲内にいる味方がリロードする度に、15秒の間、火力及び命中を5%ずつ上昇させる(最大3回まで累積)",
+	
+	"鷲影強襲":"@dur秒間、自身の攻撃速度を@spe%低下させ、火力を@atk%上昇させる",
+	"ライズバレット":"@dur秒間、自身の一部ステータスを上昇させ、スキルの発動中は後列にいる敵に対して攻撃を行う<br/>ステータス効果:火力+@atk%/命中+@acc%",
+		
+	"手榴弾":"手榴弾を投げ、半径@rangeヤード内の敵に@dmg倍のダメージを与える",
+	"殺傷榴弾":"殺傷榴弾を発射し、半径@rangeヤード内の敵に@dmg倍のダメージを与える",
+	"焼夷手榴弾":"焼夷手榴弾を投げ、半径@rangeヤード内の敵に@dmg倍の爆発ダメージを与える<br/>追加ステータス効果:@dur秒間、@dotF秒ごとに@dotDmg倍の持続ダメージ",
+	"発煙手榴弾":"発煙手榴弾を投げ、半径@rangeヤード内にいる敵の一部ステータスを@dur秒間、低下させる<br/>ステータス効果:敵攻撃速度@spe%/敵移動速度@mov%",
+	"閃光手榴弾":"閃光手榴弾を投げ、半径@rangeヤード内の敵を@dur秒間目まい状態にする",
+	"照明弾":"夜戦時において、@dur秒の間、味方全体の命中を@n_acc%上昇させる",
+	"チェーンブラスト":"榴弾を発射し、@range内の敵にそれぞれに@dmg倍のダメージを与える",
+	"夜梟咆哮":"榴弾を発射し、半径@rangeヤード内の敵に@dmg%のダメージを与える<br/>3体以上に命中した場合:@dur_1秒間、各ターゲットに@dmup%の追加ダメージ<br/>3体未満に命中した場合:@dur_2秒間、自身の火力@atk%上昇させる",
+	"零銃・フェンリル/オモヒカネ":"敵に向かって突撃し、小規模の範囲攻撃を行う<br/>範囲内にいる敵に対して、@dmg倍のダメージを@cf回与える",
+	"ジェノワーズ":"ターゲットに@dmg_1倍のダメージを与え、ロックオンする<br/>ロックオン後はミサイルを発射し、ターゲットの周囲@rangeヤード内の敵に@dmg_2倍のダメージを与える",
+	
+	"ロックショット":"@wait秒かけてターゲットへ照準を合わせ、そのターゲットに対して@dmg倍のダメージを与える",
+	"エイムショット":"@wait秒かけてターゲットへ照準を合わせ、そのターゲットに対して@dmg倍のダメージを与える",
+	"ブロックショット":"@wait秒かけて最も近いターゲットへ照準を合わせ、そのターゲットに対して@dmg倍のダメージを与える",
+	"カームショット":"@wait秒かけて最も遠いターゲットへ照準を合わせ、そのターゲットに対して@dmg倍のダメージを与える",
+	"チェーンショット":"@wait秒かけてターゲットへ照準を合わせ、そのターゲットに対して@dmg倍のダメージを与える攻撃を@cf回行う",
+	"バンカーショット":"@wait秒かけてHPが最大のターゲットに照準を合わせ、そのターゲットに対して@dmg倍のダメージを与える。<br/>ターゲットが装甲型の場合、@dmggb倍のダメージを与える。",
+	"ピアースショット":"@wait秒かけて最も遠いターゲットへ照準を合わせ、そのターゲットに向けて貫通効果のある弾丸を発射し、貫通した敵に対して@dmg倍のダメージを与える<br/>対象のターゲットにはさらに、@dmg倍の追加ダメージを与える",
+	"バトルストンプ":"榴弾@cf発を連射し、それぞれの榴弾が半径@rangeヤード内の敵に@dmg倍のダメージを与える",
+	"アックススロー":"回転する斧を投げつけ、ターゲットに@dmg倍のダメージを与える",
+	"断罪の魔弾":"スキル発動後@wait秒かけてターゲットに照準を合わせ,ターゲットに攻撃力の@dmg倍のダメージを与える特製の弾丸を発射する。<br/>打たれたターゲットは@dur秒間被ダメージが@dmup%増加し,かつ味方の攻撃ターゲットとなる。<br/>このスキルのターゲットはコンテンダーが前/中/後衛のどこにいるかによって異なり,それぞれの照準は最も遠い/その時点でHPが最も高い/最も近い敵となる,ただし,ボス存在時は優先してボスに照準を合わせる。",
+	
+	"フォースシールド":"@dur秒間、全ての攻撃を受け付けない",
+	"スタッカート":"パッシブ:攻撃を3回行うたびに、次の攻撃のダメージが@atk倍になる",
+	"インフレイム":"攻撃時に20%の確率で、会心が必ず発生する弾丸を追加発射する",
+	"狩猟衝動":"@dur秒間、自身の命中を@acc%上昇させ、攻撃が必ず会心になる",
+	"狩猟衝動Ｎ":"@dur秒の間、自身の一部ステータスを上昇させ、攻撃が必ず会心になる<br/>ステータス効果:火力+@n_atk%(@atk%)/命中+@n_acc%(@acc%)<br/>※()内は昼戦時の値",
+	"マニックブラッド":"リロードするたびに火力を@atk%上昇させる(累積)/各効果は25秒持続する",
+	"火力集中ＭＧ":"@dur秒間、自身の火力を@atk%上昇させる",
+	"強襲集中ＭＧ":"@dur秒間、自身の一部ステータスを上昇させる<br/>ステータス効果:火力+@atk%/命中+@acc%",
+	"火力集中Ｎ-ＭＧ":"夜戦時において、@dur秒の間、自身の火力を@n_atk%(@atk%)上昇させる<br/>※()内は昼戦時の値",
+	"準備万端":"@dur秒間、自身の一部ステータスを上昇させる<br/>ステータス効果:火力+@atk%/装弾数+@slot",
+	"準備万端Ｎ":"夜戦時において、@dur秒の間、自身の一部ステータスを上昇させる<br/>ステータス効果:火力+@n_atk%(昼戦時@atk%)/装弾数+@slot",
+	
+	"弔いの雨":"@dur秒間、射速+150%の掃射を行う",
+	"オーバーロード":"パッシブ:スキル未発動時、2秒ごとに自身の回避を10%上昇させ、火力を5%低下させる(最大5重まで累積)<br/>アクティブ:パッシブの効果を全て解除し、2秒ごとに火力を@atk%上昇させ、回避を@eva%低下させる(最大5重まで累積)",
+	"ストームアイ":"@dur秒の間、攻撃時にターゲットへ@cf回ダメージを与える",
+	"チェーンインパクト":"@dur秒間、銃を二丁を使用し、攻撃するたびにダメージを@cf回与え、かつその攻撃が必ず会心になる",
+	"ヒートブラスト":"攻撃モードを切り替える(スキルタップで切り替え)<br/>Feverモード(デフォルト):3点バーストモード、攻撃するたびに@fever_dmg%のダメージを3回与え、銃身温度が+1される<br/>銃身温度が15以上になると、温度1につき命中とダメージが2%低下する(最大20重まで累積)<br/>Noteモード:セミオートモード、攻撃するたびに銃身温度が-1し、移動速度と回避が@note_mov%低下するが、同一の敵を攻撃するたびにダメージが+5%される(最大10重まで累積)",
+	"マールスホルン":"アクティブ:スキル発動後、@dur秒間、部隊内にいるライフルタイプの戦術人形1体につき、自身の会心率と射速を@spe_a%上昇させる<br/>パッシブ:攻撃するたびに、40%の確率で2秒間、同列の味方全体の会心率と射速を@spe_p%上昇させる(最大3重まで累積)",
+	"ヘルメスの仮面":"パッシブ:攻撃するたびに、70%の確率でマークを2個追加し、追加されたマークが18個になると、次の攻撃でエリートクラスの敵に@dmg_1%(通常の敵には@dmg_2%)のダメージを与え、マークを全て消去する<br/>アクティブ:マークを18個追加する",
+	"楓花蛍火":"パッシブ:CT終了後、ドローンが敵一体をランダムに選択し、マークする(マーク対象は、1秒ごとに変更される)<br/>アクティブ:マークされた敵に対し、狙撃を一回行い、@dmg倍のダメージを与える(この攻撃は一定確率で会心が発生する)",
+	"マインドチェイン":"それぞれ効果の異なる弾薬に切り替える(スキルタップで切り替え)<br/><span style='color:#00CCFF;'>亜音速弾</span>（デフォルト）:回避+@eva%<br/><span style='color:red;'>ST弾</span>:火力+@atk%<br/><span style='color:#FFCC00;'>通常弾</span>:命中+@acc%",
+	
+	"ターミネートブロウ":"敵単体に1000ダメージを与え、3ヤードノックバックさせる",
+	"ショックブロウ":"ダメージ@dmg倍の追加攻撃を1回行い、3ヤードノックバックさせる",
+	"防衛集中":"@dur秒間、自身の防御力を@def%上昇させる",
+	"生存本能":"@dur秒間、自身の一部ステータスを上昇させる<br/>ステータス効果:回避+@eva%/防御力+@def%",
+	"火力集中ＳＧ":"@dur秒間、攻撃可能な標的数を5まで増やし、自身の火力を@atk%上昇させる(スラッグ弾の効果とは重複しない)",
+	"ケトーシス":"自身の弾薬量を@slot増加させ、@dur秒の間、射速を@spe%上昇させる。スキル発動中は、ノックバック率が10%に上昇する。",
+	"易刺激性暗示":"@dur秒間、自身の火力を@atk%、防御力を@def%上昇させる"
+};

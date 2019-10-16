@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8"/>
+		<link rel="stylesheet" type="text/css" href="css/drfr.css"/>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/drfr.const.js"></script>
+		<script type="text/javascript" src="data/drfr.json"></script>
+		<script>
+			// ストレージデータ
+			let saveData = {};
+			/**
+			 * 初期表示処理
+			 */
+			function init(){
+				// ストレージにデータが保存されている場合
+				if(localStorage.getItem("drfr.have")){
+					// ストレージからデータを取得してグローバル変数に退避する
+					saveData = JSON.parse(localStorage.getItem("drfr.have"));
+				}
+				// 戦術人形配列（ソート用）
+				const tdollArray = new Array();
+				// ソート用に戦術人形データ(JSON)を配列に詰めなおす
+				for(let name in unitData){
+					const tmp = JSON.parse(JSON.stringify(unitData[name]));
+					tmp["name"] = name;
+					tdollArray.push(tmp);
+				}
+				// 銃種類ソート順
+				const typeSort = {
+					HG:1,
+					SMG:2,
+					AR:3,
+					RF:4,
+					MG:5,
+					SG:6
+				};
+				// ソートする
+				tdollArray.sort(function(a,b){
+					let aVal = 0;
+					let bVal = 0;
+					// 銃種類によるソート
+					aVal = typeSort[a.type];
+					bVal = typeSort[b.type];
+					// 同じ銃種の場合
+					if(aVal == bVal){
+						// レアリティによるソート
+						aVal = a.rare;
+						bVal = b.rare;
+						// 同じレアリティの場合
+						if(aVal == bVal){
+							// 製造時間によるソート
+							if(a.make){
+								const aTmp = a.make.split(":");
+								aVal = parseInt(aTmp[0], 10) * 3600 + parseInt(aTmp[1], 10) * 60 + parseInt(aTmp[1], 10);
+							}else{
+								aVal = 999999;
+							}
+							if(b.make){
+								const bTmp = b.make.split(":");
+								bVal = parseInt(bTmp[0], 10) * 3600 + parseInt(bTmp[1], 10) * 60 + parseInt(bTmp[1], 10);
+							}else{
+								bVal = 999999;
+							}
+						}
+					}
+					return aVal - bVal;
+				});
+				// 表示領域の取得
+				const t = elem("dataTable");
+				// 表示内容のクリア
+				t.innerHTML = "";
+				// 合計件数データ
+				const sum = {
+					total:{
+						HG:0,
+						SMG:0,
+						RF:0,
+						AR:0,
+						MG:0,
+						SG:0,
+						ALL:0
+					},
+					holder:{
+						HG:0,
+						SMG:0,
+						RF:0,
+						AR:0,
+						MG:0,
+						SG:0,
+						ALL:0
+					},
+					core:{
+						HG:0,
+						SMG:0,
+						RF:0,
+						AR:0,
+						MG:0,
+						SG:0,
+						ALL:0
+					},
+					comp:{
+						HG:0,
+						SMG:0,
+						RF:0,
+						AR:0,
+						MG:0,
+						SG:0,
+						ALL:0
+					}
+				};
+				// 戦術人形ループ
+				for(let i in tdollArray){
+					// 要素から戦術人形名を取得
+					let name = tdollArray[i].name;
+					// 合計件数のインクリメント
+					sum.total.ALL++;
+					// 銃種別件数のインクリメント
+					sum.total[unitData[name].type]++;
+					// 行生成
+					const r = createElem("tr");
+					// 行に属性設定
+					r.setAttribute("name", name);
+					// Link数が5、且つLv100
+					if(saveData[name] && saveData[name].link == 5 && saveData[name].lv == 100){
+						// 行の配色変更
+						r.className = "complete";
+						// カンスト件数のインクリメント
+						sum.comp.ALL++;
+						// 銃種別カンスト件数のインクリメント
+						sum.comp[unitData[name].type]++;
+					}
+					// セル生成
+					let c = createElem("td");
+					// スタイル設定
+					c.style.textAlign = "center";
+					c.style.width = "30px";
+					// 所持チェックボックスを生成
+					let html = "<input type='checkbox' onclick='changeHave();'"
+					// ストレージデータが所持状態だった場合
+					if(saveData[name] && saveData[name].have){
+						// チェックする
+						html += " checked";
+						// 所持合計件数のインクリメント
+						sum.holder.ALL++;
+						// 銃種別所持合計件数のインクリメント
+						sum.holder[unitData[name].type]++;
+					// 未所持だった倍
+					}else{
+						// 行の配色設定
+						r.className = "inactive";
+					}
+					html += ">";
+					// HTML反映
+					c.innerHTML = html;
+					// セルを行に追加
+					r.appendChild(c);
+					// セル生成
+					c = createElem("td");
+					// スタイル設定
+					c.style.textAlign = "center";
+					c.style.width = "40px";
+					// レアリティを反映
+					c.innerHTML = unitData[name].rare;
+					// セルを行に追加
+					r.appendChild(c);
+					// セル生成
+					c = createElem("td");
+					// スタイル設定
+					c.style.textAlign = "center";
+					c.style.width = "60px";
+					// 銃種を反映
+					c.innerHTML = unitData[name].type;
+					// セルを行に追加
+					r.appendChild(c);
+					// セル生成
+					c = createElem("td");
+					// スタイル設定
+					c.style.paddingLeft = "4px";
+					c.style.width = "230px";
+					// 戦術人形名を反映
+					c.innerHTML = name.replace("@","");
+					// セルを行に追加
+					r.appendChild(c);
+					// セル生成
+					c = createElem("td");
+					// スタイル設定
+					c.style.textAlign = "center";
+					c.style.width = "70px";
+					// 製造時間が設定されている場合
+					if(unitData[name].make){
+						// 製造時間を反映
+						c.innerHTML = unitData[name].make;
+					// 製造時間未設定
+					}else{
+						// 製造不可
+						c.innerHTML = "製造不可";
+					}
+					// セルを行に追加
+					r.appendChild(c);
+					// セル生成
+					c = createElem("td");
+					// スタイル設定
+					c.style.textAlign = "center";
+					c.style.width = "50px";
+					// Lv入力欄生成
+					html = "<input type='Number' min='1' max='100' style='font-size:0.95rem;width:2.75rem;height:1.2rem;text-align:right;' onchange='changeLv();' value='"
+					// ストレージデータにLvが設定されている場合
+					if(saveData[name] && saveData[name].lv){
+						// 値の反映
+						html += saveData[name].lv;
+					}
+					html += "'>";
+					// HTMLを反映
+					c.innerHTML = html;
+					// セルを行に追加
+					r.appendChild(c);
+					// セル生成
+					c = createElem("td");
+					// スタイル設定
+					c.style.textAlign = "center";
+					c.style.width = "50px";
+					// スキルレベル選択用のコンボを生成
+					html = "<select onchange='changeSlv();'>";
+					for(let val = 1; val <= 10;val++){
+						html += "<option value='" + val + "'";
+						// ストレージデータのスキルレベルと同じ値の場合
+						if(saveData[name] && saveData[name].slv && saveData[name].slv == val){
+							// 選択状態にする
+							html += " selected";
+						}
+						html += ">" + val + "</option>";
+					}
+					html += "</select>";
+					// HTMLを反映
+					c.innerHTML = html;
+					// セルを行に追加
+					r.appendChild(c);
+					// セル生成
+					c = createElem("td");
+					// スタイル設定
+					c.style.textAlign = "center";
+					c.style.width = "60px";
+					// Link数選択用のコンボを生成
+					html = "x<select onchange='changeLink();'>";
+					for(let val = 1; val <= 5;val++){
+						html += "<option value='" + val + "'";
+						// ストレージデータのLink数と同じ値の場合
+						if(saveData[name] && saveData[name].link && saveData[name].link == val){
+							// 選択状態にする
+							html += " selected";
+						}
+						html += ">" + val + "</option>";
+					}
+					html += "</select>";
+					// HTMLを反映
+					c.innerHTML = html;
+					// セルを行に追加
+					r.appendChild(c);
+					// セル生成
+					c = createElem("td");
+					// スタイル設定
+					c.style.textAlign = "center";
+					c.style.width = "80px";
+					// ストック選択用のコンボを生成
+					html = "<select onchange='changeStock();'>";
+					for(let val = 0; val <= 7;val++){
+						html += "<option value='" + val + "'";
+						// ストレージデータのストック数と同じ値の場合
+						if(saveData[name] && saveData[name].stock && saveData[name].stock == val){
+							// 選択状態にする
+							html += " selected";
+						}
+						html += ">" + val + "</option>";
+					}
+					html += "</select>";
+					// HTMLを反映
+					c.innerHTML = html;
+					// セルを行に追加
+					r.appendChild(c);
+					// セル生成
+					c = createElem("td");
+					// スタイル設定
+					c.style.textAlign = "right";
+					r.appendChild(c);
+					// 必要コア数の形状
+					const needCore = calcCore(r);
+					// 所持データ且つレアリティが3以上の場合
+					if(saveData[name] && saveData[name].have && unitData[name].rare > 2){
+						// 必要コア合計数のインクリメント
+						sum.core.ALL = sum.core.ALL + needCore;
+						// 銃種別必要コア合計数のインクリメント
+						sum.core[unitData[name].type] = sum.core[unitData[name].type] + needCore;
+					}
+					// 行を表示領域に追加
+					t.appendChild(r);
+				}
+				// 合計数を表示
+				elem("holderSum").innerHTML = sum.holder.ALL + "/" + sum.total.ALL + "(" + Math.floor(sum.holder.ALL / sum.total.ALL * 100) + "%)";
+				elem("coreSum").innerHTML = sum.core.ALL;
+				elem("compSum").innerHTML = sum.comp.ALL;
+				elem("holderSumHG").innerHTML = sum.holder.HG + "/" + sum.total.HG + "(" + Math.floor(sum.holder.HG / sum.total.HG * 100) + "%)";
+				elem("coreSumHG").innerHTML = sum.core.HG;
+				elem("compSumHG").innerHTML = sum.comp.HG;
+				elem("holderSumSMG").innerHTML = sum.holder.SMG + "/" + sum.total.SMG + "(" + Math.floor(sum.holder.SMG / sum.total.SMG * 100) + "%)";
+				elem("coreSumSMG").innerHTML = sum.core.SMG;
+				elem("compSumSMG").innerHTML = sum.comp.SMG;
+				elem("holderSumRF").innerHTML = sum.holder.RF + "/" + sum.total.RF + "(" + Math.floor(sum.holder.RF / sum.total.RF * 100) + "%)";
+				elem("coreSumRF").innerHTML = sum.core.RF;
+				elem("compSumRF").innerHTML = sum.comp.RF;
+				elem("holderSumAR").innerHTML = sum.holder.AR + "/" + sum.total.AR + "(" + Math.floor(sum.holder.AR / sum.total.AR * 100) + "%)";
+				elem("coreSumAR").innerHTML = sum.core.AR;
+				elem("compSumAR").innerHTML = sum.comp.AR;
+				elem("holderSumMG").innerHTML = sum.holder.MG + "/" + sum.total.MG + "(" + Math.floor(sum.holder.MG / sum.total.MG * 100) + "%)";
+				elem("coreSumMG").innerHTML = sum.core.MG;
+				elem("compSumMG").innerHTML = sum.comp.MG;
+				elem("holderSumSG").innerHTML = sum.holder.SG + "/" + sum.total.SG + "(" + Math.floor(sum.holder.SG / sum.total.SG * 100) + "%)";
+				elem("coreSumSG").innerHTML = sum.core.SG;
+				elem("compSumSG").innerHTML = sum.comp.SG;
+			}
+			/**
+			 * 所持変更時処理
+			 */
+			function changeHave(){
+				// チェックボックスから親に遡って行を特定
+				const r = event.target.parentNode.parentNode;
+				// 行に設定されている戦術人形名を取得
+				const name = r.getAttribute("name");
+				// ストレージにまだ保存されていない場合
+				if(!saveData[name]){
+					// データ初期化
+					saveData[name] = {};
+				}
+				// チェックされた場合
+				if(event.target.checked){
+					// ストレージデータを所持状態にする
+					saveData[name]["have"] = true;
+					// 行のグレーアウトを削除
+					r.className = "";
+				// チェックを外された場合
+				}else{
+					// ストレージデータを未所持状態にする
+					saveData[name]["have"] = false;
+					// 行をグレーアウトする
+					r.className = "inactive";
+				}
+				// ストレージの更新
+				localStorage.setItem("drfr.have", JSON.stringify(saveData));
+			}
+			/**
+			 * Lv変更時処理
+			 */
+			function changeLv(){
+				// 入力から親に遡って行を特定
+				const r = event.target.parentNode.parentNode;
+				// 行に設定されている戦術人形名を取得
+				const name = r.getAttribute("name");
+				// ストレージデータにまだ保存されていない場合
+				if(!saveData[name]){
+					// データ初期化
+					saveData[name] = {};
+				}
+				// ストレージデータに入力されたLvを反映
+				saveData[name]["lv"] = parseInt(event.target.value, 10);
+				// Link数5且つLv100の場合
+				if(saveData[name] && saveData[name].link == 5 && saveData[name].lv == 100){
+					// 行をカンスト時の色にする
+					r.className = "complete";
+				}
+				// ストレージの更新
+				localStorage.setItem("drfr.have", JSON.stringify(saveData));
+			}
+			/**
+			 * スキルレベル変更時処理
+			 */
+			function changeSlv(){
+				// 入力から親に遡って行を特定
+				const r = event.target.parentNode.parentNode;
+				// 行に設定されている戦術人形名を取得
+				const name = r.getAttribute("name");
+				// ストレージデータにまだ保存されていない場合
+				if(!saveData[name]){
+					// データ初期化
+					saveData[name] = {};
+				}
+				// ストレージデータに入力されたスキルレベルを反映
+				saveData[name]["slv"] = parseInt(event.target.value, 10);
+				// ストレージの更新
+				localStorage.setItem("drfr.have", JSON.stringify(saveData));
+			}
+			/**
+			 * Link数変更時処理
+			 */
+			function changeLink(){
+				// 入力から親に遡って行を特定
+				const r = event.target.parentNode.parentNode;
+				// 行に設定されている戦術人形名を取得
+				const name = r.getAttribute("name");
+				// ストレージデータにまだ保存されていない場合
+				if(!saveData[name]){
+					// データ初期化
+					saveData[name] = {};
+				}
+				// ストレージデータに入力されたLink数を反映
+				saveData[name]["link"] = parseInt(event.target.value, 10);
+				// Link数5且つLv100の場合
+				if(saveData[name] && saveData[name].link == 5 && saveData[name].lv == 100){
+					// 行をカンスト時の色にする
+					r.className = "complete";
+				}
+				// 必要コア数の再計算
+				calcCore(r);
+				// ストレージの更新
+				localStorage.setItem("drfr.have", JSON.stringify(saveData));
+			}
+			/**
+			 * ストック数変更時処理
+			 */
+			function changeStock(){
+				// 入力から親に遡って行を特定
+				const r = event.target.parentNode.parentNode;
+				// 行に設定されている戦術人形名を取得
+				const name = r.getAttribute("name");
+				// ストレージデータにまだ保存されていない場合
+				if(!saveData[name]){
+					// データ初期化
+					saveData[name] = {};
+				}
+				// ストレージデータに入力されたストック数を反映
+				saveData[name]["stock"] = parseInt(event.target.value, 10);
+				// 必要コア数の再計算
+				calcCore(r);
+				// ストレージの更新
+				localStorage.setItem("drfr.have", JSON.stringify(saveData));
+			}
+			/**
+			 * 必要コア数の計算
+			 */
+			function calcCore(r){
+				// 行からセルを取得
+				const cells = r.getElementsByTagName("td");
+				// 2列目からレアリティ取得
+				const rare = parseInt(cells[1].innerText, 10);
+				// 8列目からLink数取得
+				const link = parseInt(cells[7].getElementsByTagName("select")[0].value, 10);
+				// 9列目からストック数取得
+				const stock = parseInt(cells[8].getElementsByTagName("select")[0].value, 10);
+				// 基底コア
+				let baseCore;
+				// レアリティによる分岐
+				switch(rare){
+					case 2:
+						baseCore = 1;
+						break;
+					case 3:
+						baseCore = 3;
+						break;
+					case 4:
+						baseCore = 9;
+						break;
+					default:
+						baseCore = 15;
+						break;
+				}
+				// 必要コア値
+				let need;
+				// Link数による分岐
+				switch(link){
+					case 1:
+						need = 7;
+						break;
+					case 2:
+						need = 6;
+						break;
+					case 3:
+						need = 5;
+						break;
+					case 4:
+						need = 3;
+						break;
+					default:
+						need = 0;
+						break;
+				}
+				// 必要コア数＝基底コア×（必要コア値－ストック数）
+				const ret = baseCore * (need - stock);
+				// 10列目に反映
+				cells[9].innerText = ret;
+				// 必要コア数の返却
+				return ret;
+			}
+		</script>
+	</head>
+	<body onload="init();">
+		<div style="display:flex;justify-content:flex-start;">
+			<div>
+				<table style="width:calc(50vw + 3px);">
+					<tr>
+						<th style="width:30px;"></th>
+						<th style="width:40px;">★</th>
+						<th style="width:60px;">銃種</th>
+						<th style="width:233px;">戦術人形名</th>
+						<th style="width:70px;">製造時間</th>
+						<th style="width:50px;">LV</th>
+						<th style="width:50px;">SLV</th>
+						<th style="width:60px;">Link</th>
+						<th style="width:80px;">ストック</th>
+						<th>必要コア</th>
+					</tr>
+				</table>
+				<div class="listWrapper" style="width:50vw;height:95vh;">
+					<table id="dataTable" class="list"></table>
+				</div>
+			</div>
+			<div style="margin-left:4px;">
+				<table>
+					<tr>
+						<th colspan="2">所持数</th>
+						<th>要求コア<br/><sup>※★2除く</sup></th>
+						<th>レベルマ</th>
+					</tr>
+					<tr>
+						<th>全銃種類</th>
+						<td id="holderSum" style="text-align:right;"></td>
+						<td id="coreSum" style="text-align:right;"></td>
+						<td id="compSum" style="text-align:right;"></td>
+					</tr>
+					<tr>
+						<th>ハンドガン</th>
+						<td id="holderSumHG" style="text-align:right;"></td>
+						<td id="coreSumHG" style="text-align:right;"></td>
+						<td id="compSumHG" style="text-align:right;"></td>
+					</tr>
+					<tr>
+						<th>サブマシンガン</th>
+						<td id="holderSumSMG" style="text-align:right;"></td>
+						<td id="coreSumSMG" style="text-align:right;"></td>
+						<td id="compSumSMG" style="text-align:right;"></td>
+					</tr>
+					<tr>
+						<th>ライフル</th>
+						<td id="holderSumRF" style="text-align:right;"></td>
+						<td id="coreSumRF" style="text-align:right;"></td>
+						<td id="compSumRF" style="text-align:right;"></td>
+					</tr>
+					<tr>
+						<th>アサルトライフル</th>
+						<td id="holderSumAR" style="text-align:right;"></td>
+						<td id="coreSumAR" style="text-align:right;"></td>
+						<td id="compSumAR" style="text-align:right;"></td>
+					</tr>
+					<tr>
+						<th>マシンガン</th>
+						<td id="holderSumMG" style="text-align:right;"></td>
+						<td id="coreSumMG" style="text-align:right;"></td>
+						<td id="compSumMG" style="text-align:right;"></td>
+					</tr>
+					<tr>
+						<th>ショットガン</th>
+						<td id="holderSumSG" style="text-align:right;"></td>
+						<td id="coreSumSG" style="text-align:right;"></td>
+						<td id="compSumSG" style="text-align:right;"></td>
+					</tr>
+				</table>
+				<button onclick="init();">再集計</button>
+			</div>
+		</div>
+	</body>
+</html>
